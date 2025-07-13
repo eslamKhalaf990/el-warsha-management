@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'El Warsha ERP',
       theme: ThemeData(
         fontFamily: 'cairo',
         colorScheme: ColorScheme.light(

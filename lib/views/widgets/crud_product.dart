@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
+import 'package:warsha_app/utils/default_text.dart';
+
+import '../add_product.dart';
 
 class CRUDProduct extends StatelessWidget {
   const CRUDProduct({
@@ -27,17 +30,27 @@ class CRUDProduct extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color:
-                Theme.of(context).colorScheme.surfaceTint,
-                borderRadius: Constants.BORDER_RADIUS_50,
-              ),
-              child: Icon(
-                Iconsax.add,
-                color:
-                Theme.of(context).colorScheme.secondary,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddProduct(),
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color:
+                  Theme.of(context).colorScheme.surfaceTint,
+                  borderRadius: Constants.BORDER_RADIUS_50,
+                ),
+                child: Icon(
+                  Iconsax.add,
+                  color:
+                  Theme.of(context).colorScheme.secondary,
+                ),
               ),
             ),
             const SizedBox(width: 10),
