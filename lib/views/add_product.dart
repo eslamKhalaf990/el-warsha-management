@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
-import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_text.dart';
 
 class AddProduct extends StatelessWidget {
@@ -10,42 +10,119 @@ class AddProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const DefaultText(txt: "Add New Product")),
+      appBar: AppBar(title: const DefaultText(txt: "Add New Product")),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Colors.orange.shade50.withOpacity(0.3),
               Colors.blue.shade50.withOpacity(0.7)
-            ], // Replace with your colors
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
         ),
-        child: const Row(
+        child: Row(
           children: [
-            Expanded(child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: DefaultProductForm(),
-            )),
-            Expanded(child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: DefaultProductForm(),
-            )),
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 20, left: 15),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  borderRadius: Constants.BORDER_RADIUS_15,
+                ),
+                width: 600,
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 20, right: 15, left: 15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    borderRadius: Constants.BORDER_RADIUS_15,
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(30.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            child: DefaultProductForm(
+                              title: "Product name",
+                              icon: Iconsax.bag,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            child: DefaultProductForm(
+                              title: "Product description",
+                              icon: Iconsax.document,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            child: DefaultProductForm(
+                              title: "Product buying price",
+                              icon: Iconsax.money,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15.0),
+                              child: DefaultProductForm(
+                                title: "Product selling price",
+                                icon: Iconsax.money,
+                              ),
+                            ),
+                        ),
+                        SizedBox(height: 20),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            child: DefaultProductForm(
+                              title: "Product category",
+                              icon: Iconsax.category,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            child: DefaultProductForm(
+                              title: "Product quantity",
+                              icon: Iconsax.add,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
-
     );
   }
 }
 
 class DefaultProductForm extends StatelessWidget {
-  const DefaultProductForm({
-    super.key,
-  });
-
+  const DefaultProductForm({super.key, required this.title, required this.icon});
+  final String title;
+  final IconData icon;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -53,25 +130,26 @@ class DefaultProductForm extends StatelessWidget {
       cursorColor: Theme.of(context).colorScheme.tertiary.withAlpha(Constants.OPACITY_05),
       decoration: InputDecoration(
         filled: true,
-        fillColor: Colors.grey.shade50,
+        fillColor: Theme.of(context).colorScheme.surfaceTint,
         enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(
               color: Colors.transparent,
             ),
-            borderRadius: Constants.BORDER_RADIUS_20),
+            borderRadius: Constants.BORDER_RADIUS_15),
         errorStyle: TextStyle(color: Colors.red.shade300),
-        prefixIcon: const Padding(
+        prefixIcon: Padding(
           padding: EdgeInsets.symmetric(horizontal: 30.0),
-          child: Icon(Iconsax.search_normal_copy),
+          child: Icon(icon, color: Theme.of(context).colorScheme.secondary,),
         ),
         border: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.transparent), borderRadius: Constants.BORDER_RADIUS_20),
+            borderSide: const BorderSide(color: Colors.transparent),
+            borderRadius: Constants.BORDER_RADIUS_15),
         focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(
               color: Colors.transparent,
             ),
-            borderRadius: Constants.BORDER_RADIUS_20),
-        hintText: "Product name",
+            borderRadius: Constants.BORDER_RADIUS_15),
+        hintText: title,
         hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
       ),
     );
