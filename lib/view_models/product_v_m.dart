@@ -31,4 +31,35 @@ class ProductVM extends ChangeNotifier {
     }
     return products;
   }
+
+  Future<String> addProduct(String productName, String productDescription,
+      String productBPrice, String productSPrice, String productCategory, String productSKU) async {
+    String status = "";
+    try {
+      isLoading = true;
+      ProductModel product = ProductModel(
+        productName: productName,
+        productDescription: productDescription,
+        productBPrice: productBPrice,
+        productSPrice: productSPrice,
+        productCategory: productCategory,
+        productSKU: productSKU,
+      );
+      final response = await _productService.addProduct(product);
+      if (response.statusCode == 201) {
+        status = "product_added";
+        debugPrint("Product added successfully");
+      } else {
+        status = "product_not_added";
+        debugPrint("Failed to add product: ${response.statusCode}");
+      }
+    } catch (e) {
+      status = "product_not_added";
+    debugPrint("Error fetching products: $e");
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+    return status;
+  }
 }

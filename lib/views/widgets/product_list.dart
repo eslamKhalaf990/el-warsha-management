@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/product_model.dart';
@@ -14,8 +13,8 @@ class ProductList extends StatelessWidget {
       future: Provider.of<ProductVM>(context, listen: false).getAllProducts(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Center(
+            child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary,),
           );
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));

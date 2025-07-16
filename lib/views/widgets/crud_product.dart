@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
-import 'package:warsha_app/utils/default_text.dart';
 
 import '../add_product.dart';
 
 class CRUDProduct extends StatelessWidget {
-  const CRUDProduct({
-    super.key,
-  });
+  const CRUDProduct({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,21 +32,19 @@ class CRUDProduct extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const AddProduct(),
+                    builder: (context) => AddProduct(),
                   ),
                 );
               },
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color:
-                  Theme.of(context).colorScheme.surfaceTint,
+                  color: Theme.of(context).colorScheme.surfaceTint,
                   borderRadius: Constants.BORDER_RADIUS_50,
                 ),
                 child: Icon(
                   Iconsax.add,
-                  color:
-                  Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),
@@ -57,22 +52,19 @@ class CRUDProduct extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color:
-                Theme.of(context).colorScheme.surfaceTint,
+                color: Theme.of(context).colorScheme.surfaceTint,
                 borderRadius: Constants.BORDER_RADIUS_50,
               ),
               child: Icon(
                 Iconsax.edit,
-                color:
-                Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.secondary,
               ),
             ),
             const SizedBox(width: 10),
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color:
-                Theme.of(context).colorScheme.surfaceTint,
+                color: Theme.of(context).colorScheme.surfaceTint,
                 borderRadius: Constants.BORDER_RADIUS_50,
               ),
               child: Icon(

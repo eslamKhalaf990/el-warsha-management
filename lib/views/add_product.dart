@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:warsha_app/utils/const_values.dart';
+import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/view_models/product_v_m.dart';
 
 class AddProduct extends StatelessWidget {
-  const AddProduct({super.key});
+  AddProduct({super.key});
+  final TextEditingController _productName = TextEditingController();
+  final TextEditingController _productDescription = TextEditingController();
+  final TextEditingController _productBuyingPrice = TextEditingController();
+  final TextEditingController _productSellingPrice = TextEditingController();
+  final TextEditingController _productCategory = TextEditingController();
+  final TextEditingController _productQuantity = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +22,7 @@ class AddProduct extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Colors.orange.shade50.withOpacity(0.3),
-              Colors.blue.shade50.withOpacity(0.7)
-            ],
+            colors: [Colors.orange.shade50.withOpacity(0.3), Colors.blue.shade50.withOpacity(0.7)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -42,70 +47,103 @@ class AddProduct extends StatelessWidget {
                     color: Theme.of(context).colorScheme.onPrimary,
                     borderRadius: Constants.BORDER_RADIUS_15,
                   ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(30.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(30.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
                             child: DefaultProductForm(
                               title: "Product name",
+                              controller: _productName,
                               icon: Iconsax.bag,
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
                             child: DefaultProductForm(
                               title: "Product description",
+                              controller: _productDescription,
                               icon: Iconsax.document,
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
                             child: DefaultProductForm(
                               title: "Product buying price",
+                              controller: _productBuyingPrice,
                               icon: Iconsax.money,
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
-                        Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15.0),
-                              child: DefaultProductForm(
-                                title: "Product selling price",
-                                icon: Iconsax.money,
-                              ),
-                            ),
-                        ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: DefaultProductForm(
+                              title: "Product selling price",
+                              controller: _productSellingPrice,
+                              icon: Iconsax.money,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
                             child: DefaultProductForm(
                               title: "Product category",
+                              controller: _productCategory,
                               icon: Iconsax.category,
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
                             child: DefaultProductForm(
                               title: "Product quantity",
+                              controller: _productQuantity,
                               icon: Iconsax.add,
                             ),
                           ),
                         ),
+                        const SizedBox(height: 20),
+                        Consumer<ProductVM>(
+                          builder: (context, productVM, child) => DefaultButton(
+                            onTap: () async {
+                              String status = await productVM.addProduct(
+                                _productName.text,
+                                _productDescription.text,
+                                _productBuyingPrice.text,
+                                _productSellingPrice.text,
+                                _productCategory.text,
+                                _productQuantity.text,
+                              );
+                              if (status == "product_added") {
+                                Navigator.pop(context);
+                                productVM.getAllProducts();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Product added successfully"),
+                                  ),
+                                );
+                              }
+                            },
+                            title: "Add new product",
+                            margin: const EdgeInsets.symmetric(horizontal: 15),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),
@@ -120,13 +158,14 @@ class AddProduct extends StatelessWidget {
 }
 
 class DefaultProductForm extends StatelessWidget {
-  const DefaultProductForm({super.key, required this.title, required this.icon});
+  const DefaultProductForm({super.key, required this.title, required this.icon, required this.controller});
   final String title;
+  final TextEditingController controller;
   final IconData icon;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: TextEditingController(),
+      controller: controller,
       cursorColor: Theme.of(context).colorScheme.tertiary.withAlpha(Constants.OPACITY_05),
       decoration: InputDecoration(
         filled: true,
@@ -138,8 +177,11 @@ class DefaultProductForm extends StatelessWidget {
             borderRadius: Constants.BORDER_RADIUS_15),
         errorStyle: TextStyle(color: Colors.red.shade300),
         prefixIcon: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.0),
-          child: Icon(icon, color: Theme.of(context).colorScheme.secondary,),
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Icon(
+            icon,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
         ),
         border: OutlineInputBorder(
             borderSide: const BorderSide(color: Colors.transparent),
