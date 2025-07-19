@@ -6,6 +6,8 @@ import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
 
+import 'widgets/drag_drop_widget.dart';
+
 class AddProduct extends StatelessWidget {
   AddProduct({super.key});
   final TextEditingController _productName = TextEditingController();
@@ -36,7 +38,13 @@ class AddProduct extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onPrimary,
                   borderRadius: Constants.BORDER_RADIUS_15,
                 ),
-                width: 600,
+                // width: 600,
+                child: Column(
+                  children: [
+                    const DragDropImageUpload(),
+                    DefaultButton(onTap: (){}, title: "title", margin: EdgeInsets.all(0))
+                  ],
+                )
               ),
             ),
             Expanded(
@@ -131,6 +139,7 @@ class AddProduct extends StatelessWidget {
                               );
                               if (status == "product_added") {
                                 Navigator.pop(context);
+                                productVM.initAllProducts();
                                 productVM.getAllProducts();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(

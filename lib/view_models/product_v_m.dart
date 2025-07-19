@@ -9,7 +9,16 @@ class ProductVM extends ChangeNotifier {
 
   bool isLoading = false;
 
-  ProductVM(this._productService);
+  Future<List<ProductModel>>? allProducts;
+
+  ProductVM(this._productService) {
+    initAllProducts();
+  }
+
+  void initAllProducts () {
+    allProducts = getAllProducts();
+    notifyListeners();
+  }
 
   Future<List<ProductModel>> getAllProducts() async {
     List<ProductModel> products = [];
@@ -33,7 +42,7 @@ class ProductVM extends ChangeNotifier {
   }
 
   Future<String> addProduct(String productName, String productDescription,
-      String productBPrice, String productSPrice, String productCategory, String productSKU) async {
+      String productBPrice, String productSPrice, String productCategory, productQuantity) async {
     String status = "";
     try {
       isLoading = true;
@@ -43,7 +52,7 @@ class ProductVM extends ChangeNotifier {
         productBPrice: productBPrice,
         productSPrice: productSPrice,
         productCategory: productCategory,
-        productSKU: productSKU,
+        productQuantity: productQuantity,
       );
       final response = await _productService.addProduct(product);
       if (response.statusCode == 201) {

@@ -10,9 +10,10 @@ class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ProductModel>>(
-      future: Provider.of<ProductVM>(context, listen: false).getAllProducts(),
+      future: Provider.of<ProductVM>(context).allProducts,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
+          print("waiting");
           return Center(
             child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary,),
           );
@@ -27,9 +28,11 @@ class ProductList extends StatelessWidget {
                 return ProductWidget(
                   title: snapshot.data![index].productName,
                   description: snapshot.data![index].productDescription,
-                  price: snapshot.data![index].productBPrice,
+                  bPrice: snapshot.data![index].productBPrice,
+                  sPrice: snapshot.data![index].productSPrice,
                   category: snapshot.data![index].productCategory,
-                  isOutOfStock: true, sku: snapshot.data![index].productSKU,
+                  quantity: snapshot.data![index].productQuantity,
+                  sku: snapshot.data![index].productSKU ?? "-",
                 );
               },
             ),

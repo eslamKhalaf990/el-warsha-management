@@ -43,7 +43,8 @@ dependencies:
   shimmer: ^3.0.0
   syncfusion_flutter_datepicker: ^29.1.38
   syncfusion_flutter_charts: ^29.1.38
-
+  desktop_drop: ^0.6.0
+  file_picker: ^8.3.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -68,8 +69,8 @@ flutter:
 
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+     - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

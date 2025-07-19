@@ -46,8 +46,9 @@ class ProductService {
           "description": product.productDescription,
           "name": product.productName,
           "category": product.productCategory,
-          "price": product.productBPrice,
-          "sku": product.productSKU,
+          "buyingPrice": product.productBPrice,
+          "sellingPrice": product.productSPrice,
+          "quantity": product.productQuantity,
         })
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
       debugPrint(response.body);

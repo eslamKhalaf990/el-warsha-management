@@ -6,28 +6,30 @@ import 'package:warsha_app/utils/default_text.dart';
 class ProductWidget extends StatelessWidget {
   final String title;
   final String description;
-  final String price;
+  final String bPrice;
+  final String sPrice;
   final String sku;
   final String category;
-  final bool isOutOfStock;
+  final String quantity;
 
   const ProductWidget({
     super.key,
     required this.title,
     required this.sku,
     required this.description,
-    required this.price,
-    this.isOutOfStock = false,
+    required this.bPrice,
+    required this.sPrice,
+    required this.quantity,
     required this.category,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onPrimary,
+        color: Theme.of(context).colorScheme.onPrimary.withAlpha(100),
         borderRadius: Constants.BORDER_RADIUS_20,
       ),
       child: Column(
@@ -69,6 +71,20 @@ class ProductWidget extends StatelessWidget {
                           bold: true,
                         ),
 
+                        const Expanded(child: SizedBox()),
+
+                        // Dot indicator for new
+                        if (int.parse(quantity) < 1)
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.red.shade300,
+                                borderRadius: Constants.BORDER_RADIUS_20
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+                            // margin: const EdgeInsets.only(top: 4, right: 12),
+                            child: const DefaultText(txt: 'Out of stock',color: Colors.white,),
+                          ),
+
                       ],
                     ),
                     const SizedBox(height: 6),
@@ -79,24 +95,72 @@ class ProductWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     // Time
-                    DefaultText(
-                      txt: "$category  |  $price",
-                      size: 14,
+                    Row(
+                      children: [
+                        DefaultText(
+                          txt: "$category    |  ",
+                          size: 14,
+                        ),
+
+                        DefaultText(
+                          txt: " $quantity Pieces",
+                          size: 14,
+                        ),
+
+                        const SizedBox(width: 15,),
+
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.green.shade300,
+                              borderRadius: Constants.BORDER_RADIUS_20
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+
+                          child: Row(
+                            children: [
+                              const DefaultText(
+                                txt: "Buying Price  ",
+                                size: 14,
+                                color: Colors.white
+                              ),
+                              DefaultText(
+                                txt: "$bPrice EGP",
+                                size: 14,
+                                color: Colors.white
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 15,),
+
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.blue.shade300,
+                              borderRadius: Constants.BORDER_RADIUS_20
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+                          child: Row(
+                            children: [
+                              const DefaultText(
+                                  txt: "Selling Price  ",
+                                  size: 14,
+                                  color: Colors.white
+                              ),
+                              DefaultText(
+                                  txt: "$sPrice EGP",
+                                  size: 14,
+                                  color: Colors.white
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 5,),
+                    Divider(color: Theme.of(context).colorScheme.onSurface.withAlpha(50),thickness: 0.5,)
                   ],
                 ),
               ),
-              // Dot indicator for new
-              if (isOutOfStock)
-                Container(
-                  width: 8,
-                  height: 8,
-                  margin: const EdgeInsets.only(top: 4, right: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                ),
             ],
           ),
         ],

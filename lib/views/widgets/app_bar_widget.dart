@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
-
 
 class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   const DefaultAppBar({super.key});
@@ -11,88 +11,28 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       title: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           margin: const EdgeInsets.symmetric(horizontal: 15),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-            color: Theme.of(context).colorScheme.onPrimary,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: const DefaultText(
-            txt: "Home",
-            bold: true,
-          )),
-      actions: [
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30),
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 3),
+          width: 160,
+          height: 50,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onPrimary,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(100),
           ),
           child: Row(
             children: [
-              Row(
-                children: [
-                  Icon(Iconsax.home, color: Theme.of(context).colorScheme.secondary,),
-                  const SizedBox(
-                      width: 15
-                  ),
-                  const DefaultText(txt: "Home", bold: true,)
-                ],
+              ClipRRect(
+                  borderRadius: Constants.BORDER_RADIUS_100,
+                  child: Image.asset("assets/images/logo.png"),
               ),
-              const SizedBox(width: 100),
-              Row(
-                children: [
-                  Icon(
-                    Iconsax.category,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  const SizedBox(width: 15),
-                  const DefaultText(txt: "Products", bold: true,)
-                ],
-              ),
-              SizedBox(width: 100),
-              Row(
-                children: [
-                  Icon(
-                    Iconsax.house,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  const DefaultText(txt: "Inventory", bold: true,)
-                ],
-              ),
-              const SizedBox(width: 100),
-              Row(
-                children: [
-                  Icon(
-                    Iconsax.profile_2user,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  const SizedBox(width: 15),
-                  const DefaultText(txt: "Customers", bold: true,)
-                ],
-              ),
-              const SizedBox(width: 100),
-              Row(
-                children: [
-                  Icon(
-                    Iconsax.document,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  const SizedBox(width: 15),
-                  const DefaultText(txt: "Invoices", bold: true,)
-                ],
+              const SizedBox(width: 10,),
+              const DefaultText(
+                txt: "Home",
+                bold: true,
               ),
             ],
           ),
-        ),
-      ],
+      ),
     );
   }
 

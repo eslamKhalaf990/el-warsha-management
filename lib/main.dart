@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:warsha_app/controllers/drag_drop_controller.dart';
 import 'package:warsha_app/services/products_service.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
 import 'package:warsha_app/views/home.dart';
@@ -8,6 +9,7 @@ void main() {
     runApp(
       MultiProvider(
         providers: [
+          ChangeNotifierProvider(create: (_)=> DragDropController()),
 
           //providers used for dependency injection
           Provider<ProductService>(create: (_) => ProductService()),
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'cairo',
         colorScheme: ColorScheme.light(
+          onPrimary: Colors.white.withAlpha(200),
           secondary: Colors.blue.shade400,
           onSurface: Colors.grey.shade700,
           onSecondary: Colors.grey.shade400,

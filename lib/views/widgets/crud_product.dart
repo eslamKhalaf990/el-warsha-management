@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
+import 'package:warsha_app/utils/default_text.dart';
 
 import '../add_product.dart';
 
@@ -11,8 +12,9 @@ class CRUDProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(vertical: 2.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onPrimary,
+        color: Theme.of(context).colorScheme.onPrimary.withAlpha(100),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
@@ -27,8 +29,8 @@ class CRUDProduct extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            GestureDetector(
-              onTap: () {
+            IconButton(
+              onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -36,15 +38,21 @@ class CRUDProduct extends StatelessWidget {
                   ),
                 );
               },
-              child: Container(
+              icon: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceTint,
                   borderRadius: Constants.BORDER_RADIUS_50,
                 ),
-                child: Icon(
-                  Iconsax.add,
-                  color: Theme.of(context).colorScheme.secondary,
+                child: Row(
+                  children: [
+                    Icon(
+                      Iconsax.add,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    const SizedBox(width: 5,),
+                    const DefaultText(txt: "Add Product"),
+                  ],
                 ),
               ),
             ),
@@ -55,10 +63,16 @@ class CRUDProduct extends StatelessWidget {
                 color: Theme.of(context).colorScheme.surfaceTint,
                 borderRadius: Constants.BORDER_RADIUS_50,
               ),
-              child: Icon(
-                Iconsax.edit,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Iconsax.edit,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                  const SizedBox(width: 5,),
+                  const DefaultText(txt: "Update Product"),
+                ],
+              )
             ),
             const SizedBox(width: 10),
             Container(
@@ -67,9 +81,15 @@ class CRUDProduct extends StatelessWidget {
                 color: Theme.of(context).colorScheme.surfaceTint,
                 borderRadius: Constants.BORDER_RADIUS_50,
               ),
-              child: Icon(
-                Iconsax.close_square,
-                color: Colors.red.shade400,
+              child: Row(
+                children: [
+                  Icon(
+                    Iconsax.close_square,
+                    color: Colors.red.shade300,
+                  ),
+                  const SizedBox(width: 5,),
+                  const DefaultText(txt: "Delete Product"),
+                ],
               ),
             ),
           ],

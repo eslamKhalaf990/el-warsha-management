@@ -18,7 +18,7 @@ class DefaultForm extends StatelessWidget {
       keyboardType: TextInputType.multiline,
       decoration: InputDecoration(
         filled: true,
-        fillColor: Colors.grey.shade50,
+        fillColor: Theme.of(context).colorScheme.surfaceTint,
         enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(
               color: Colors.transparent,
