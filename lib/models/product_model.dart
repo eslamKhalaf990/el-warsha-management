@@ -5,6 +5,7 @@ class ProductModel {
   String productBPrice;
   String productCategory;
   String productQuantity;
+  String productImage;
   String? productSKU;
 
   ProductModel({
@@ -14,6 +15,7 @@ class ProductModel {
     required this.productSPrice,
     required this.productCategory,
     required this.productQuantity,
+    required this.productImage,
     this.productSKU,
   });
 
@@ -25,7 +27,7 @@ class ProductModel {
       productBPrice: json['buyingPrice'].toString(),
       productCategory: json['category'],
       productQuantity: json['quantity'],
-      productSKU: json['sku'],
+      productSKU: json['sku'], productImage: json['imageUrl'] ?? "-",
     );
   }
   factory ProductModel.toJson(Map<String, dynamic> json) {
@@ -36,7 +38,7 @@ class ProductModel {
       productSPrice: json['BuyingPrice'].toString(),
       productQuantity: json['quantity'],
       productCategory: json['category'],
-      productSKU: json['sku'],
+      productSKU: json['sku'], productImage: json['imageUrl']??"-",
     );
   }
 }

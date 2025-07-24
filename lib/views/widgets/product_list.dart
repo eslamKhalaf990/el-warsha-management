@@ -13,7 +13,6 @@ class ProductList extends StatelessWidget {
       future: Provider.of<ProductVM>(context).allProducts,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          print("waiting");
           return Center(
             child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary,),
           );
@@ -33,6 +32,7 @@ class ProductList extends StatelessWidget {
                   category: snapshot.data![index].productCategory,
                   quantity: snapshot.data![index].productQuantity,
                   sku: snapshot.data![index].productSKU ?? "-",
+                  image: snapshot.data![index].productImage ?? "-"
                 );
               },
             ),

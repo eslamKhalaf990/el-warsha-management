@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 
@@ -13,7 +12,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Container(
           margin: const EdgeInsets.symmetric(horizontal: 15),
           padding: const EdgeInsets.symmetric(vertical: 3),
-          width: 160,
+          width: 200,
           height: 50,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onPrimary,
@@ -27,7 +26,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               const SizedBox(width: 10,),
               const DefaultText(
-                txt: "Home",
+                txt: "EL WARSHA",
                 bold: true,
               ),
             ],

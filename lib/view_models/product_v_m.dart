@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:warsha_app/models/product_model.dart';
@@ -41,34 +42,44 @@ class ProductVM extends ChangeNotifier {
     return products;
   }
 
-  Future<String> addProduct(String productName, String productDescription,
-      String productBPrice, String productSPrice, String productCategory, productQuantity) async {
+  Future<String> addProduct({
+    required String productName,
+    required String productDescription,
+    required String productBPrice,
+    required String productSPrice,
+    required String productCategory,
+    required String productQuantity,
+    required File? imageFile,
+  }) async {
     String status = "";
     try {
       isLoading = true;
-      ProductModel product = ProductModel(
-        productName: productName,
-        productDescription: productDescription,
-        productBPrice: productBPrice,
-        productSPrice: productSPrice,
-        productCategory: productCategory,
-        productQuantity: productQuantity,
+
+      final response = await _productService.addProductWithImage(
+        name: productName,
+        description: productDescription,
+        buyingPrice: productBPrice,
+        sellingPrice: productSPrice,
+        category: productCategory,
+        quantity: productQuantity,
+        imageFile: imageFile,
       );
-      final response = await _productService.addProduct(product);
-      if (response.statusCode == 201) {
+
+      final responseBody = await response.stream.bytesToString();
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
         status = "product_added";
-        debugPrint("Product added successfully");
+        debugPrint("✅ Product added: $responseBody");
       } else {
         status = "product_not_added";
-        debugPrint("Failed to add product: ${response.statusCode}");
       }
     } catch (e) {
       status = "product_not_added";
-    debugPrint("Error fetching products: $e");
     } finally {
       isLoading = false;
       notifyListeners();
     }
+
     return status;
   }
 }

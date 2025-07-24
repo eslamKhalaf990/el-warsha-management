@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:warsha_app/controllers/add_product.dart';
 import 'package:warsha_app/controllers/drag_drop_controller.dart';
 import 'package:warsha_app/services/products_service.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
@@ -10,6 +11,7 @@ void main() {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_)=> DragDropController()),
+          ChangeNotifierProvider(create: (_)=> ProductProvider()),
 
           //providers used for dependency injection
           Provider<ProductService>(create: (_) => ProductService()),

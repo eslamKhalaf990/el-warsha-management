@@ -32,9 +32,9 @@ class _DragDropImageUploadState extends State<DragDropImageUpload> {
         onDragEntered: (details) => setState(() => _dragging = true),
         onDragExited: (details) => setState(() => _dragging = false),
         child: Container(
-          width: 200,
-          height: 200,
-          margin: const EdgeInsets.all(30),
+          width: double.infinity,
+          height: 500,
+          margin: const EdgeInsets.symmetric(horizontal: 15),
           decoration: BoxDecoration(
             borderRadius: Constants.BORDER_RADIUS_20,
             color: _dragging ? Colors.grey.withOpacity(0.2) : Theme.of(context).colorScheme.surfaceTint,

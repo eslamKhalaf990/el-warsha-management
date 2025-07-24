@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 
@@ -30,33 +32,37 @@ class ProductService {
     return response;
   }
 
-  Future<http.Response> addProduct(ProductModel product) async {
-    debugPrint("addProduct called");
-    http.Response response;
-    try {
-      response = await http.post(
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-        Uri.parse(
-          Baseurl.addProductAPI,
-        ),
-        body: jsonEncode({
-          "description": product.productDescription,
-          "name": product.productName,
-          "category": product.productCategory,
-          "buyingPrice": product.productBPrice,
-          "sellingPrice": product.productSPrice,
-          "quantity": product.productQuantity,
-        })
-      ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
-    } on TimeoutException {
-      throw Exception('The request timed out. Please try again later.');
-    } catch (e) {
-      throw Exception('Failed to add your new product: $e');
+  Future<http.StreamedResponse> addProductWithImage({
+    required String name,
+    required String description,
+    required String buyingPrice,
+    required String sellingPrice,
+    required String category,
+    required String quantity,
+    required File? imageFile,
+  }) async {
+    var uri = Uri.parse(Baseurl.addProductAPI);
+
+    final product = jsonEncode({
+      "name": name,
+      "description": description,
+      "buyingPrice": buyingPrice,
+      "sellingPrice": sellingPrice,
+      "category": category,
+      "quantity": quantity,
+    });
+    var request = http.MultipartRequest("POST", uri);
+
+    request.fields['product'] = product;
+
+    if (imageFile != null && await imageFile.exists()) {
+      request.files.add(await http.MultipartFile.fromPath(
+        'image',
+        imageFile.path,
+        filename: basename(imageFile.path),
+      ));
     }
-    return response;
+
+    return await request.send(); // Let the viewmodel parse the response
   }
 }

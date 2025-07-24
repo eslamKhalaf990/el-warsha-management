@@ -44,6 +44,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^29.1.38
   syncfusion_flutter_charts: ^29.1.38
   desktop_drop: ^0.6.0
+  path: ^1.9.0
   file_picker: ^8.3.2
 dev_dependencies:
   flutter_test:

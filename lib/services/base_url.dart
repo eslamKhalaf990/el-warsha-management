@@ -1,6 +1,7 @@
 class Baseurl {
   // static String baseURL = "https://2fvvvgwq-5162.euw.devtunnels.ms/";
   static String baseURL = "http://localhost:8080/";
+  static String baseURLImages = "${baseURL}products/getImage?filename=";
 
   /// =============== Authentication APIs ============== ///
   /// =============== Authentication APIs ============== ///
