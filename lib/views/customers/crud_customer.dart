@@ -3,11 +3,11 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/views/customers/add_customer.dart';
+import 'package:warsha_app/views/products/widgets/add_product.dart';
 
-import '../add_product.dart';
-
-class CRUDProduct extends StatelessWidget {
-  const CRUDProduct({super.key});
+class CRUDCustomer extends StatelessWidget {
+  const CRUDCustomer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class CRUDProduct extends StatelessWidget {
           children: [
             Expanded(
               child: DefaultForm(
-                title: 'Search For Product By Name or ID',
+                title: 'Search For Customer By Name or ID',
                 controller: TextEditingController(),
                 numberOfLines: 1,
               ),
@@ -34,7 +34,7 @@ class CRUDProduct extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddProduct(),
+                    builder: (context) => AddCustomer(),
                   ),
                 );
               },
@@ -51,28 +51,28 @@ class CRUDProduct extends StatelessWidget {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     const SizedBox(width: 5,),
-                    const DefaultText(txt: "Add Product"),
+                    const DefaultText(txt: "Add Customer"),
                   ],
                 ),
               ),
             ),
             const SizedBox(width: 10),
             Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceTint,
-                borderRadius: Constants.BORDER_RADIUS_50,
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Iconsax.edit,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  const SizedBox(width: 5,),
-                  const DefaultText(txt: "Update Product"),
-                ],
-              )
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceTint,
+                  borderRadius: Constants.BORDER_RADIUS_50,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Iconsax.edit,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    const SizedBox(width: 5,),
+                    const DefaultText(txt: "Update Customer"),
+                  ],
+                )
             ),
             const SizedBox(width: 10),
             Container(
@@ -88,7 +88,7 @@ class CRUDProduct extends StatelessWidget {
                     color: Colors.red.shade300,
                   ),
                   const SizedBox(width: 5,),
-                  const DefaultText(txt: "Delete Product"),
+                  const DefaultText(txt: "Delete Customer"),
                 ],
               ),
             ),

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:warsha_app/controllers/add_customer.dart';
 import 'package:warsha_app/controllers/add_product.dart';
 import 'package:warsha_app/controllers/drag_drop_controller.dart';
+import 'package:warsha_app/controllers/navigation.dart';
+import 'package:warsha_app/services/customers_services.dart';
 import 'package:warsha_app/services/products_service.dart';
+import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
 import 'package:warsha_app/views/home.dart';
 
@@ -12,14 +16,24 @@ void main() {
         providers: [
           ChangeNotifierProvider(create: (_)=> DragDropController()),
           ChangeNotifierProvider(create: (_)=> ProductProvider()),
+          ChangeNotifierProvider(create: (_)=> Navigation()),
+          ChangeNotifierProvider(create: (_)=> CustomerProvider()),
 
           //providers used for dependency injection
           Provider<ProductService>(create: (_) => ProductService()),
+          Provider<CustomerService>(create: (_) => CustomerService()),
 
-          //injecting user with api services
+          //injecting product with api services
           ChangeNotifierProvider<ProductVM>(
             create: (context) => ProductVM(
               context.read<ProductService>(),
+            ),
+          ),
+
+          //injecting customer with api services
+          ChangeNotifierProvider<CustomerVM>(
+            create: (context) => CustomerVM(
+              context.read<CustomerService>(),
             ),
           ),
         ],

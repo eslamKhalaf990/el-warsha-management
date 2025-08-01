@@ -1,5 +1,6 @@
 class ProductModel {
   String productName;
+  late String productID;
   String productDescription;
   String productSPrice;
   String productBPrice;
@@ -8,7 +9,7 @@ class ProductModel {
   String productImage;
   String? productSKU;
 
-  ProductModel({
+  ProductModel.add({
     required this.productName,
     required this.productDescription,
     required this.productBPrice,
@@ -19,9 +20,22 @@ class ProductModel {
     this.productSKU,
   });
 
+  ProductModel.get({
+    required this.productName,
+    required this.productID,
+    required this.productDescription,
+    required this.productBPrice,
+    required this.productSPrice,
+    required this.productCategory,
+    required this.productQuantity,
+    required this.productImage,
+    this.productSKU,
+  });
+
   factory ProductModel.fromJson(Map<String, dynamic> json) {
-    return ProductModel(
+    return ProductModel.get(
       productName: json['name'],
+      productID: json['productID'].toString(),
       productDescription: json['description'],
       productSPrice: json['sellingPrice'].toString(),
       productBPrice: json['buyingPrice'].toString(),
@@ -31,7 +45,7 @@ class ProductModel {
     );
   }
   factory ProductModel.toJson(Map<String, dynamic> json) {
-    return ProductModel(
+    return ProductModel.add(
       productName: json['name'],
       productDescription: json['description'],
       productBPrice: json['sellingPrice'].toString(),

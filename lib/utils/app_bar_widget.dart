@@ -12,7 +12,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Container(
           margin: const EdgeInsets.symmetric(horizontal: 15),
           padding: const EdgeInsets.symmetric(vertical: 3),
-          width: 200,
+          width: 250,
           height: 50,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onPrimary,

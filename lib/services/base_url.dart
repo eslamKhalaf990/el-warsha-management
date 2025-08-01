@@ -1,15 +1,25 @@
 class Baseurl {
-  // static String baseURL = "https://2fvvvgwq-5162.euw.devtunnels.ms/";
+  // static String baseURL = "https://warshaerp-production.up.railway.app/";
   static String baseURL = "http://localhost:8080/";
   static String baseURLImages = "${baseURL}products/getImage?filename=";
 
   /// =============== Authentication APIs ============== ///
   /// =============== Authentication APIs ============== ///
 
-  /// ===============   User Data APIs    ============== ///
-  /// ===============   User Data APIs    ============== ///
+  /// ===============   Customers APIs    ============== ///
+  static String getAllCustomersAPI = '${baseURL}customers';
+  static String addCustomerAPI = '${baseURL}customers';
+  /// ===============   Customers APIs    ============== ///
 
-  /// ===============   Attendance APIs    ============== ///
+
+  /// ===============   Orders APIs    ============== ///
+  static String getAllOrderAPI = '${baseURL}order';
+  static String addOrderAPI = '${baseURL}orders';
+  /// ===============   Orders APIs    ============== ///
+
+  /// ===============   Products APIs    ============== ///
   static String getAllProductsAPI = '${baseURL}products';
   static String addProductAPI = '${baseURL}products';
+  /// ===============   Products APIs    ============== ///
+
 }

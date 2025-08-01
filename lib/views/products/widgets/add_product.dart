@@ -8,10 +8,10 @@ import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
 
-import 'widgets/drag_drop_widget.dart';
+import 'drag_drop_widget.dart';
 
 class AddProduct extends StatelessWidget {
-  AddProduct({super.key});
+  const AddProduct({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,9 @@ class AddProduct extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.orange.shade50.withOpacity(0.3),
-                Colors.blue.shade50.withOpacity(0.7)
-              ],
+                Colors.blue.shade50,
+                Colors.yellow.shade200
+              ], // Replace with your colors
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -225,7 +225,7 @@ class AddProduct extends StatelessWidget {
                                           txt: "Profit Margin is:  "),
                                       DefaultText(
                                         txt:
-                                            "${value.buyingPrice - value.sellingPrice}",
+                                            "${value.sellingPrice - value.buyingPrice}",
                                         bold: true,
                                         size: 16,
                                       )

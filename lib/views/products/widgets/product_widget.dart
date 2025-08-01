@@ -3,7 +3,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 
-import '../../services/base_url.dart';
+import '../../../services/base_url.dart';
 
 class ProductWidget extends StatelessWidget {
   final String title;
