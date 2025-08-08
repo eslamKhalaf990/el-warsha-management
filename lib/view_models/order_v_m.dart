@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/models/order_items_model.dart';
 import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/models/product_model.dart';
@@ -10,12 +11,13 @@ import 'package:warsha_app/services/products_service.dart';
 
 class OrderVM extends ChangeNotifier {
   final OrdersService _orderService;
+  OrderModel orderModel;
 
   bool isLoading = false;
 
   Future<List<OrderModel>>? allOrders;
 
-  OrderVM(this._orderService) {
+  OrderVM(this._orderService, this.orderModel) {
     initAllOrders();
   }
 
@@ -56,21 +58,29 @@ class OrderVM extends ChangeNotifier {
 
       final response = await _orderService.addOrder(orderModel);
 
-      final responseBody = response.body;
-
       if (response.statusCode == 200 || response.statusCode == 201) {
         status = "order_added";
-        debugPrint("Order added: $responseBody");
       } else {
         status = "order_not_added";
       }
     } catch (e) {
       status = "order_not_added";
+      print(e);
     } finally {
       isLoading = false;
       notifyListeners();
     }
 
     return status;
+  }
+
+  set addCustomer(CustomerModel value) {
+    orderModel.customer = value;
+    notifyListeners();
+  }
+
+  set addToOrderItems(OrderItemsModel value) {
+    orderModel.orderItems.add(value);
+    notifyListeners();
   }
 }

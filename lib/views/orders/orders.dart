@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:warsha_app/views/orders/crud_order.dart';
 import 'order_list.dart';
 
-class Customers extends StatelessWidget {
-  const Customers({super.key});
+class Orders extends StatelessWidget {
+  const Orders({super.key});
 
   @override
   Widget build(BuildContext context) {

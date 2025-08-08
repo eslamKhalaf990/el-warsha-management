@@ -4,9 +4,12 @@ import 'package:warsha_app/controllers/add_customer.dart';
 import 'package:warsha_app/controllers/add_product.dart';
 import 'package:warsha_app/controllers/drag_drop_controller.dart';
 import 'package:warsha_app/controllers/navigation.dart';
+import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/services/customers_services.dart';
+import 'package:warsha_app/services/orders_service.dart';
 import 'package:warsha_app/services/products_service.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
+import 'package:warsha_app/view_models/order_v_m.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
 import 'package:warsha_app/views/home.dart';
 
@@ -21,12 +24,21 @@ void main() {
 
           //providers used for dependency injection
           Provider<ProductService>(create: (_) => ProductService()),
+          Provider<OrdersService>(create: (_) => OrdersService()),
           Provider<CustomerService>(create: (_) => CustomerService()),
 
           //injecting product with api services
           ChangeNotifierProvider<ProductVM>(
             create: (context) => ProductVM(
               context.read<ProductService>(),
+            ),
+          ),
+
+          //injecting product with api services
+          ChangeNotifierProvider<OrderVM>(
+            create: (context) => OrderVM(
+              context.read<OrdersService>(),
+              OrderModel()
             ),
           ),
 

@@ -13,7 +13,7 @@ class Baseurl {
 
 
   /// ===============   Orders APIs    ============== ///
-  static String getAllOrderAPI = '${baseURL}order';
+  static String getAllOrderAPI = '${baseURL}orders';
   static String addOrderAPI = '${baseURL}orders';
   /// ===============   Orders APIs    ============== ///
 

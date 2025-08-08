@@ -1,19 +1,22 @@
 class OrderItemsModel {
-  final int productId;
-  final int quantity;
-  final int unitPrice;
+  final String productId;
+  final String productName;
+  final String quantity;
+  final String unitPrice;
 
   OrderItemsModel({
     required this.productId,
+    required this.productName,
     required this.quantity,
     required this.unitPrice,
   });
 
   factory OrderItemsModel.fromJson(Map<String, dynamic> json) {
     return OrderItemsModel(
-      productId: json['productId'],
-      quantity: json['quantity'],
-      unitPrice: json['unitPrice'],
+      productId: json['productId'].toString(),
+      productName: json['productName'].toString(),
+      quantity: json['quantity'].toString(),
+      unitPrice: json['unitPrice'].toString(),
     );
   }
 

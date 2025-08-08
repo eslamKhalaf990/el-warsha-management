@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
+import 'package:warsha_app/view_models/order_v_m.dart';
 import 'customer_widget.dart';
 
-class CustomerList extends StatelessWidget {
-  const CustomerList({super.key});
+class CustomerToAdd extends StatelessWidget {
+  const CustomerToAdd({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +27,18 @@ class CustomerList extends StatelessWidget {
               itemCount: snapshot.data!.length,
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
-                return CustomerWidget(
-                  name: snapshot.data![index].customerName,
-                  email: snapshot.data![index].email,
-                  address:snapshot.data![index].address,
-                  phone: snapshot.data![index].phone,
+                return GestureDetector(
+                  onTap: (){
+                    Provider.of<OrderVM>(context, listen: false).addCustomer =
+                        snapshot.data![index];
+                    },
+                  child: CustomerWidget(
+                    index: index,
+                    name: snapshot.data![index].customerName,
+                    email: snapshot.data![index].email,
+                    address:snapshot.data![index].address,
+                    phone: snapshot.data![index].phone,
+                  ),
                 );
               },
             ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/add_customer.dart';
 import 'package:warsha_app/utils/const_values.dart';
-import 'package:warsha_app/utils/default_button.dart';
+import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/view_models/customers_v_m.dart';
+import 'package:warsha_app/view_models/order_v_m.dart';
+import 'package:warsha_app/views/orders/customer_to_add.dart';
+import 'package:warsha_app/views/orders/product_to_add.dart';
 
 class AddOrder extends StatelessWidget {
   const AddOrder({super.key});
@@ -32,10 +33,60 @@ class AddOrder extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                flex: 2,
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 60, bottom: 15, left: 15),
+                  child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        borderRadius: Constants.BORDER_RADIUS_15,
+                      ),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 20),
+                          Container(
+                            margin: const EdgeInsets.all(15),
+                            child: const Row(
+                              children: [DefaultText(txt: "Order Items")],
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
+                                child: DefaultText(txt: Provider.of<OrderVM>(context).orderModel.customer.customerID ?? "-"),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15.0),
+                              child: ListView.builder(
+                                  itemCount: Provider.of<OrderVM>(context).orderModel.orderItems.length,
+                                  itemBuilder: (context, index) => Container(
+                                      width: 100,
+                                      height: 20,
+                                      child: DefaultText(
+                                        txt: Provider.of<OrderVM>(context).orderModel.
+                                        orderItems[index].productName,
+                                      ),
+                                  )
+                              ),
+
+                            ),
+                          ),
+                        ],
+                      )),
+                ),
+              ),
+              Expanded(
+                flex: 4,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      top: 60, bottom: 50, right: 15, left: 15),
+                      top: 60, bottom: 15, right: 7, left: 15),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.onPrimary,
@@ -49,93 +100,60 @@ class AddOrder extends StatelessWidget {
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 15.0),
                             child: Row(
-                              children: [DefaultText(txt: "Order Info")],
+                              children: [DefaultText(txt: "Products")],
                             ),
                           ),
                           const SizedBox(height: 20),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: DefaultCustomerForm(
-                                title: "Order ID",
-                                controller: value.name,
-                                icon: Iconsax.bag,
-                              ),
+
+                          DefaultForm(
+                            title: 'Search For Products',
+                            controller: TextEditingController(),
+                            numberOfLines: 1,
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          const ProductToAdd(),
+
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 60, bottom: 15, right: 15, left: 7),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      borderRadius: Constants.BORDER_RADIUS_15,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Row(
+                              children: [DefaultText(txt: "Customers")],
                             ),
                           ),
                           const SizedBox(height: 20),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: DefaultCustomerForm(
-                                title: "Order Status",
-                                controller: value.email,
-                                icon: Iconsax.document,
-                              ),
-                            ),
+
+                          DefaultForm(
+                            title: 'Search For Customer',
+                            controller: TextEditingController(),
+                            numberOfLines: 1,
                           ),
+
                           const SizedBox(height: 20),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: DefaultCustomerForm(
-                                title: "Order Source",
-                                controller: value.phone,
-                                icon: Iconsax.category,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: DefaultCustomerForm(
-                                title: "Customer Address",
-                                controller: value.address,
-                                icon: Iconsax.add,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: [
-                              Consumer<CustomerVM>(
-                                builder: (context, customerVM, child) => Expanded(
-                                  flex: 3,
-                                  child: DefaultButton(
-                                    onTap: () async {
-                                      String status = await customerVM.addCustomer(
-                                        value.name.text,
-                                        value.email.text,
-                                        value.phone.text,
-                                        value.address.text,
-                                      );
-                                      if (status == "customer_added") {
-                                        Navigator.pop(context);
-                                        customerVM.initAllCustomers();
-                                        customerVM.getAllCustomers();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                "Customer added successfully"),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    title: "Add new Customer",
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 15),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
+
+
+                          const CustomerToAdd(),
                         ],
                       ),
                     ),

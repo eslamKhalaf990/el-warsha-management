@@ -1,18 +1,40 @@
+import 'customer_model.dart';
 import 'order_items_model.dart';
 
 class OrderModel {
-  final String customerID;
-  final List<OrderItemsModel> orderItems;
+  //customer info
+  String? customerID;
+  late CustomerModel customer;
+
+  //order
+  late String orderID;
+  late String orderDate;
+  late String status;
+
+  //items
+  late List<OrderItemsModel> orderItems = [];
+  OrderModel();
 
   OrderModel.add({
     required this.customerID,
     required this.orderItems,
   });
 
+  OrderModel.get({
+    required this.customer,
+    required this.orderID,
+    required this.orderDate,
+    required this.status,
+    required this.orderItems,
+  });
+
   factory OrderModel.fromJson(Map<String, dynamic> json) {
-    return OrderModel.add(
-      customerID: json['customerId'],
-      orderItems: (json['items'] as List)
+    return OrderModel.get(
+      orderID: json['orderId'].toString(),
+      status: json['status'].toString(),
+      orderDate: json['orderDate'].toString(),
+      customer: CustomerModel.fromJson(json['customer']),
+      orderItems: (json['orderItems'] as List)
           .map((item) => OrderItemsModel.fromJson(item))
           .toList(),
     );

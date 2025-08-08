@@ -3,18 +3,24 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 
-class CustomerWidget extends StatelessWidget {
-  final String name;
+class OrderWidget extends StatelessWidget {
+  final String orderID;
+  final String status;
+  final String customerName;
   final String email;
   final String phone;
   final String address;
+  final String orderDate;
 
-  const CustomerWidget({
+  const OrderWidget({
     super.key,
-    required this.name,
     required this.address,
     required this.email,
     required this.phone,
+    required this.orderID,
+    required this.status,
+    required this.customerName,
+    required this.orderDate,
   });
 
   @override
@@ -51,7 +57,49 @@ class CustomerWidget extends StatelessWidget {
                     Row(
                       children: [
                         DefaultText(
-                          txt: name,
+                          txt: orderID,
+                          bold: true,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          width: 5,
+                          height: 5,
+                        ),
+                        const SizedBox(width: 10),
+                        DefaultText(
+                          txt: orderDate,
+                          bold: true,
+                        ),const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          width: 5,
+                          height: 5,
+                        ),
+                        const SizedBox(width: 10),
+                        DefaultText(
+                          txt: status,
+                          bold: true,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+
+                    // Title
+                    Row(
+                      children: [
+                        DefaultText(
+                          txt: customerName,
                           bold: true,
                         ),
                         const SizedBox(

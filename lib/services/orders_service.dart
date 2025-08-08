@@ -34,7 +34,7 @@ class OrdersService {
     return response;
   }
   Future<http.Response> addOrder(OrderModel order) async {
-    debugPrint("addOrder called ${order.customerID}");
+    debugPrint("addOrder called ${order.toJson()}");
     http.Response response;
     try {
       response = await http.post(
@@ -45,7 +45,7 @@ class OrdersService {
           Uri.parse(
             Baseurl.addOrderAPI,
           ),
-          body: order.toJson()
+          body: jsonEncode(order.toJson())
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
       debugPrint(response.body);
     } on TimeoutException {

@@ -3,8 +3,6 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/navigation.dart';
 import 'package:warsha_app/utils/const_values.dart';
-import 'package:warsha_app/view_models/product_v_m.dart';
-
 import '../utils/default_text.dart';
 import '../utils/app_bar_widget.dart';
 
@@ -100,30 +98,6 @@ class Home extends StatelessWidget {
                               ),
                             ),
                             // const SizedBox(height: 70),
-                            Container(
-                              decoration: BoxDecoration(
-                                  // color: Theme.of(context).colorScheme.secondary.withAlpha(50),
-                                  borderRadius: Constants.BORDER_RADIUS_20),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 15),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Iconsax.house,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  ),
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  const DefaultText(
-                                    txt: "Orders",
-                                    bold: true,
-                                  )
-                                ],
-                              ),
-                            ),
-                            // const SizedBox(height: 70),
                             InkWell(
                               onTap: (){
                                 value.updatePage(1);
@@ -131,6 +105,38 @@ class Home extends StatelessWidget {
                               child: Container(
                                 decoration: BoxDecoration(
                                     color: value.page == 1 ? Theme.of(context)
+                                        .colorScheme
+                                        .secondary
+                                        .withAlpha(50) : null,
+                                    borderRadius: Constants.BORDER_RADIUS_20),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 15),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Iconsax.house,
+                                      color:
+                                          Theme.of(context).colorScheme.secondary,
+                                    ),
+                                    const SizedBox(
+                                      width: 15,
+                                    ),
+                                    const DefaultText(
+                                      txt: "Orders",
+                                      bold: true,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            // const SizedBox(height: 70),
+                            InkWell(
+                              onTap: (){
+                                value.updatePage(2);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: value.page == 2 ? Theme.of(context)
                                         .colorScheme
                                         .secondary
                                         .withAlpha(50) : null,
