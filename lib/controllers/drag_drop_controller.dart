@@ -1,14 +1,19 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
 
 class DragDropController extends ChangeNotifier {
-  File? _droppedFile;
+  Uint8List? droppedBytes;
+  String? droppedFileName;
 
-  void updateDropFile(File droppedFile){
-    _droppedFile = droppedFile;
+  void updateDropFile(Uint8List bytes, String name) {
+    droppedBytes = bytes;
+    droppedFileName = name;
     notifyListeners();
   }
 
-  File? get droppedFile => _droppedFile;
+  void clear() {
+    droppedBytes = null;
+    droppedFileName = null;
+    notifyListeners();
+  }
 }

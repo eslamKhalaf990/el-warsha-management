@@ -7,7 +7,6 @@ import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
-
 import 'drag_drop_widget.dart';
 
 class AddProduct extends StatelessWidget {
@@ -185,10 +184,9 @@ class AddProduct extends StatelessWidget {
                                         productSPrice: value.productSellingPrice.text,
                                         productCategory: value.productCategory.text,
                                         productQuantity: value.productQuantity.text,
-                                        imageFile: Provider.of<
-                                                    DragDropController>(context,
-                                                listen: false)
-                                            .droppedFile, // Replace with your actual `File?` variable
+                                        imageBytes: Provider.of<
+                                          DragDropController>(context,
+                                          listen: false).droppedBytes,
                                       );
                                       if (status == "product_added") {
                                         Navigator.pop(context);
@@ -210,7 +208,7 @@ class AddProduct extends StatelessWidget {
                                 ),
                               ),
                               Expanded(
-                                flex: 1,
+                                flex: 2,
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color:

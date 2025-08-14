@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
-import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 
 import 'base_url.dart';
@@ -39,7 +37,8 @@ class ProductService {
     required String sellingPrice,
     required String category,
     required String quantity,
-    required File? imageFile,
+    required Uint8List? imageBytes, // changed type
+    String? imageName, // optional, for proper filename
   }) async {
     var uri = Uri.parse(Baseurl.addProductAPI);
 
@@ -51,18 +50,21 @@ class ProductService {
       "category": category,
       "quantity": quantity,
     });
-    var request = http.MultipartRequest("POST", uri);
 
+    var request = http.MultipartRequest("POST", uri);
     request.fields['product'] = product;
 
-    if (imageFile != null && await imageFile.exists()) {
-      request.files.add(await http.MultipartFile.fromPath(
-        'image',
-        imageFile.path,
-        filename: basename(imageFile.path),
-      ));
+    if (imageBytes != null) {
+      request.files.add(
+        http.MultipartFile.fromBytes(
+          'image',
+          imageBytes as List<int>,
+          filename: imageName ?? "upload.jpg",
+        ),
+      );
     }
 
-    return await request.send(); // Let the viewmodel parse the response
+    return await request.send();
   }
+
 }

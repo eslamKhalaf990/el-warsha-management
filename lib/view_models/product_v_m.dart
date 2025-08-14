@@ -1,6 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
-
+import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/services/products_service.dart';
@@ -49,7 +48,7 @@ class ProductVM extends ChangeNotifier {
     required String productSPrice,
     required String productCategory,
     required String productQuantity,
-    required File? imageFile,
+    required Uint8List? imageBytes, // changed from File? to Uint8List?
   }) async {
     String status = "";
     try {
@@ -62,14 +61,14 @@ class ProductVM extends ChangeNotifier {
         sellingPrice: productSPrice,
         category: productCategory,
         quantity: productQuantity,
-        imageFile: imageFile,
+        imageBytes: imageBytes, // pass bytes
       );
 
       final responseBody = await response.stream.bytesToString();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         status = "product_added";
-        debugPrint("✅ Product added: $responseBody");
+        debugPrint("Product added: $responseBody");
       } else {
         status = "product_not_added";
       }
@@ -82,4 +81,5 @@ class ProductVM extends ChangeNotifier {
 
     return status;
   }
+
 }
