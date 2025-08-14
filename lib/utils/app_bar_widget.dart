@@ -11,22 +11,22 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.transparent,
       title: Container(
           margin: const EdgeInsets.symmetric(horizontal: 15),
-          padding: const EdgeInsets.symmetric(vertical: 3),
-          width: 250,
-          height: 50,
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onPrimary,
             borderRadius: BorderRadius.circular(100),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               ClipRRect(
                   borderRadius: Constants.BORDER_RADIUS_100,
-                  child: Image.asset("assets/images/logo.png"),
+                  child: Image.asset("assets/images/logo.jpg", width: 40,),
               ),
               const SizedBox(width: 10,),
               const DefaultText(
-                txt: "EL WARSHA",
+                txt: "ELWARSHA",
                 bold: true,
               ),
             ],

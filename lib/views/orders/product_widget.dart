@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/view_models/order_v_m.dart';
 
 import '../../../services/base_url.dart';
 
 class ProductWidget extends StatelessWidget {
   final String title;
+  final String productID;
   final int index;
   final String description;
   final String bPrice;
@@ -19,6 +22,7 @@ class ProductWidget extends StatelessWidget {
   const ProductWidget({
     super.key,
     required this.title,
+    required this.productID,
     required this.sku,
     required this.description,
     required this.bPrice,
@@ -35,7 +39,8 @@ class ProductWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-        color: index == 0
+        color: Provider.of<OrderVM>(context).orderModel.orderItems.any(
+                (product) => product.productId == productID)
             ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
             : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
         borderRadius: Constants.BORDER_RADIUS_20,

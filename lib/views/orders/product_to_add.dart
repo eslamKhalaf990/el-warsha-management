@@ -35,20 +35,25 @@ class ProductToAdd extends StatelessWidget {
                     final product = snapshot.data![index];
 
                     OrderItemsModel orderItemsModel = OrderItemsModel(
-                        productId: product.productID,
-                        productName: product.productName,
-                        quantity: product.productQuantity,
-                        unitPrice: product.productSPrice,
+                      productId: product.productID,
+                      productName: product.productName,
+                      quantity: product.productQuantity,
+                      unitPrice: product.productSPrice,
                     );
 
-                    Provider.of<OrderVM>(context, listen: false)
-                        .addToOrderItems = orderItemsModel;
+                    final orderVM = Provider.of<OrderVM>(context, listen: false);
 
-                    // Provider.of<OrderVM>(context, listen: false).addProduct(
-                    //     customerID: Provider.of<OrderVM>(context, listen: false).orderModel.customerID,
-                    //     orderItems: Provider.of<OrderVM>(context, listen: false).orderModel.orderItems,
-                    // );
+                    // Check for duplicates by productId
+                    bool alreadyExists = orderVM.orderModel.orderItems
+                        .any((item) => item.productId == product.productID);
+
+                    if (!alreadyExists) {
+                      orderVM.addToOrderItems = orderItemsModel;
+                    } else {
+                      orderVM.removeByProductId = orderItemsModel.productId;
+                    }
                   },
+
                   child: ProductWidget(
                     title: snapshot.data![index].productName,
                     description: snapshot.data![index].productDescription,
@@ -58,7 +63,7 @@ class ProductToAdd extends StatelessWidget {
                     quantity: snapshot.data![index].productQuantity,
                     sku: snapshot.data![index].productSKU ?? "-",
                     image: snapshot.data![index].productImage ?? "-",
-                    index: index,
+                    index: index, productID: snapshot.data![index].productID,
                   ),
                 );
               },

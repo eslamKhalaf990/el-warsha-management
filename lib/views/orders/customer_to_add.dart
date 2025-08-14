@@ -37,7 +37,7 @@ class CustomerToAdd extends StatelessWidget {
                     name: snapshot.data![index].customerName,
                     email: snapshot.data![index].email,
                     address:snapshot.data![index].address,
-                    phone: snapshot.data![index].phone,
+                    phone: snapshot.data![index].phone, customerID: snapshot.data![index].customerID,
                   ),
                 );
               },

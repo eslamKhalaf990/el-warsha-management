@@ -4,7 +4,7 @@ import 'order_items_model.dart';
 class OrderModel {
   //customer info
   String? customerID;
-  late CustomerModel customer;
+  CustomerModel? customer;
 
   //order
   late String orderID;

@@ -54,6 +54,8 @@ class OrderVM extends ChangeNotifier {
     String status = "";
     try {
       isLoading = true;
+      notifyListeners();
+
       OrderModel orderModel = OrderModel.add(customerID: customerID, orderItems: orderItems);
 
       final response = await _orderService.addOrder(orderModel);
@@ -81,6 +83,11 @@ class OrderVM extends ChangeNotifier {
 
   set addToOrderItems(OrderItemsModel value) {
     orderModel.orderItems.add(value);
+    notifyListeners();
+  }
+
+  set removeByProductId(String productId) {
+    orderModel.orderItems.removeWhere((item) => item.productId == productId);
     notifyListeners();
   }
 }
