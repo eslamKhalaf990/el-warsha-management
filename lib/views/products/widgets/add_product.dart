@@ -201,6 +201,8 @@ class AddProduct extends StatelessWidget {
                                         );
                                       }
                                     },
+                                    isValid: !Provider.of<ProductVM>(context).isLoading,
+                                    isLoading: Provider.of<ProductVM>(context).isLoading,
                                     title: "Add new product",
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 15),

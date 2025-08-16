@@ -48,11 +48,12 @@ class ProductVM extends ChangeNotifier {
     required String productSPrice,
     required String productCategory,
     required String productQuantity,
-    required Uint8List? imageBytes, // changed from File? to Uint8List?
+    required Uint8List? imageBytes,
   }) async {
     String status = "";
     try {
       isLoading = true;
+      notifyListeners();
 
       final response = await _productService.addProductWithImage(
         name: productName,
