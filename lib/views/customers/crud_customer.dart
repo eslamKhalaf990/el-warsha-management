@@ -4,7 +4,6 @@ import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/views/customers/add_customer.dart';
-import 'package:warsha_app/views/products/widgets/add_product.dart';
 
 class CRUDCustomer extends StatelessWidget {
   const CRUDCustomer({super.key});

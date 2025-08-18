@@ -1,26 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/views/products/invoices.dart';
 
 class OrderWidget extends StatelessWidget {
-  final String orderID;
-  final String status;
-  final String customerName;
-  final String email;
-  final String phone;
-  final String address;
-  final String orderDate;
+  final OrderModel order;
 
   const OrderWidget({
     super.key,
-    required this.address,
-    required this.email,
-    required this.phone,
-    required this.orderID,
-    required this.status,
-    required this.customerName,
-    required this.orderDate,
+    required this.order,
   });
 
   @override
@@ -50,108 +41,143 @@ class OrderWidget extends StatelessWidget {
                 width: 20,
               ),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Title
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        DefaultText(
-                          txt: orderID,
-                          bold: true,
+                        // Title
+                        Row(
+                          children: [
+                            DefaultText(
+                              txt:"Order ID: ${order.orderID}",
+                              bold: true,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              width: 5,
+                              height: 5,
+                            ),
+                            const SizedBox(width: 10),
+                            DefaultText(
+                              txt: order.orderDate,
+                              bold: true,
+                            ),const SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              width: 5,
+                              height: 5,
+                            ),
+                            const SizedBox(width: 10),
+                            DefaultText(
+                              txt: order.status,
+                              bold: true,
+                            ),
+                          ],
                         ),
-                        const SizedBox(
-                          width: 10,
+                        const SizedBox(height: 6),
+                        // Title
+                        Row(
+                          children: [
+                            DefaultText(
+                              txt: order.customer!.customerName,
+                              bold: true,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              width: 5,
+                              height: 5,
+                            ),
+                            const SizedBox(width: 10),
+                            DefaultText(
+                              txt: order.customer!.phone,
+                              bold: true,
+                            ),
+                          ],
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          width: 5,
-                          height: 5,
-                        ),
-                        const SizedBox(width: 10),
-                        DefaultText(
-                          txt: orderDate,
-                          bold: true,
-                        ),const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          width: 5,
-                          height: 5,
-                        ),
-                        const SizedBox(width: 10),
-                        DefaultText(
-                          txt: status,
-                          bold: true,
-                        ),
+                        const SizedBox(height: 6),
+                        // Message
+                        Text(order.customer!.address),
+                        const SizedBox(height: 6),
+                        const SizedBox(height: 5),
+                        Divider(
+                          color:
+                              Theme.of(context).colorScheme.onSurface.withAlpha(50),
+                          thickness: 0.5,
+                        )
                       ],
                     ),
-                    const SizedBox(height: 6),
-
-                    // Title
-                    Row(
+                    Column(
                       children: [
-                        DefaultText(
-                          txt: customerName,
-                          bold: true,
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.green.shade300,
+                                  borderRadius: Constants.BORDER_RADIUS_20),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 2),
+                              child: const Row(
+                                children: [
+                                  DefaultText(
+                                      txt: "View Order Details",
+                                      size: 14,
+                                      color: Colors.white),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          width: 5,
-                          height: 5,
-                        ),
-                        const SizedBox(width: 10),
-                        DefaultText(
-                          txt: email,
-                          bold: true,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    // Message
-                    Text(address),
-                    const SizedBox(height: 6),
-                    // Time
-                    Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.green.shade300,
-                              borderRadius: Constants.BORDER_RADIUS_20),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 2),
+                        const SizedBox(height: 6,),
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PDFViewPage(pdfPath:"${Baseurl.invoiceAPI}/${order.orderID}"),
+                              ),
+                            );
+                          },
                           child: Row(
                             children: [
-                              const DefaultText(
-                                  txt: "Phone Number  ",
-                                  size: 14,
-                                  color: Colors.white),
-                              DefaultText(
-                                  txt: phone, size: 14, color: Colors.white),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.red.shade300,
+                                    borderRadius: Constants.BORDER_RADIUS_20),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 2),
+                                child: const Row(
+                                  children: [
+                                    DefaultText(
+                                        txt: "View Order Invoice",
+                                        size: 14,
+                                        color: Colors.white),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 5),
-                    Divider(
-                      color:
-                          Theme.of(context).colorScheme.onSurface.withAlpha(50),
-                      thickness: 0.5,
-                    )
                   ],
                 ),
               ),

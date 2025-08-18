@@ -28,13 +28,7 @@ class OrderList extends StatelessWidget {
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 return OrderWidget(
-                  email: snapshot.data![index].customer!.email,
-                  address:snapshot.data![index].customer!.address,
-                  phone: snapshot.data![index].customer!.phone,
-                  orderID:snapshot.data![index].orderID ,
-                  status: snapshot.data![index].status,
-                  customerName: snapshot.data![index].customer!.customerName,
-                  orderDate: snapshot.data![index].orderDate,
+                  order: snapshot.data![index],
                 );
               },
             ),

@@ -62,7 +62,7 @@ class ProductVM extends ChangeNotifier {
         sellingPrice: productSPrice,
         category: productCategory,
         quantity: productQuantity,
-        imageBytes: imageBytes, // pass bytes
+        imageBytes: imageBytes,
       );
 
       final responseBody = await response.stream.bytesToString();

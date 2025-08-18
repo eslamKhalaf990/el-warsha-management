@@ -53,22 +53,30 @@ class AddOrder extends StatelessWidget {
                           alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
-                            child: DefaultButton(
-                              onTap: () async {
-                                final orderVM = Provider.of<OrderVM>(context, listen: false);
-                                if(orderVM.orderModel.customer != null){
-                                  await orderVM.addProduct(
-                                    customerID: orderVM.orderModel.customer!.customerID,
-                                    orderItems: orderVM.orderModel.orderItems,
-                                  );
-                                  Navigator.pop(context);
-                                  orderVM.initAllOrders();
-                                }
-                              },
-                              isValid: !Provider.of<OrderVM>(context).isLoading,
-                              isLoading: Provider.of<OrderVM>(context).isLoading,
-                              title: "Place Order",
-                              margin: EdgeInsets.zero,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: DefaultButton(
+                                    onTap: () async {
+                                      final orderVM = Provider.of<OrderVM>(context, listen: false);
+                                      if(orderVM.orderModel.customer != null){
+                                        await orderVM.addProduct(
+                                          customerID: orderVM.orderModel.customer!.customerID,
+                                          orderItems: orderVM.orderModel.orderItems,
+                                        );
+                                        Navigator.pop(context);
+                                        orderVM.initAllOrders();
+                                      }
+                                    },
+                                    isValid: !Provider.of<OrderVM>(context).isLoading,
+                                    isLoading: Provider.of<OrderVM>(context).isLoading,
+                                    title: "Place Order",
+                                    margin: EdgeInsets.zero,
+                                  ),
+                                ),
+                                SizedBox(width: 10,),
+                                DefaultText(txt: "Total Price:\n0.0 EGP"),
+                              ],
                             ),
                           ),
                         ),

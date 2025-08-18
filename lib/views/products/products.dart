@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:warsha_app/views/products/widgets/crud_product.dart';
-import 'package:warsha_app/views/products/widgets/product_list.dart';
+import 'package:warsha_app/views/products/crud_product.dart';
+import 'package:warsha_app/views/products/product_list.dart';
 
 class Products extends StatelessWidget {
   const Products({super.key});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
-import 'package:warsha_app/views/products/widgets/product_widget.dart';
+import 'package:warsha_app/views/products/product_widget.dart';
 
 class ProductList extends StatelessWidget {
   const ProductList({super.key});
