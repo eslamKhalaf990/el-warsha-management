@@ -45,7 +45,7 @@ class DeliveryOrderWidget extends StatelessWidget {
                   width: 350,
                   child: Text(
                     Provider.of<OrderVM>(context).orderModel.customer?.address ??
-                    "-",
+                    "Pick your customer!",
                   ),
                 ),
               ],

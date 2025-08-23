@@ -8,6 +8,11 @@ class OrderModel {
 
   //order
   late String orderID;
+  late String delivery;
+  late String discount;
+  late String orderSource;
+  late String paymentMethod;
+  late String downPayment;
   late String orderDate;
   late String status;
 
@@ -17,6 +22,11 @@ class OrderModel {
 
   OrderModel.add({
     required this.customerID,
+    required this.delivery,
+    required this.orderSource,
+    required this.paymentMethod,
+    required this.downPayment,
+    required this.discount,
     required this.orderItems,
   });
 
@@ -43,6 +53,11 @@ class OrderModel {
   Map<String, dynamic> toJson() {
     return {
       'customerId': customerID,
+      'downPayment' : downPayment,
+      'delivery' : delivery,
+      'orderSource' : orderSource,
+      'paymentMethod' : paymentMethod,
+      'discount' : discount,
       'items': orderItems.map((item) => item.toJson()).toList(),
     };
   }

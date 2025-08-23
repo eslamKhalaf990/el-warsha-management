@@ -26,6 +26,7 @@ class OrderWidget extends StatelessWidget {
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                   padding: const EdgeInsets.all(10),
@@ -81,9 +82,17 @@ class OrderWidget extends StatelessWidget {
                               height: 5,
                             ),
                             const SizedBox(width: 10),
-                            DefaultText(
-                              txt: order.status,
-                              bold: true,
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow.shade300,
+                                  borderRadius: Constants.BORDER_RADIUS_20),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 0,
+                              ),
+                              child: DefaultText(
+                                txt: order.status,
+                                bold: true,
+                              ),
                             ),
                           ],
                         ),
@@ -116,6 +125,30 @@ class OrderWidget extends StatelessWidget {
                         const SizedBox(height: 6),
                         // Message
                         Text(order.customer!.address),
+
+                        const SizedBox(height: 6),
+                        Row(
+                          children: [
+                            Icon(Iconsax.receipt_item_copy, size: 16,),
+                            SizedBox(width: 5,),
+                            Text("Items List"),
+                          ],
+                        ),
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(
+                            order.orderItems.length,
+                                (index) => Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: Constants.BORDER_RADIUS_20,
+                                      color: Theme.of(context).colorScheme.tertiary.withAlpha(50),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                                    margin: const EdgeInsets.symmetric(vertical: 5),
+                                    child: DefaultText(txt: "${index+1}. ${order.orderItems[index].productName} \t\t ${order.orderItems[index].quantity} Piece \t\t ${order.orderItems[index].unitPrice} EGP")),
+                          ),
+                        ),
                         const SizedBox(height: 6),
                         const SizedBox(height: 5),
                         Divider(

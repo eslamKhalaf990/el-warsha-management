@@ -173,21 +173,29 @@ class AddProduct extends StatelessWidget {
                           Row(
                             children: [
                               Consumer<ProductVM>(
-                                builder: (context, productVM, child) => Expanded(
+                                builder: (context, productVM, child) =>
+                                    Expanded(
                                   flex: 3,
                                   child: DefaultButton(
                                     onTap: () async {
-                                      String status = await productVM.addProduct(
+                                      String status =
+                                          await productVM.addProduct(
                                         productName: value.productName.text,
                                         productDescription:
-                                        value.productDescription.text,
-                                        productBPrice: value.productBuyingPrice.text,
-                                        productSPrice: value.productSellingPrice.text,
-                                        productCategory: value.productCategory.text,
-                                        productQuantity: value.productQuantity.text,
-                                        imageBytes: Provider.of<
-                                          DragDropController>(context,
-                                          listen: false).droppedBytes,
+                                            value.productDescription.text,
+                                        productBPrice:
+                                            value.productBuyingPrice.text,
+                                        productSPrice:
+                                            value.productSellingPrice.text,
+                                        productCategory:
+                                            value.productCategory.text,
+                                        productQuantity:
+                                            value.productQuantity.text,
+                                        imageBytes:
+                                            Provider.of<DragDropController>(
+                                                    context,
+                                                    listen: false)
+                                                .droppedBytes,
                                       );
                                       if (status == "product_added") {
                                         Navigator.pop(context);
@@ -202,8 +210,10 @@ class AddProduct extends StatelessWidget {
                                         );
                                       }
                                     },
-                                    isValid: !Provider.of<ProductVM>(context).isLoading,
-                                    isLoading: Provider.of<ProductVM>(context).isLoading,
+                                    isValid: !Provider.of<ProductVM>(context)
+                                        .isLoading,
+                                    isLoading: Provider.of<ProductVM>(context)
+                                        .isLoading,
                                     title: "Add new product",
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 15),
@@ -214,8 +224,9 @@ class AddProduct extends StatelessWidget {
                                 flex: 2,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.surfaceTint,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceTint,
                                     borderRadius: Constants.BORDER_RADIUS_20,
                                   ),
                                   padding: const EdgeInsets.symmetric(
@@ -252,15 +263,20 @@ class AddProduct extends StatelessWidget {
 }
 
 class DefaultProductForm extends StatelessWidget {
-  const DefaultProductForm(
-      {super.key,
-      required this.title,
-      required this.icon,
-      required this.controller, this.onChange});
+  const DefaultProductForm({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.controller,
+    this.onChange,
+    this.fillColor, this.currency,
+  });
   final String title;
   final TextEditingController controller;
   final Function(String)? onChange;
   final IconData? icon;
+  final bool? currency;
+  final Color? fillColor;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -272,7 +288,7 @@ class DefaultProductForm extends StatelessWidget {
           .withAlpha(Constants.OPACITY_05),
       decoration: InputDecoration(
         filled: true,
-        fillColor: Theme.of(context).colorScheme.surfaceTint,
+        fillColor:fillColor ?? Theme.of(context).colorScheme.surfaceTint,
         enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(
               color: Colors.transparent,
@@ -281,7 +297,7 @@ class DefaultProductForm extends StatelessWidget {
         errorStyle: TextStyle(color: Colors.red.shade300),
         prefixIcon: icon != null
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Icon(
                   icon,
                   color: Theme.of(context).colorScheme.secondary,
@@ -296,6 +312,7 @@ class DefaultProductForm extends StatelessWidget {
               color: Colors.transparent,
             ),
             borderRadius: Constants.BORDER_RADIUS_15),
+        suffix: currency !=  null ? const DefaultText(txt: "EGP") : null,
         labelText: title,
         labelStyle: const TextStyle(fontSize: 14, color: Colors.grey),
       ),

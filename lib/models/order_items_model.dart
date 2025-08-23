@@ -2,6 +2,7 @@ class OrderItemsModel {
   final String productId;
   final String productName;
   final String quantity;
+  int quantityToOrder = 1;
   final String unitPrice;
 
   OrderItemsModel({
@@ -23,7 +24,7 @@ class OrderItemsModel {
   Map<String, dynamic> toJson() {
     return {
       'productId': productId,
-      'quantity': quantity,
+      'quantity': quantityToOrder,
       'unitPrice': unitPrice,
     };
   }

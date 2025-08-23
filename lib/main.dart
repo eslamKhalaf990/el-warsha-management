@@ -13,6 +13,8 @@ import 'package:warsha_app/view_models/order_v_m.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
 import 'package:warsha_app/views/home.dart';
 
+import 'controllers/payment_details.dart';
+
 void main() {
     runApp(
       MultiProvider(
@@ -21,6 +23,7 @@ void main() {
           ChangeNotifierProvider(create: (_)=> ProductProvider()),
           ChangeNotifierProvider(create: (_)=> Navigation()),
           ChangeNotifierProvider(create: (_)=> CustomerProvider()),
+          ChangeNotifierProvider(create: (_)=> PaymentDetails()),
 
           //providers used for dependency injection
           Provider<ProductService>(create: (_) => ProductService()),

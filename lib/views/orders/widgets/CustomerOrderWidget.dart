@@ -47,9 +47,13 @@ class CustomerOrderWidget extends StatelessWidget {
                           .orderModel
                           .customer
                           ?.customerName ??
-                      "-",
-                  bold: true,
-                  size: 16,
+                      "Pick your customer",
+                  bold: Provider.of<OrderVM>(context)
+                      .orderModel
+                      .customer != null,
+                  size: Provider.of<OrderVM>(context)
+                      .orderModel
+                      .customer != null ? 16:14,
                 ),
               ],
             ),

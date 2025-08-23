@@ -114,7 +114,7 @@ class Home extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Icon(
-                                      Iconsax.house,
+                                      Iconsax.receipt_item,
                                       color:
                                           Theme.of(context).colorScheme.secondary,
                                     ),
@@ -169,7 +169,7 @@ class Home extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Icon(
-                                    Iconsax.document,
+                                    Iconsax.document_text,
                                     color:
                                         Theme.of(context).colorScheme.secondary,
                                   ),
