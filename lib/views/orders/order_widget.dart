@@ -48,16 +48,14 @@ class OrderWidget extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Title
+                        // order id, order date and status
                         Row(
                           children: [
                             DefaultText(
-                              txt:"Order ID: ${order.orderID}",
+                              txt: "Order ID: ${order.orderID}",
                               bold: true,
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
+                            const SizedBox(width: 10),
                             Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
@@ -66,13 +64,13 @@ class OrderWidget extends StatelessWidget {
                               width: 5,
                               height: 5,
                             ),
+
                             const SizedBox(width: 10),
                             DefaultText(
                               txt: order.orderDate,
                               bold: true,
-                            ),const SizedBox(
-                              width: 10,
                             ),
+                            const SizedBox(width: 10),
                             Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
@@ -82,12 +80,32 @@ class OrderWidget extends StatelessWidget {
                               height: 5,
                             ),
                             const SizedBox(width: 10),
+
+                            DefaultText(
+                              txt: "Total Price: ${order.totalPrice}",
+                              bold: true,
+                            ),
+                            const SizedBox(width: 10),
+
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              width: 5,
+                              height: 5,
+                            ),
+                            const SizedBox(width: 10),
+
+                            const SizedBox(width: 10),
+
                             Container(
                               decoration: BoxDecoration(
                                   color: Colors.yellow.shade300,
                                   borderRadius: Constants.BORDER_RADIUS_20),
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 0,
+                                horizontal: 15,
+                                vertical: 0,
                               ),
                               child: DefaultText(
                                 txt: order.status,
@@ -129,8 +147,13 @@ class OrderWidget extends StatelessWidget {
                         const SizedBox(height: 6),
                         Row(
                           children: [
-                            Icon(Iconsax.receipt_item_copy, size: 16,),
-                            SizedBox(width: 5,),
+                            Icon(
+                              Iconsax.receipt_item_copy,
+                              size: 16,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
                             Text("Items List"),
                           ],
                         ),
@@ -139,21 +162,29 @@ class OrderWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: List.generate(
                             order.orderItems.length,
-                                (index) => Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: Constants.BORDER_RADIUS_20,
-                                      color: Theme.of(context).colorScheme.tertiary.withAlpha(50),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                                    margin: const EdgeInsets.symmetric(vertical: 5),
-                                    child: DefaultText(txt: "${index+1}. ${order.orderItems[index].productName} \t\t ${order.orderItems[index].quantity} Piece \t\t ${order.orderItems[index].unitPrice} EGP")),
+                            (index) => Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: Constants.BORDER_RADIUS_20,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .tertiary
+                                      .withAlpha(50),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 4),
+                                margin: const EdgeInsets.symmetric(vertical: 5),
+                                child: DefaultText(
+                                    txt:
+                                        "${index + 1}. ${order.orderItems[index].productName} \t\t ${order.orderItems[index].quantity} Piece \t\t ${order.orderItems[index].unitPrice} EGP")),
                           ),
                         ),
                         const SizedBox(height: 6),
                         const SizedBox(height: 5),
                         Divider(
-                          color:
-                              Theme.of(context).colorScheme.onSurface.withAlpha(50),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withAlpha(50),
                           thickness: 0.5,
                         )
                       ],
@@ -179,13 +210,17 @@ class OrderWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 6,),
+                        const SizedBox(
+                          height: 6,
+                        ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PDFViewPage(pdfPath:"${Baseurl.invoiceAPI}/${order.orderID}"),
+                                builder: (context) => PDFViewPage(
+                                    pdfPath:
+                                        "${Baseurl.invoiceAPI}/${order.orderID}"),
                               ),
                             );
                           },

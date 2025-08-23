@@ -9,6 +9,7 @@ class OrderModel {
   //order
   late String orderID;
   late String delivery;
+  late String totalPrice;
   late String discount;
   late String orderSource;
   late String paymentMethod;
@@ -33,6 +34,11 @@ class OrderModel {
   OrderModel.get({
     required this.customer,
     required this.orderID,
+    required this.orderSource,
+    required this.paymentMethod,
+    required this.totalPrice,
+    required this.delivery,
+    required this.downPayment,
     required this.orderDate,
     required this.status,
     required this.orderItems,
@@ -47,6 +53,11 @@ class OrderModel {
       orderItems: (json['orderItems'] as List)
           .map((item) => OrderItemsModel.fromJson(item))
           .toList(),
+      orderSource: json['orderSource'.toString()],
+      paymentMethod: json['paymentMethod'].toString(),
+      delivery: json['delivery'].toString(),
+      downPayment: json['downPayment'].toString(),
+      totalPrice: json['totalPrice'].toString(),
     );
   }
 
