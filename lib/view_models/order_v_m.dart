@@ -92,17 +92,26 @@ class OrderVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  set addItemQuantity(int index) {
+  set incrementItemQuantity(int index) {
     orderModel.orderItems[index].quantityToOrder++;
     notifyListeners();
+  }
+
+  set decrementItemQuantity(int index) {
+    if(orderModel.orderItems[index].quantityToOrder > 1){
+      orderModel.orderItems[index].quantityToOrder--;
+      notifyListeners();
+    }
   }
 
   double getTotalPrice (){
     double itemsTotal = 0.0;
 
-    for (var item in orderModel.orderItems) {
-      itemsTotal += double.parse(item.unitPrice);
-    }
+    itemsTotal = orderModel.orderItems.fold(0, (sum, item) {
+      final unitPrice = double.tryParse(item.unitPrice) ?? 0;
+      return sum + unitPrice * (item.quantityToOrder);
+    });
+
     return itemsTotal;
   }
 

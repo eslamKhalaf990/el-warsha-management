@@ -50,7 +50,7 @@ class AddOrder extends StatelessWidget {
                     ),
                     child: Stack(
                       children: [
-                        OrderDetailsWidget(),
+                        const OrderDetailsWidget(),
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
@@ -60,43 +60,66 @@ class AddOrder extends StatelessWidget {
                                 Expanded(
                                   child: DefaultButton(
                                     onTap: () async {
-                                      final orderVM = Provider.of<OrderVM>(context, listen: false);
-                                      final payment = Provider.of<PaymentDetails>(context, listen: false);
-                                      if(orderVM.orderModel.customer != null){
+                                      final orderVM = Provider.of<OrderVM>(
+                                          context,
+                                          listen: false);
+                                      final payment =
+                                          Provider.of<PaymentDetails>(context,
+                                              listen: false);
+                                      if (orderVM.orderModel.customer != null) {
                                         await orderVM.addOrder(
-                                          customerID: orderVM.orderModel.customer!.customerID,
-                                          orderItems: orderVM.orderModel.orderItems,
-
+                                          customerID: orderVM
+                                              .orderModel.customer!.customerID,
+                                          orderItems:
+                                              orderVM.orderModel.orderItems,
                                           delivery: payment.delivery.text,
                                           downPayment: payment.downPayment.text,
                                           discount: payment.discount.text,
-                                          paymentMethod: payment.paymentMethod.text,
-                                          orderSource: payment.platformSource.text,
+                                          paymentMethod:
+                                              payment.paymentMethod.text,
+                                          orderSource:
+                                              payment.platformSource.text,
                                         );
                                         Navigator.pop(context);
                                         orderVM.initAllOrders();
                                       }
                                     },
-                                    isValid: !Provider.of<OrderVM>(context).isLoading,
-                                    isLoading: Provider.of<OrderVM>(context).isLoading,
+                                    isValid: !Provider.of<OrderVM>(context)
+                                        .isLoading,
+                                    isLoading:
+                                        Provider.of<OrderVM>(context).isLoading,
                                     title: "Place Order",
                                     margin: EdgeInsets.zero,
                                   ),
                                 ),
-                                const SizedBox(width: 10,),
+                                const SizedBox(
+                                  width: 10,
+                                ),
                                 Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 30),
-                                    decoration: BoxDecoration(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 5.0, horizontal: 30),
+                                  decoration: BoxDecoration(
                                       borderRadius: Constants.BORDER_RADIUS_15,
-                                      color: Theme.of(context).colorScheme.tertiary
-                                    ),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        const DefaultText(txt: "Total Price", color: Colors.white, size: 12,),
-                                        DefaultText(txt: "${Provider.of<PaymentDetails>(context).totalPrice + Provider.of<OrderVM>(context).getTotalPrice()} EGP", color: Colors.white,bold: true, size: 16,),
-                                      ],
-                                    ),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const DefaultText(
+                                        txt: "Total Price",
+                                        color: Colors.white,
+                                        size: 12,
+                                      ),
+                                      DefaultText(
+                                        txt:
+                                            "${(Provider.of<PaymentDetails>(context).totalPrice + Provider.of<OrderVM>(context).getTotalPrice())} EGP",
+                                        color: Colors.white,
+                                        bold: true,
+                                        size: 16,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -215,7 +238,8 @@ class OrderDetailsWidget extends StatelessWidget {
           //order item title
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
               child: Row(
                 children: [
                   Icon(
@@ -232,31 +256,40 @@ class OrderDetailsWidget extends StatelessWidget {
           ),
 
           //list of order items
-          Provider.of<OrderVM>(context).orderModel.orderItems.isNotEmpty? SliverFixedExtentList(
-            itemExtent: 60,
-            delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: OrderItemWidget(index),
-                );
-              },
-              childCount:
-              Provider.of<OrderVM>(context).orderModel.orderItems.length,
-            ),
-          ) : SliverToBoxAdapter(child: Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Iconsax.shopping_cart, color: Colors.red.shade300,),
-                SizedBox(width: 15,),
-                DefaultText(txt: "Put items in list first!"),
-              ],
-            ),
-          )),
-
+          Provider.of<OrderVM>(context).orderModel.orderItems.isNotEmpty
+              ? SliverFixedExtentList(
+                  itemExtent: 60,
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: OrderItemWidget(index),
+                      );
+                    },
+                    childCount: Provider.of<OrderVM>(context)
+                        .orderModel
+                        .orderItems
+                        .length,
+                  ),
+                )
+              : SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Iconsax.shopping_cart,
+                          color: Colors.red.shade300,
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        const DefaultText(txt: "Put items in list first!"),
+                      ],
+                    ),
+                  ),
+                ),
 
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
           SliverToBoxAdapter(
@@ -266,20 +299,28 @@ class OrderDetailsWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
                     children: [
-                      Icon(Iconsax.call_incoming_copy, color: Theme.of(context).colorScheme.tertiary,),
-                      const SizedBox(width: 15,),
+                      Icon(
+                        Iconsax.call_incoming_copy,
+                        color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
                       const DefaultText(txt: "Order Platform Source"),
                     ],
                   ),
                 ),
-                const SizedBox(height: 15,),
+                const SizedBox(
+                  height: 15,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(right: 20.0, left: 20),
                   child: DefaultProductForm(
-                    fillColor: Theme.of(context).colorScheme.tertiary.withAlpha(30),
+                    fillColor:
+                        Theme.of(context).colorScheme.tertiary.withAlpha(30),
                     title: "Which platform you get the order from?",
                     controller: value.platformSource,
-                    onChange: (value){},
+                    onChange: (value) {},
                     icon: Iconsax.facebook,
                   ),
                 ),
@@ -291,79 +332,104 @@ class OrderDetailsWidget extends StatelessWidget {
 
           //payment details
           SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      children: [
-                        Icon(Iconsax.wallet_1_copy, color: Theme.of(context).colorScheme.tertiary,),
-                        const SizedBox(width: 15,),
-                        const DefaultText(txt: "Payment Details"),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10,),
-                  Row(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
                     children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20.0),
-                          child: DefaultProductForm(
-                            currency: true,
-                            fillColor: Theme.of(context).colorScheme.tertiary.withAlpha(30),
-                            title: "Down Payment",
-                            controller: value.downPayment,
-                            onChange: (value){},
-                            icon: Iconsax.wallet_1,
-                          ),
-                        ),
+                      Icon(
+                        Iconsax.wallet_1_copy,
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
-                      const SizedBox(width: 5,),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
-                          child: DefaultProductForm(
-                            currency: true,
-                            fillColor: Theme.of(context).colorScheme.tertiary.withAlpha(30),
-                            title: "Delivery Charge",
-                            controller: value.delivery,
-                            onChange: (value){},
-                            icon: Iconsax.truck,
-                          ),
-                        ),
+                      const SizedBox(
+                        width: 15,
                       ),
+                      const DefaultText(txt: "Payment Details"),
                     ],
                   ),
-                  const SizedBox(height: 10,),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0, left: 20),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
                         child: DefaultProductForm(
                           currency: true,
-                          fillColor: Theme.of(context).colorScheme.tertiary.withAlpha(30),
-                          title: "Discount",
-                          controller: value.discount,
-                          onChange: (value){},
-                          icon: Iconsax.discount_shape,
-                        ),
-                      ),
-                      const SizedBox(height: 10,),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0, left: 20),
-                        child: DefaultProductForm(
-                          fillColor: Theme.of(context).colorScheme.tertiary.withAlpha(30),
-                          title: "Payment Method",
-                          controller: value.paymentMethod,
-                          onChange: (value){},
+                          fillColor: Theme.of(context)
+                              .colorScheme
+                              .tertiary
+                              .withAlpha(30),
+                          title: "Down Payment",
+                          controller: value.downPayment,
+                          onChange: (value) {},
                           icon: Iconsax.wallet_1,
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: DefaultProductForm(
+                          currency: true,
+                          fillColor: Theme.of(context)
+                              .colorScheme
+                              .tertiary
+                              .withAlpha(30),
+                          title: "Delivery Charge",
+                          controller: value.delivery,
+                          onChange: (value) {},
+                          icon: Iconsax.truck,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20.0, left: 20),
+                      child: DefaultProductForm(
+                        currency: true,
+                        fillColor: Theme.of(context)
+                            .colorScheme
+                            .tertiary
+                            .withAlpha(30),
+                        title: "Discount",
+                        controller: value.discount,
+                        onChange: (value) {},
+                        icon: Iconsax.discount_shape,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20.0, left: 20),
+                      child: DefaultProductForm(
+                        fillColor: Theme.of(context)
+                            .colorScheme
+                            .tertiary
+                            .withAlpha(30),
+                        title: "Payment Method",
+                        controller: value.paymentMethod,
+                        onChange: (value) {},
+                        icon: Iconsax.wallet_1,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
 
           const SliverToBoxAdapter(child: SizedBox(height: 80)),
@@ -372,8 +438,3 @@ class OrderDetailsWidget extends StatelessWidget {
     );
   }
 }
-
-
-
-
-

@@ -1,6 +1,5 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
@@ -26,7 +25,28 @@ class OrderItemWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           DefaultText(txt: orderItem.productName, center: true),
-          DefaultText(txt: "${orderItem.unitPrice} EGP", center: true),
+          
+          Row(
+            children: [
+              InkWell(
+                  onTap: (){
+                    Provider.of<OrderVM>(context,listen: false).incrementItemQuantity = index;
+                  },
+                  child: const Icon(Iconsax.add_square_copy)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: DefaultText(txt: orderItem.quantityToOrder.toString()),
+              ),
+              InkWell(
+                  onTap: (){
+                    Provider.of<OrderVM>(context,listen: false).decrementItemQuantity = index;
+                  },
+                  child: const Icon(Iconsax.minus_square_copy)),
+              const SizedBox(width: 15,),
+              DefaultText(txt: "${double.parse(orderItem.unitPrice) * orderItem.quantityToOrder} EGP", center: true),
+            ],
+          ),
+
         ],
       ),
     );
