@@ -41,12 +41,9 @@ class DeliveryOrderWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
             child:  Row(
               children: [
-                SizedBox(
-                  width: 350,
-                  child: Text(
-                    Provider.of<OrderVM>(context).orderModel.customer?.address ??
-                    "Pick your customer!",
-                  ),
+                Text(
+                  Provider.of<OrderVM>(context).orderModel.customer?.address ??
+                  "Pick your customer!",
                 ),
               ],
             ),

@@ -97,8 +97,6 @@ class OrderWidget extends StatelessWidget {
                             ),
                             const SizedBox(width: 10),
 
-                            const SizedBox(width: 10),
-
                             Container(
                               decoration: BoxDecoration(
                                   color: Colors.yellow.shade300,
@@ -115,6 +113,51 @@ class OrderWidget extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 6),
+
+                        Row(
+                          children: [
+                            DefaultText(
+                              txt: "Delivery: ${order.delivery}",
+                              bold: true,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              width: 5,
+                              height: 5,
+                            ),
+                            const SizedBox(width: 10),
+                            DefaultText(
+                              txt: "Payment method: ${order.paymentMethod}",
+                              bold: true,
+                            ),
+
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
+                              width: 5,
+                              height: 5,
+                            ),
+                            const SizedBox(width: 10),
+                            DefaultText(
+                              txt: "Down payment: ${order.downPayment}",
+                              bold: true,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+
+
                         // Title
                         Row(
                           children: [
@@ -141,11 +184,13 @@ class OrderWidget extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 6),
+
+
                         // Message
                         Text(order.customer!.address),
 
                         const SizedBox(height: 6),
-                        Row(
+                        const Row(
                           children: [
                             Icon(
                               Iconsax.receipt_item_copy,

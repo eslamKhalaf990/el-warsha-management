@@ -25,14 +25,20 @@ class ProductToAdd extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.data!.isNotEmpty) {
+          final filteredProducts = snapshot.data!.where((product) {
+            final name = product.productName.toLowerCase() ?? "";
+            final sku = product.productSKU?.toLowerCase() ?? "";
+            final query = Provider.of<ProductVM>(context).searchController.text.toLowerCase();
+            return name.contains(query) || sku.contains(query);
+          }).toList();
           return Expanded(
             child: ListView.builder(
-              itemCount: snapshot.data!.length,
+              itemCount: filteredProducts.length,
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    final product = snapshot.data![index];
+                    final product = filteredProducts[index];
 
                     OrderItemsModel orderItemsModel = OrderItemsModel(
                       productId: product.productID,
@@ -55,15 +61,15 @@ class ProductToAdd extends StatelessWidget {
                   },
 
                   child: ProductWidget(
-                    title: snapshot.data![index].productName,
-                    description: snapshot.data![index].productDescription,
-                    bPrice: snapshot.data![index].productBPrice,
-                    sPrice: snapshot.data![index].productSPrice,
-                    category: snapshot.data![index].productCategory,
-                    quantity: snapshot.data![index].productQuantity,
-                    sku: snapshot.data![index].productSKU ?? "-",
-                    image: snapshot.data![index].productImage ?? "-",
-                    index: index, productID: snapshot.data![index].productID,
+                    title: filteredProducts[index].productName,
+                    description: filteredProducts[index].productDescription,
+                    bPrice: filteredProducts[index].productBPrice,
+                    sPrice: filteredProducts[index].productSPrice,
+                    category: filteredProducts[index].productCategory,
+                    quantity: filteredProducts[index].productQuantity,
+                    sku: filteredProducts[index].productSKU ?? "-",
+                    image: filteredProducts[index].productImage ?? "-",
+                    index: index, productID: filteredProducts[index].productID,
                   ),
                 );
               },

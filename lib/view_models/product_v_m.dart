@@ -10,9 +10,13 @@ class ProductVM extends ChangeNotifier {
   bool isLoading = false;
 
   Future<List<ProductModel>>? allProducts;
+  final TextEditingController searchController = TextEditingController();
 
   ProductVM(this._productService) {
     initAllProducts();
+    searchController.addListener(() {
+      notifyListeners();
+    });
   }
 
   void initAllProducts () {
@@ -81,6 +85,12 @@ class ProductVM extends ChangeNotifier {
     }
 
     return status;
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
 }

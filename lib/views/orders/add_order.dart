@@ -7,7 +7,9 @@ import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/order_v_m.dart';
+import 'package:warsha_app/view_models/product_v_m.dart';
 import 'package:warsha_app/views/orders/customer_to_add.dart';
 import 'package:warsha_app/views/orders/product_to_add.dart';
 import 'package:warsha_app/views/orders/widgets/CustomerOrderWidget.dart';
@@ -154,7 +156,7 @@ class AddOrder extends StatelessWidget {
                           const SizedBox(height: 20),
                           DefaultForm(
                             title: 'Search For Products',
-                            controller: TextEditingController(),
+                            controller: Provider.of<ProductVM>(context, listen: false).searchController,
                             numberOfLines: 1,
                           ),
                           const SizedBox(height: 20),
@@ -189,7 +191,7 @@ class AddOrder extends StatelessWidget {
                           const SizedBox(height: 20),
                           DefaultForm(
                             title: 'Search For Customer',
-                            controller: TextEditingController(),
+                            controller: Provider.of<CustomerVM>(context, listen: false).searchController,
                             numberOfLines: 1,
                           ),
                           const SizedBox(height: 20),
@@ -315,15 +317,40 @@ class OrderDetailsWidget extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 20.0, left: 20),
-                  child: DefaultProductForm(
-                    fillColor:
-                        Theme.of(context).colorScheme.tertiary.withAlpha(30),
-                    title: "Which platform you get the order from?",
-                    controller: value.platformSource,
-                    onChange: (value) {},
-                    icon: Iconsax.facebook,
+                  child: DropdownButtonFormField<String>(
+                    borderRadius: Constants.BORDER_RADIUS_20,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.tertiary.withAlpha(30),
+                      labelText: "Which platform did you get the order from?",
+                      labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
+                          borderRadius: Constants.BORDER_RADIUS_15),
+                      prefixIcon: Icon(Iconsax.message, color: Theme.of(context).colorScheme.tertiary,),
+                    ),
+                    value: value.platformSource.text.isNotEmpty
+                        ? value.platformSource.text
+                        : null, // bind to controller if already set
+                    items: const [
+                      DropdownMenuItem(value: "facebook", child: Text("Facebook")),
+                      DropdownMenuItem(value: "tiktok", child: Text("TikTok")),
+                      DropdownMenuItem(value: "instagram", child: Text("Instagram")),
+                      DropdownMenuItem(value: "ecommerce", child: Text("E-commerce")),
+                    ],
+                    onChanged: (selected) {
+                      if (selected != null) {
+                        value.platformSource.text = selected;
+                      }
+                    },
                   ),
                 ),
+
               ],
             ),
           ),
@@ -415,17 +442,38 @@ class OrderDetailsWidget extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 20.0, left: 20),
-                      child: DefaultProductForm(
-                        fillColor: Theme.of(context)
-                            .colorScheme
-                            .tertiary
-                            .withAlpha(30),
-                        title: "Payment Method",
-                        controller: value.paymentMethod,
-                        onChange: (value) {},
-                        icon: Iconsax.wallet_1,
+                      child: DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Theme.of(context).colorScheme.tertiary.withAlpha(30),
+                          labelText: "Payment Method",
+                          labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                color: Colors.transparent,
+                              ),
+                              borderRadius: Constants.BORDER_RADIUS_15),
+                          prefixIcon: Icon(Iconsax.wallet_1,color: Theme.of(context).colorScheme.tertiary),
+                        ),
+                        value: value.paymentMethod.text.isNotEmpty
+                            ? value.paymentMethod.text
+                            : null, // preselect if controller has value
+                        items: const [
+                          DropdownMenuItem(value: "vodafone cash", child: Text("Vodafone Cash")),
+                          DropdownMenuItem(value: "instapay", child: Text("Instapay")),
+                          DropdownMenuItem(value: "cash", child: Text("Cash")),
+                        ],
+                        onChanged: (selected) {
+                          if (selected != null) {
+                            value.paymentMethod.text = selected; // sync with controller
+                          }
+                        },
                       ),
                     ),
+
                   ],
                 ),
               ],

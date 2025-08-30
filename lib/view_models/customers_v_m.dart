@@ -1,9 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:warsha_app/models/customer_model.dart';
-import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/services/customers_services.dart';
 
 class CustomerVM extends ChangeNotifier {
@@ -13,9 +10,15 @@ class CustomerVM extends ChangeNotifier {
 
   Future<List<CustomerModel>>? allCustomers;
 
+  final TextEditingController searchController = TextEditingController();
+
   CustomerVM(this._customerService) {
     initAllCustomers();
+    searchController.addListener(() {
+      notifyListeners();
+    });
   }
+
 
   void initAllCustomers () {
     allCustomers = getAllCustomers();
@@ -64,5 +67,11 @@ class CustomerVM extends ChangeNotifier {
       notifyListeners();
     }
     return status;
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 }

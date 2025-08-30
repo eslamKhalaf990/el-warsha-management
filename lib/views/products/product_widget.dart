@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/utils/image_helper.dart';
 
 class ProductWidget extends StatelessWidget {
   final String title;
@@ -45,7 +47,7 @@ class ProductWidget extends StatelessWidget {
                   borderRadius: Constants.BORDER_RADIUS_20,
                 ),
                 child: Image.network(
-                  image,
+                  "${Baseurl.baseURLImages}${ImageHelper.extractFileId(image)}",
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,

@@ -27,6 +27,7 @@ class OrderVM extends ChangeNotifier {
     List<OrderModel> orders = [];
     try {
       isLoading = true;
+
       final response = await _orderService.getAllOrders();
       if (response.statusCode == 200) {
         final ordersData = jsonDecode(response.body);
@@ -100,6 +101,10 @@ class OrderVM extends ChangeNotifier {
   set decrementItemQuantity(int index) {
     if(orderModel.orderItems[index].quantityToOrder > 1){
       orderModel.orderItems[index].quantityToOrder--;
+      notifyListeners();
+    }
+    else {
+      orderModel.orderItems.remove(orderModel.orderItems[index]);
       notifyListeners();
     }
   }

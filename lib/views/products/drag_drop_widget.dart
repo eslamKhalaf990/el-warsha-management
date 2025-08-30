@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
@@ -24,16 +23,16 @@ class _DragDropImageUploadState extends State<DragDropImageUpload> {
     return Consumer<DragDropController>(
       builder: (context, drop, child) => Stack(
         children: [
-          DropzoneView(
-            onCreated: (controller) => _dropzoneController = controller,
-            onHover: () => setState(() => _dragging = true),
-            onLeave: () => setState(() => _dragging = false),
-            onDrop: (event) async {
-              final bytes = await _dropzoneController.getFileData(event);
-              final name = await _dropzoneController.getFilename(event);
-              drop.updateDropFile(bytes, name);
-            },
-          ),
+          // DropzoneView(
+          //   onCreated: (controller) => _dropzoneController = controller,
+          //   onHover: () => setState(() => _dragging = true),
+          //   onLeave: () => setState(() => _dragging = false),
+          //   onDrop: (event) async {
+          //     final bytes = await _dropzoneController.getFileData(event);
+          //     final name = await _dropzoneController.getFilename(event);
+          //     drop.updateDropFile(bytes, name);
+          //   },
+          // ),
           Container(
             width: double.infinity,
             height: 500,

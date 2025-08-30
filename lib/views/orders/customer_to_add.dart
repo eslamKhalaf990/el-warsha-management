@@ -22,22 +22,28 @@ class CustomerToAdd extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.data!.isNotEmpty) {
+          final filteredCustomers = snapshot.data!.where((customer) {
+            final name = customer.customerName.toLowerCase();
+            final phone = customer.phone.toLowerCase();
+            final query = Provider.of<CustomerVM>(context).searchController.text.toLowerCase();
+            return name.contains(query) || phone.contains(query);
+          }).toList();
           return Expanded(
             child: ListView.builder(
-              itemCount: snapshot.data!.length,
+              itemCount: filteredCustomers.length,
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: (){
                     Provider.of<OrderVM>(context, listen: false).addCustomer =
-                        snapshot.data![index];
+                        filteredCustomers[index];
                     },
                   child: CustomerWidget(
                     index: index,
-                    name: snapshot.data![index].customerName,
-                    email: snapshot.data![index].email,
-                    address:snapshot.data![index].address,
-                    phone: snapshot.data![index].phone, customerID: snapshot.data![index].customerID,
+                    name: filteredCustomers[index].customerName,
+                    email: filteredCustomers[index].email,
+                    address:filteredCustomers[index].address,
+                    phone: filteredCustomers[index].phone, customerID: filteredCustomers[index].customerID,
                   ),
                 );
               },
