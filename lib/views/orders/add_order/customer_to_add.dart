@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
-import 'package:warsha_app/view_models/order_v_m.dart';
+import 'package:warsha_app/view_models/add_order_v_m.dart';
 import '../customer_widget.dart';
 
 class CustomerToAdd extends StatelessWidget {
@@ -35,7 +35,7 @@ class CustomerToAdd extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: (){
-                    Provider.of<OrderVM>(context, listen: false).addCustomer =
+                    Provider.of<AddOrderVM>(context, listen: false).addCustomer =
                         filteredCustomers[index];
                     },
                   child: CustomerWidget(
@@ -43,7 +43,8 @@ class CustomerToAdd extends StatelessWidget {
                     name: filteredCustomers[index].name,
                     email: filteredCustomers[index].email,
                     address:filteredCustomers[index].address,
-                    phone: filteredCustomers[index].phone, customerID: filteredCustomers[index].customerID,
+                    phone: filteredCustomers[index].phone,
+                    id: filteredCustomers[index].id,
                   ),
                 );
               },
@@ -51,7 +52,7 @@ class CustomerToAdd extends StatelessWidget {
           );
         } else {
           return const Center(
-            child: Text("no products yet!"),
+            child: Text("No customers yet!"),
           );
         }
       },

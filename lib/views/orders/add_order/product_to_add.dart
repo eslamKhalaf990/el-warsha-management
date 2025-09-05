@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_items_model.dart';
 import 'package:warsha_app/models/product_model.dart';
-import 'package:warsha_app/view_models/order_v_m.dart';
+import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
 import 'package:warsha_app/views/orders/product_widget.dart';
 
@@ -26,7 +26,7 @@ class ProductToAdd extends StatelessWidget {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.data!.isNotEmpty) {
           final filteredProducts = snapshot.data!.where((product) {
-            final name = product.name.toLowerCase() ?? "";
+            final name = product.name.toLowerCase();
             final sku = product.sku?.toLowerCase() ?? "";
             final query = Provider.of<ProductVM>(context).searchController.text.toLowerCase();
             return name.contains(query) || sku.contains(query);
@@ -39,6 +39,7 @@ class ProductToAdd extends StatelessWidget {
                 return GestureDetector(
                   onTap: () {
                     final product = filteredProducts[index];
+                    final orderVM = Provider.of<AddOrderVM>(context, listen: false);
 
                     OrderItemsModel orderItemsModel = OrderItemsModel(
                       productId: product.productID,
@@ -46,8 +47,6 @@ class ProductToAdd extends StatelessWidget {
                       quantity: product.quantity,
                       unitPrice: product.sellingPrice,
                     );
-
-                    final orderVM = Provider.of<OrderVM>(context, listen: false);
 
                     // Check for duplicates by productId
                     bool alreadyExists = orderVM.orderModel.orderItems

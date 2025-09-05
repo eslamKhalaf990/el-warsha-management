@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/controllers/customer_provider.dart';
-import 'package:warsha_app/controllers/payment_provider.dart';
+import 'package:warsha_app/controllers/add_order/add_customer.dart';
+import 'package:warsha_app/controllers/add_order/add_payment.dart';
+import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
-import 'package:warsha_app/view_models/order_v_m.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
 import 'package:warsha_app/views/orders/add_order/order_details.dart';
 import 'package:warsha_app/views/orders/add_order/customer_to_add.dart';
@@ -18,19 +18,14 @@ class AddOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final orderVM = context.read<OrderVM>();
-    final payment = context.read<PaymentProvider>();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      orderVM.clearOrder();
-      payment.clearPaymentDetails();
-    });
     return Consumer<CustomerProvider>(
       builder: (context, value, child) => Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
             backgroundColor: Colors.transparent,
-            title: const DefaultText(txt: "Add Order")),
+            title: const DefaultText(txt: "Add New Order"),
+        ),
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -61,6 +56,7 @@ class AddOrder extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              //title
                               const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 15.0),
                                 child: Row(
@@ -68,12 +64,16 @@ class AddOrder extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 20),
+
+                              //search fo product
                               DefaultForm(
                                 title: 'Search For Products',
                                 controller: Provider.of<ProductVM>(context, listen: false).searchController,
                                 numberOfLines: 1,
                               ),
                               const SizedBox(height: 20),
+
+                              //list of products
                               const ProductToAdd(),
                             ],
                           ),
@@ -103,12 +103,16 @@ class AddOrder extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 20),
+
+                              //search for customer
                               DefaultForm(
                                 title: 'Search For Customer',
                                 controller: Provider.of<CustomerVM>(context, listen: false).searchController,
                                 numberOfLines: 1,
                               ),
                               const SizedBox(height: 20),
+
+                              //list of customers
                               const CustomerToAdd(),
                             ],
                           ),

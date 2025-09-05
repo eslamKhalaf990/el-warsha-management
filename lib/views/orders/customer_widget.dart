@@ -3,11 +3,11 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/view_models/order_v_m.dart';
+import 'package:warsha_app/view_models/add_order_v_m.dart';
 
 class CustomerWidget extends StatelessWidget {
   final String name;
-  final String customerID;
+  final String id;
   final String email;
   final String phone;
   final String address;
@@ -19,7 +19,7 @@ class CustomerWidget extends StatelessWidget {
     required this.address,
     required this.email,
     required this.phone, 
-    required this.index, required this.customerID,
+    required this.index, required this.id,
   });
 
   @override
@@ -28,7 +28,7 @@ class CustomerWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-        color: Provider.of<OrderVM>(context).orderModel.customer?.customerID == customerID ?
+        color: Provider.of<AddOrderVM>(context).orderModel.customer?.id == id ?
         Theme.of(context).colorScheme.tertiary.withAlpha(30):
         Theme.of(context).colorScheme.onPrimary.withAlpha(100),
         borderRadius: Constants.BORDER_RADIUS_20,

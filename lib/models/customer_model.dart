@@ -1,6 +1,6 @@
 class CustomerModel {
   String name;
-  late String customerID;
+  late String id;
   String email;
   String phone;
   String address;
@@ -14,7 +14,7 @@ class CustomerModel {
 
   CustomerModel.get({
     required this.name,
-    required this.customerID,
+    required this.id,
     required this.email,
     required this.phone,
     required this.address,
@@ -23,7 +23,7 @@ class CustomerModel {
   factory CustomerModel.fromJson(Map<String, dynamic> json) {
     return CustomerModel.get(
       name: json['fullName'],
-      customerID: (json['customerID'] ?? json['customerId']).toString()  ,
+      id: (json['customerID'] ?? json['customerId']).toString()  ,
       email: json['email'],
       phone: json['phone'].toString(),
       address: json['address'],

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
-import 'package:warsha_app/view_models/order_v_m.dart';
-import '../customer_widget.dart';
+import 'package:warsha_app/view_models/update_order_v_m.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:warsha_app/utils/const_values.dart';
+import 'package:warsha_app/utils/default_text.dart';
 
 class CustomerToUpdate extends StatelessWidget {
   const CustomerToUpdate({super.key});
@@ -17,7 +19,9 @@ class CustomerToUpdate extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-            child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary,),
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
           );
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
@@ -25,7 +29,10 @@ class CustomerToUpdate extends StatelessWidget {
           final filteredCustomers = snapshot.data!.where((customer) {
             final name = customer.name.toLowerCase();
             final phone = customer.phone.toLowerCase();
-            final query = Provider.of<CustomerVM>(context).searchController.text.toLowerCase();
+            final query = Provider.of<CustomerVM>(context)
+                .searchController
+                .text
+                .toLowerCase();
             return name.contains(query) || phone.contains(query);
           }).toList();
           return Expanded(
@@ -34,16 +41,17 @@ class CustomerToUpdate extends StatelessWidget {
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: (){
-                    Provider.of<OrderVM>(context, listen: false).addCustomer =
-                        filteredCustomers[index];
-                    },
+                  onTap: () {
+                    Provider.of<UpdateOrderVM>(context, listen: false)
+                        .addCustomer = filteredCustomers[index];
+                  },
                   child: CustomerWidget(
                     index: index,
                     name: filteredCustomers[index].name,
                     email: filteredCustomers[index].email,
-                    address:filteredCustomers[index].address,
-                    phone: filteredCustomers[index].phone, customerID: filteredCustomers[index].customerID,
+                    address: filteredCustomers[index].address,
+                    phone: filteredCustomers[index].phone,
+                    id: filteredCustomers[index].id,
                   ),
                 );
               },
@@ -51,10 +59,125 @@ class CustomerToUpdate extends StatelessWidget {
           );
         } else {
           return const Center(
-            child: Text("no products yet!"),
+            child: Text("No customers yet!"),
           );
         }
       },
+    );
+  }
+}
+
+class CustomerWidget extends StatelessWidget {
+  final String name;
+  final String id;
+  final String email;
+  final String phone;
+  final String address;
+  final int index;
+
+  const CustomerWidget({
+    super.key,
+    required this.name,
+    required this.address,
+    required this.email,
+    required this.phone,
+    required this.index,
+    required this.id,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      decoration: BoxDecoration(
+        color: Provider.of<UpdateOrderVM>(context).orderModel.customer?.id == id
+            ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
+            : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
+        borderRadius: Constants.BORDER_RADIUS_20,
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surfaceTint,
+                            borderRadius: Constants.BORDER_RADIUS_20,
+                          ),
+                          child: const Icon(
+                            Iconsax.profile_circle,
+                            size: 25,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            DefaultText(
+                              txt: name,
+                              bold: true,
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            DefaultText(
+                              txt: email,
+                              bold: true,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    // Message
+                    Text(address),
+                    const SizedBox(height: 6),
+                    // Time
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.green.shade300,
+                              borderRadius: Constants.BORDER_RADIUS_20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 2),
+                          child: Row(
+                            children: [
+                              const DefaultText(
+                                  txt: "Phone:  ",
+                                  size: 14,
+                                  color: Colors.white),
+                              DefaultText(
+                                  txt: phone, size: 14, color: Colors.white),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Divider(
+                      color:
+                          Theme.of(context).colorScheme.onSurface.withAlpha(50),
+                      thickness: 0.5,
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

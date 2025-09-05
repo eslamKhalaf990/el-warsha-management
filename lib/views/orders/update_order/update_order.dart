@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/controllers/customer_provider.dart';
-import 'package:warsha_app/controllers/payment_provider.dart';
+import 'package:warsha_app/controllers/add_order/add_customer.dart';
+import 'package:warsha_app/controllers/update_order/updatePaymentDetails.dart';
 import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
-import 'package:warsha_app/view_models/order_v_m.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
+import 'package:warsha_app/view_models/update_order_v_m.dart';
 import 'package:warsha_app/views/orders/update_order/customer_to_update.dart';
 import 'package:warsha_app/views/orders/update_order/product_to_update.dart';
 import 'package:warsha_app/views/orders/update_order/update_order_details.dart';
@@ -20,8 +20,8 @@ class UpdateOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final orderVM = context.read<OrderVM>();
-    final payment = context.read<PaymentProvider>();
+    final orderVM = context.read<UpdateOrderVM>();
+    final payment = context.read<UpdatePaymentDetails>();
 
     // Pre-fill only once if editing
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -92,7 +92,6 @@ class UpdateOrder extends StatelessWidget {
                                       Navigator.pop(context);
                                       payment.clearPaymentDetails();
                                       value.clearCustomer();
-                                      orderVM.initAllOrders();
                                     },
                                     isValid: !orderVM.isLoading,
                                     isLoading: orderVM.isLoading,

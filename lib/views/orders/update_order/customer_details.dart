@@ -1,13 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/view_models/add_order_v_m.dart';
+import 'package:warsha_app/view_models/update_order_v_m.dart';
 
-class CustomerOrderWidget extends StatelessWidget {
-  const CustomerOrderWidget({super.key});
+class CustomerDetails extends StatelessWidget {
+  const CustomerDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +23,7 @@ class CustomerOrderWidget extends StatelessWidget {
                   color: Theme.of(context).colorScheme.tertiary,
                   size: 22,
                 ),
-                const SizedBox(
-                  width: 5,
-                ),
+                const SizedBox(width: 5),
                 const DefaultText(
                   txt: "Customer Name",
                   size: 13,
@@ -43,17 +40,19 @@ class CustomerOrderWidget extends StatelessWidget {
             child: Row(
               children: [
                 DefaultText(
-                  txt: Provider.of<AddOrderVM>(context)
+                  txt: Provider.of<UpdateOrderVM>(context)
                           .orderModel
                           .customer
                           ?.name ??
-                      "Pick your customer",
-                  bold: Provider.of<AddOrderVM>(context)
-                      .orderModel
-                      .customer != null,
-                  size: Provider.of<AddOrderVM>(context)
-                      .orderModel
-                      .customer != null ? 16:14,
+                      "Pick your customer!",
+                  bold:
+                      Provider.of<UpdateOrderVM>(context).orderModel.customer !=
+                          null,
+                  size:
+                      Provider.of<UpdateOrderVM>(context).orderModel.customer !=
+                              null
+                          ? 16
+                          : 14,
                 ),
               ],
             ),

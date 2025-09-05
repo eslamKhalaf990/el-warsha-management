@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/controllers/payment_provider.dart';
+import 'package:warsha_app/controllers/add_order/add_payment.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/view_models/order_v_m.dart';
-import 'package:warsha_app/views/products/add_product.dart';
-import '../widgets/CustomerOrderWidget.dart';
-import '../widgets/DeliveryOrderWidget.dart';
-import '../widgets/OrderItemWidget.dart';
-import 'package:warsha_app/controllers/customer_provider.dart';
+import 'package:warsha_app/view_models/add_order_v_m.dart';
+import 'package:warsha_app/views/orders/add_order/widgets/order_details_widget.dart';
+import 'package:warsha_app/controllers/add_order/add_customer.dart';
 import 'package:warsha_app/utils/default_button.dart';
 
 class OrderDetailsStep extends StatelessWidget {
@@ -17,58 +13,54 @@ class OrderDetailsStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CustomerProvider>(
-      builder: (context, value, child) => Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            title: const DefaultText(txt: "Add New Order")),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.blue.shade50,
-                Colors.yellow.shade200
-              ], // Replace with your colors
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: const DefaultText(txt: "Add New Order")),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.blue.shade50,
+              Colors.yellow.shade200
+            ], // Replace with your colors
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 60, bottom: 15, left: 15),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      borderRadius: Constants.BORDER_RADIUS_15,
-                    ),
-                    child: Stack(
-                      children: [
-                        const OrderDetailsWidget(),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: DefaultButton(
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 60, bottom: 15, left: 15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    borderRadius: Constants.BORDER_RADIUS_15,
+                  ),
+                  child: Stack(
+                    children: [
+                      const OrderDetailsWidget(),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Consumer2<AddOrderVM, PaymentProvider>(
+                                  builder: (context, order, payment,
+                                          child) =>
+                                      DefaultButton(
                                     onTap: () async {
-                                      final orderVM = Provider.of<OrderVM>(
-                                          context,
-                                          listen: false);
-                                      final payment =
-                                          Provider.of<PaymentProvider>(context,
-                                              listen: false);
-                                      if (orderVM.orderModel.customer != null) {
-                                        await orderVM.addOrder(
-                                          customerID: orderVM
-                                              .orderModel.customer!.customerID,
+                                      if (order.orderModel.customer != null) {
+                                        await order.addOrder(
+                                          customerID:
+                                              order.orderModel.customer!.id,
                                           orderItems:
-                                              orderVM.orderModel.orderItems,
+                                              order.orderModel.orderItems,
                                           delivery: payment.delivery.text,
                                           downPayment: payment.downPayment.text,
                                           discount: payment.discount.text,
@@ -80,343 +72,61 @@ class OrderDetailsStep extends StatelessWidget {
 
                                         Navigator.pop(context);
                                         payment.clearPaymentDetails();
-                                        value.clearCustomer();
+                                        order.clearOrder();
 
-                                        orderVM.initAllOrders();
+                                        order.initAllOrders();
                                       }
                                     },
-                                    isValid: !Provider.of<OrderVM>(context)
+                                    isValid: !Provider.of<AddOrderVM>(context)
                                         .isLoading,
                                     isLoading:
-                                        Provider.of<OrderVM>(context).isLoading,
+                                        Provider.of<AddOrderVM>(context).isLoading,
                                     title: "Place Order",
                                     margin: EdgeInsets.zero,
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 10,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 30),
+                                decoration: BoxDecoration(
+                                    borderRadius: Constants.BORDER_RADIUS_15,
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const DefaultText(
+                                      txt: "Total Price",
+                                      color: Colors.white,
+                                      size: 12,
+                                    ),
+                                    DefaultText(
+                                      txt:
+                                          "${(Provider.of<PaymentProvider>(context).totalPrice + Provider.of<AddOrderVM>(context).getTotalPrice())} EGP",
+                                      color: Colors.white,
+                                      bold: true,
+                                      size: 16,
+                                    ),
+                                  ],
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 5.0, horizontal: 30),
-                                  decoration: BoxDecoration(
-                                      borderRadius: Constants.BORDER_RADIUS_15,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .tertiary),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const DefaultText(
-                                        txt: "Total Price",
-                                        color: Colors.white,
-                                        size: 12,
-                                      ),
-                                      DefaultText(
-                                        txt:
-                                            "${(Provider.of<PaymentProvider>(context).totalPrice + Provider.of<OrderVM>(context).getTotalPrice())} EGP",
-                                        color: Colors.white,
-                                        bold: true,
-                                        size: 16,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-
-
-
-
-
-class OrderDetailsWidget extends StatelessWidget {
-  const OrderDetailsWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<PaymentProvider>(
-      builder: (context, value, child) => CustomScrollView(
-        slivers: [
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(15.0),
-              child: Row(
-                children: [DefaultText(txt: "Order Details")],
-              ),
-            ),
-          ),
-
-          //customer info
-          const SliverToBoxAdapter(child: CustomerOrderWidget()),
-
-          const SliverToBoxAdapter(child: SizedBox(height: 15)),
-
-          //delivery
-          const SliverToBoxAdapter(child: DeliveryOrderWidget()),
-
-          const SliverToBoxAdapter(child: SizedBox(height: 15)),
-
-          //order item title
-          SliverToBoxAdapter(
-            child: Padding(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
-              child: Row(
-                children: [
-                  Icon(
-                    Iconsax.receipt_item_copy,
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  const DefaultText(txt: "Order Items"),
-                ],
-              ),
-            ),
-          ),
-
-          //list of order items
-          Provider.of<OrderVM>(context).orderModel.orderItems.isNotEmpty
-              ? SliverFixedExtentList(
-            itemExtent: 60,
-            delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: OrderItemWidget(index),
-                );
-              },
-              childCount: Provider.of<OrderVM>(context)
-                  .orderModel
-                  .orderItems
-                  .length,
-            ),
-          )
-              : SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Iconsax.shopping_cart,
-                    color: Colors.red.shade300,
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  const DefaultText(txt: "Put items in list first!"),
-                ],
-              ),
-            ),
-          ),
-
-          const SliverToBoxAdapter(child: SizedBox(height: 15)),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Iconsax.call_incoming_copy,
-                        color: Theme.of(context).colorScheme.tertiary,
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const DefaultText(txt: "Order Platform Source"),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 20.0, left: 20),
-                  child: DropdownButtonFormField<String>(
-                    borderRadius: Constants.BORDER_RADIUS_20,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Theme.of(context).colorScheme.tertiary.withAlpha(30),
-                      labelText: "Which platform did you get the order from?",
-                      labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
-                          ),
-                          borderRadius: Constants.BORDER_RADIUS_15),
-                      prefixIcon: Icon(Iconsax.message, color: Theme.of(context).colorScheme.tertiary,),
-                    ),
-                    value: value.platformSource.text.isNotEmpty
-                        ? value.platformSource.text
-                        : null, // bind to controller if already set
-                    items: const [
-                      DropdownMenuItem(value: "facebook", child: Text("Facebook")),
-                      DropdownMenuItem(value: "tiktok", child: Text("TikTok")),
-                      DropdownMenuItem(value: "instagram", child: Text("Instagram")),
-                      DropdownMenuItem(value: "ecommerce", child: Text("E-commerce")),
-                    ],
-                    onChanged: (selected) {
-                      if (selected != null) {
-                        value.platformSource.text = selected;
-                      }
-                    },
-                  ),
-                ),
-
-              ],
-            ),
-          ),
-
-          const SliverToBoxAdapter(child: SizedBox(height: 15)),
-
-          //payment details
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Iconsax.wallet_1_copy,
-                        color: Theme.of(context).colorScheme.tertiary,
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const DefaultText(txt: "Payment Details"),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: DefaultProductForm(
-                          currency: true,
-                          fillColor: Theme.of(context)
-                              .colorScheme
-                              .tertiary
-                              .withAlpha(30),
-                          title: "Down Payment",
-                          controller: value.downPayment,
-                          onChange: (value) {},
-                          icon: Iconsax.wallet_1,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: DefaultProductForm(
-                          currency: true,
-                          fillColor: Theme.of(context)
-                              .colorScheme
-                              .tertiary
-                              .withAlpha(30),
-                          title: "Delivery Charge",
-                          controller: value.delivery,
-                          onChange: (value) {},
-                          icon: Iconsax.truck,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20.0, left: 20),
-                      child: DefaultProductForm(
-                        currency: true,
-                        fillColor: Theme.of(context)
-                            .colorScheme
-                            .tertiary
-                            .withAlpha(30),
-                        title: "Discount",
-                        controller: value.discount,
-                        onChange: (value) {},
-                        icon: Iconsax.discount_shape,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20.0, left: 20),
-                      child: DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Theme.of(context).colorScheme.tertiary.withAlpha(30),
-                          labelText: "Payment Method",
-                          labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.transparent,
-                              ),
-                              borderRadius: Constants.BORDER_RADIUS_15),
-                          prefixIcon: Icon(Iconsax.wallet_1,color: Theme.of(context).colorScheme.tertiary),
-                        ),
-                        value: value.paymentMethod.text.isNotEmpty
-                            ? value.paymentMethod.text
-                            : null, // preselect if controller has value
-                        items: const [
-                          DropdownMenuItem(value: "vodafone cash", child: Text("Vodafone Cash")),
-                          DropdownMenuItem(value: "instapay", child: Text("Instapay")),
-                          DropdownMenuItem(value: "cash", child: Text("Cash")),
-                        ],
-                        onChanged: (selected) {
-                          if (selected != null) {
-                            value.paymentMethod.text = selected; // sync with controller
-                          }
-                        },
-                      ),
-                    ),
-
-                  ],
-                ),
-              ],
-            ),
-          ),
-
-          const SliverToBoxAdapter(child: SizedBox(height: 80)),
-        ],
-      ),
-    );
-  }
-}

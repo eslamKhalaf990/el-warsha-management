@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/controllers/customer_provider.dart';
-import 'package:warsha_app/controllers/product_provider.dart';
+import 'package:warsha_app/controllers/add_order/add_customer.dart';
+import 'package:warsha_app/controllers/add_order/add_product.dart';
 import 'package:warsha_app/controllers/drag_drop_controller.dart';
 import 'package:warsha_app/controllers/navigation.dart';
+import 'package:warsha_app/controllers/update_order/updatePaymentDetails.dart';
+import 'package:warsha_app/controllers/update_order/update_customer.dart';
 import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/services/customers_services.dart';
 import 'package:warsha_app/services/orders_service.dart';
 import 'package:warsha_app/services/products_service.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
-import 'package:warsha_app/view_models/order_v_m.dart';
+import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
+import 'package:warsha_app/view_models/update_order_v_m.dart';
 import 'package:warsha_app/views/home.dart';
-import 'controllers/payment_provider.dart';
+import 'controllers/add_order/add_payment.dart';
+import 'controllers/update_order/update_product.dart';
 
 void main() {
     runApp(
@@ -22,6 +26,9 @@ void main() {
           ChangeNotifierProvider(create: (_)=> ProductProvider()),
           ChangeNotifierProvider(create: (_)=> Navigation()),
           ChangeNotifierProvider(create: (_)=> CustomerProvider()),
+          ChangeNotifierProvider(create: (_)=> UpdateCustomerProvider()),
+          ChangeNotifierProvider(create: (_)=> UpdatePaymentDetails()),
+          ChangeNotifierProvider(create: (_)=> UpdateProductProvider()),
           ChangeNotifierProvider(create: (_)=> PaymentProvider()),
 
           //providers used for dependency injection
@@ -37,8 +44,15 @@ void main() {
           ),
 
           //injecting product with api services
-          ChangeNotifierProvider<OrderVM>(
-            create: (context) => OrderVM(
+          ChangeNotifierProvider<AddOrderVM>(
+            create: (context) => AddOrderVM(
+              context.read<OrdersService>(),
+              OrderModel()
+            ),
+          ),
+          //injecting product with api services
+          ChangeNotifierProvider<UpdateOrderVM>(
+            create: (context) => UpdateOrderVM(
               context.read<OrdersService>(),
               OrderModel()
             ),

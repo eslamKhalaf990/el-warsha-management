@@ -1,13 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
+import 'package:warsha_app/view_models/update_order_v_m.dart';
 
-class CustomerOrderWidget extends StatelessWidget {
-  const CustomerOrderWidget({super.key});
+class DeliveryAddress extends StatelessWidget {
+  const DeliveryAddress({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class CustomerOrderWidget extends StatelessWidget {
             child: Row(
               children: [
                 Icon(
-                  Iconsax.profile_circle_copy,
+                  Iconsax.location_copy,
                   color: Theme.of(context).colorScheme.tertiary,
                   size: 22,
                 ),
@@ -28,7 +28,7 @@ class CustomerOrderWidget extends StatelessWidget {
                   width: 5,
                 ),
                 const DefaultText(
-                  txt: "Customer Name",
+                  txt: "Deliver To",
                   size: 13,
                 ),
               ],
@@ -40,20 +40,11 @@ class CustomerOrderWidget extends StatelessWidget {
               borderRadius: Constants.BORDER_RADIUS_15,
             ),
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-            child: Row(
+            child:  Row(
               children: [
-                DefaultText(
-                  txt: Provider.of<AddOrderVM>(context)
-                          .orderModel
-                          .customer
-                          ?.name ??
-                      "Pick your customer",
-                  bold: Provider.of<AddOrderVM>(context)
-                      .orderModel
-                      .customer != null,
-                  size: Provider.of<AddOrderVM>(context)
-                      .orderModel
-                      .customer != null ? 16:14,
+                Text(
+                  Provider.of<UpdateOrderVM>(context).orderModel.customer?.address ??
+                      "Pick your customer!",
                 ),
               ],
             ),

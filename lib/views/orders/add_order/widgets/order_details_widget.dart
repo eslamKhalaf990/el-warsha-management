@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/controllers/update_order/updatePaymentDetails.dart';
+import 'package:warsha_app/controllers/add_order/add_payment.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/view_models/update_order_v_m.dart';
+import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/views/orders/widgets/CustomerOrderWidget.dart';
 import 'package:warsha_app/views/orders/widgets/DeliveryOrderWidget.dart';
 import 'package:warsha_app/views/orders/widgets/OrderItemWidget.dart';
 import 'package:warsha_app/views/products/add_product.dart';
 
-import 'customer_details.dart';
-import 'delivery_address.dart';
-
-class UpdateOrderDetails extends StatelessWidget {
-  const UpdateOrderDetails({super.key});
+class OrderDetailsWidget extends StatelessWidget {
+  const OrderDetailsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<UpdatePaymentDetails, UpdateOrderVM>(
-      builder: (context, payment, order, child) => CustomScrollView(
+    return Consumer<PaymentProvider>(
+      builder: (context, value, child) => CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(
             child: Padding(
@@ -31,12 +28,12 @@ class UpdateOrderDetails extends StatelessWidget {
           ),
 
           //customer info
-          const SliverToBoxAdapter(child: CustomerDetails()),
+          const SliverToBoxAdapter(child: CustomerOrderWidget()),
 
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
 
           //delivery
-          const SliverToBoxAdapter(child: DeliveryAddress()),
+          const SliverToBoxAdapter(child: DeliveryOrderWidget()),
 
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
 
@@ -44,7 +41,7 @@ class UpdateOrderDetails extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
+              const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
               child: Row(
                 children: [
                   Icon(
@@ -61,37 +58,40 @@ class UpdateOrderDetails extends StatelessWidget {
           ),
 
           //list of order items
-          order.orderModel.orderItems.isNotEmpty
+          Provider.of<AddOrderVM>(context).orderModel.orderItems.isNotEmpty
               ? SliverFixedExtentList(
-                  itemExtent: 60,
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: OrderItemWidget(index, orderItem: Provider.of<UpdateOrderVM>(context).orderModel.orderItems[index]),
-                      );
-                    },
-                    childCount: order.orderModel.orderItems.length,
-                  ),
-                )
+            itemExtent: 60,
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: OrderItemWidget(index, orderItem: Provider.of<AddOrderVM>(context).orderModel.orderItems[index]),
+                );
+              },
+              childCount: Provider.of<AddOrderVM>(context)
+                  .orderModel
+                  .orderItems
+                  .length,
+            ),
+          )
               : SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Iconsax.shopping_cart,
-                          color: Colors.red.shade300,
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        const DefaultText(txt: "Put items in list first!"),
-                      ],
-                    ),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Iconsax.shopping_cart,
+                    color: Colors.red.shade300,
                   ),
-                ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  const DefaultText(txt: "Put items in list first!"),
+                ],
+              ),
+            ),
+          ),
 
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
           SliverToBoxAdapter(
@@ -122,10 +122,10 @@ class UpdateOrderDetails extends StatelessWidget {
                     decoration: InputDecoration(
                       filled: true,
                       fillColor:
-                          Theme.of(context).colorScheme.tertiary.withAlpha(30),
+                      Theme.of(context).colorScheme.tertiary.withAlpha(30),
                       labelText: "Which platform did you get the order from?",
                       labelStyle:
-                          const TextStyle(color: Colors.grey, fontSize: 14),
+                      const TextStyle(color: Colors.grey, fontSize: 14),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -139,8 +139,8 @@ class UpdateOrderDetails extends StatelessWidget {
                         color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ),
-                    value: payment.platformSource.text.isNotEmpty
-                        ? payment.platformSource.text
+                    value: value.platformSource.text.isNotEmpty
+                        ? value.platformSource.text
                         : null, // bind to controller if already set
                     items: const [
                       DropdownMenuItem(
@@ -153,7 +153,7 @@ class UpdateOrderDetails extends StatelessWidget {
                     ],
                     onChanged: (selected) {
                       if (selected != null) {
-                        payment.platformSource.text = selected;
+                        value.platformSource.text = selected;
                       }
                     },
                   ),
@@ -198,7 +198,7 @@ class UpdateOrderDetails extends StatelessWidget {
                               .tertiary
                               .withAlpha(30),
                           title: "Down Payment",
-                          controller: payment.downPayment,
+                          controller: value.downPayment,
                           onChange: (value) {},
                           icon: Iconsax.wallet_1,
                         ),
@@ -217,7 +217,7 @@ class UpdateOrderDetails extends StatelessWidget {
                               .tertiary
                               .withAlpha(30),
                           title: "Delivery Charge",
-                          controller: payment.delivery,
+                          controller: value.delivery,
                           onChange: (value) {},
                           icon: Iconsax.truck,
                         ),
@@ -239,7 +239,7 @@ class UpdateOrderDetails extends StatelessWidget {
                             .tertiary
                             .withAlpha(30),
                         title: "Discount",
-                        controller: payment.discount,
+                        controller: value.discount,
                         onChange: (value) {},
                         icon: Iconsax.discount_shape,
                       ),
@@ -258,7 +258,7 @@ class UpdateOrderDetails extends StatelessWidget {
                               .withAlpha(30),
                           labelText: "Payment Method",
                           labelStyle:
-                              const TextStyle(color: Colors.grey, fontSize: 14),
+                          const TextStyle(color: Colors.grey, fontSize: 14),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -270,8 +270,8 @@ class UpdateOrderDetails extends StatelessWidget {
                           prefixIcon: Icon(Iconsax.wallet_1,
                               color: Theme.of(context).colorScheme.tertiary),
                         ),
-                        value: payment.paymentMethod.text.isNotEmpty
-                            ? payment.paymentMethod.text
+                        value: value.paymentMethod.text.isNotEmpty
+                            ? value.paymentMethod.text
                             : null, // preselect if controller has value
                         items: const [
                           DropdownMenuItem(
@@ -283,7 +283,7 @@ class UpdateOrderDetails extends StatelessWidget {
                         ],
                         onChanged: (selected) {
                           if (selected != null) {
-                            payment.paymentMethod.text =
+                            value.paymentMethod.text =
                                 selected; // sync with controller
                           }
                         },

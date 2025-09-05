@@ -5,7 +5,7 @@ import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/view_models/order_v_m.dart';
+import 'package:warsha_app/view_models/add_order_v_m.dart';
 
 class ProductWidget extends StatelessWidget {
   const ProductWidget({super.key, required this.productModel});
@@ -18,7 +18,7 @@ class ProductWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-        color: Provider.of<OrderVM>(context)
+        color: Provider.of<AddOrderVM>(context)
                 .orderModel
                 .orderItems
                 .any((product) => product.productId == productModel.productID)
