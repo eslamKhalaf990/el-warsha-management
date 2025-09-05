@@ -50,7 +50,7 @@ class CustomerVM extends ChangeNotifier {
     String status = "";
     try {
       isLoading = true;
-      CustomerModel customer = CustomerModel.add(customerName: name, email: email, phone: phone, address: address);
+      CustomerModel customer = CustomerModel.add(name: name, email: email, phone: phone, address: address);
       final response = await _customerService.addCustomer(customer);
       if (response.statusCode == 201) {
         status = "customer_added";

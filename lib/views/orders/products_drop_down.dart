@@ -83,7 +83,7 @@ class _ProductsDropdownState extends State<ProductsDropdown> {
         dropdownMenuEntries: isLoading
             ? [
           DropdownMenuEntry(
-            value: ProductModel.get(productName: "", productID: "", productDescription: "", productBPrice: "", productSPrice: "", productCategory: "", productQuantity: "", productImage: ""),
+            value: ProductModel.get(name: "", productID: "", productDescription: "", buyingPrice: "", sellingPrice: "", category: "", quantity: "", image: ""),
             label: 'Loading...',
             style: ButtonStyle(
               textStyle: WidgetStateProperty.all(
@@ -104,7 +104,7 @@ class _ProductsDropdownState extends State<ProductsDropdown> {
             .map((type) {
           return DropdownMenuEntry(
             value: type,
-            label: type.productName,
+            label: type.name,
             style: ButtonStyle(
               textStyle: WidgetStateProperty.all(
                 const TextStyle(fontSize: 14),

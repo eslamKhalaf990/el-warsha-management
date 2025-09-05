@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/controllers/add_customer.dart';
-import 'package:warsha_app/controllers/payment_details.dart';
+import 'package:warsha_app/controllers/payment_provider.dart';
 import 'package:warsha_app/utils/const_values.dart';
-import 'package:warsha_app/utils/deafualt_form_field.dart';
-import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/order_v_m.dart';
-import 'package:warsha_app/view_models/product_v_m.dart';
-import 'package:warsha_app/views/orders/customer_to_add.dart';
-import 'package:warsha_app/views/orders/product_to_add.dart';
-import 'package:warsha_app/views/orders/widgets/CustomerOrderWidget.dart';
-import 'package:warsha_app/views/orders/widgets/DeliveryOrderWidget.dart';
-import 'package:warsha_app/views/orders/widgets/OrderItemWidget.dart';
 import 'package:warsha_app/views/products/add_product.dart';
+import '../widgets/CustomerOrderWidget.dart';
+import '../widgets/DeliveryOrderWidget.dart';
+import '../widgets/OrderItemWidget.dart';
+import 'package:warsha_app/controllers/customer_provider.dart';
+import 'package:warsha_app/utils/default_button.dart';
 
-class AddOrder extends StatelessWidget {
-  const AddOrder({super.key});
+class OrderDetailsStep extends StatelessWidget {
+  const OrderDetailsStep({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +61,7 @@ class AddOrder extends StatelessWidget {
                                           context,
                                           listen: false);
                                       final payment =
-                                          Provider.of<PaymentDetails>(context,
+                                          Provider.of<PaymentProvider>(context,
                                               listen: false);
                                       if (orderVM.orderModel.customer != null) {
                                         await orderVM.addOrder(
@@ -82,7 +77,11 @@ class AddOrder extends StatelessWidget {
                                           orderSource:
                                               payment.platformSource.text,
                                         );
+
                                         Navigator.pop(context);
+                                        payment.clearPaymentDetails();
+                                        value.clearCustomer();
+
                                         orderVM.initAllOrders();
                                       }
                                     },
@@ -115,7 +114,7 @@ class AddOrder extends StatelessWidget {
                                       ),
                                       DefaultText(
                                         txt:
-                                            "${(Provider.of<PaymentDetails>(context).totalPrice + Provider.of<OrderVM>(context).getTotalPrice())} EGP",
+                                            "${(Provider.of<PaymentProvider>(context).totalPrice + Provider.of<OrderVM>(context).getTotalPrice())} EGP",
                                         color: Colors.white,
                                         bold: true,
                                         size: 16,
@@ -132,76 +131,6 @@ class AddOrder extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 60, bottom: 15, right: 7, left: 15),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      borderRadius: Constants.BORDER_RADIUS_15,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15.0),
-                            child: Row(
-                              children: [DefaultText(txt: "Products")],
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          DefaultForm(
-                            title: 'Search For Products',
-                            controller: Provider.of<ProductVM>(context, listen: false).searchController,
-                            numberOfLines: 1,
-                          ),
-                          const SizedBox(height: 20),
-                          const ProductToAdd(),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 60, bottom: 15, right: 15, left: 7),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      borderRadius: Constants.BORDER_RADIUS_15,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15.0),
-                            child: Row(
-                              children: [DefaultText(txt: "Customers")],
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          DefaultForm(
-                            title: 'Search For Customer',
-                            controller: Provider.of<CustomerVM>(context, listen: false).searchController,
-                            numberOfLines: 1,
-                          ),
-                          const SizedBox(height: 20),
-                          const CustomerToAdd(),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -210,12 +139,17 @@ class AddOrder extends StatelessWidget {
   }
 }
 
+
+
+
+
+
 class OrderDetailsWidget extends StatelessWidget {
   const OrderDetailsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PaymentDetails>(
+    return Consumer<PaymentProvider>(
       builder: (context, value, child) => CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(
@@ -241,7 +175,7 @@ class OrderDetailsWidget extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
+              const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5),
               child: Row(
                 children: [
                   Icon(
@@ -260,38 +194,38 @@ class OrderDetailsWidget extends StatelessWidget {
           //list of order items
           Provider.of<OrderVM>(context).orderModel.orderItems.isNotEmpty
               ? SliverFixedExtentList(
-                  itemExtent: 60,
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: OrderItemWidget(index),
-                      );
-                    },
-                    childCount: Provider.of<OrderVM>(context)
-                        .orderModel
-                        .orderItems
-                        .length,
-                  ),
-                )
+            itemExtent: 60,
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: OrderItemWidget(index),
+                );
+              },
+              childCount: Provider.of<OrderVM>(context)
+                  .orderModel
+                  .orderItems
+                  .length,
+            ),
+          )
               : SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Iconsax.shopping_cart,
-                          color: Colors.red.shade300,
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        const DefaultText(txt: "Put items in list first!"),
-                      ],
-                    ),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Iconsax.shopping_cart,
+                    color: Colors.red.shade300,
                   ),
-                ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  const DefaultText(txt: "Put items in list first!"),
+                ],
+              ),
+            ),
+          ),
 
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
           SliverToBoxAdapter(

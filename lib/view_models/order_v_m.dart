@@ -83,6 +83,26 @@ class OrderVM extends ChangeNotifier {
     return status;
   }
 
+  void clearOrder() {
+    orderModel = OrderModel();
+  }
+
+  void loadOrder(OrderModel existingOrder) {
+    orderModel = OrderModel.get(
+      orderItems: List<OrderItemsModel>.from(existingOrder.orderItems),
+      orderSource: existingOrder.orderSource,
+      downPayment: existingOrder.downPayment,
+      paymentMethod: existingOrder.paymentMethod,
+      delivery: existingOrder.delivery,
+      customer: existingOrder.customer,
+      orderID: existingOrder.orderID,
+      totalPrice: existingOrder.totalPrice,
+      orderDate: existingOrder.orderDate,
+      status: existingOrder.status,
+    );
+    notifyListeners();
+  }
+
   set addCustomer(CustomerModel value) {
     orderModel.customer = value;
     notifyListeners();
@@ -90,6 +110,11 @@ class OrderVM extends ChangeNotifier {
 
   set addToOrderItems(OrderItemsModel value) {
     orderModel.orderItems.add(value);
+    notifyListeners();
+  }
+
+  set removeFromOrderItems(String productId) {
+    orderModel.orderItems.removeWhere((item) => item.productId == productId);
     notifyListeners();
   }
 
@@ -118,10 +143,5 @@ class OrderVM extends ChangeNotifier {
     });
 
     return itemsTotal;
-  }
-
-  set removeByProductId(String productId) {
-    orderModel.orderItems.removeWhere((item) => item.productId == productId);
-    notifyListeners();
   }
 }

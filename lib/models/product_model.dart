@@ -1,58 +1,58 @@
 class ProductModel {
-  String productName;
+  String name;
   late String productID;
   String productDescription;
-  String productSPrice;
-  String productBPrice;
-  String productCategory;
-  String productQuantity;
-  String productImage;
-  String? productSKU;
+  String sellingPrice;
+  String buyingPrice;
+  String category;
+  String quantity;
+  String image;
+  String? sku;
 
   ProductModel.add({
-    required this.productName,
+    required this.name,
     required this.productDescription,
-    required this.productBPrice,
-    required this.productSPrice,
-    required this.productCategory,
-    required this.productQuantity,
-    required this.productImage,
-    this.productSKU,
+    required this.buyingPrice,
+    required this.sellingPrice,
+    required this.category,
+    required this.quantity,
+    required this.image,
+    this.sku,
   });
 
   ProductModel.get({
-    required this.productName,
+    required this.name,
     required this.productID,
     required this.productDescription,
-    required this.productBPrice,
-    required this.productSPrice,
-    required this.productCategory,
-    required this.productQuantity,
-    required this.productImage,
-    this.productSKU,
+    required this.buyingPrice,
+    required this.sellingPrice,
+    required this.category,
+    required this.quantity,
+    required this.image,
+    this.sku,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel.get(
-      productName: json['name'],
+      name: json['name'],
       productID: json['productID'].toString(),
       productDescription: json['description'],
-      productSPrice: json['sellingPrice'].toString(),
-      productBPrice: json['buyingPrice'].toString(),
-      productCategory: json['category'],
-      productQuantity: json['quantity'],
-      productSKU: json['sku'], productImage: json['imageUrl'] ?? "-",
+      sellingPrice: json['sellingPrice'].toString(),
+      buyingPrice: json['buyingPrice'].toString(),
+      category: json['category'],
+      quantity: json['quantity'],
+      sku: json['sku'], image: json['imageUrl'] ?? "-",
     );
   }
   factory ProductModel.toJson(Map<String, dynamic> json) {
     return ProductModel.add(
-      productName: json['name'],
+      name: json['name'],
       productDescription: json['description'],
-      productBPrice: json['sellingPrice'].toString(),
-      productSPrice: json['BuyingPrice'].toString(),
-      productQuantity: json['quantity'],
-      productCategory: json['category'],
-      productSKU: json['sku'], productImage: json['imageUrl']??"-",
+      buyingPrice: json['sellingPrice'].toString(),
+      sellingPrice: json['BuyingPrice'].toString(),
+      quantity: json['quantity'],
+      category: json['category'],
+      sku: json['sku'], image: json['imageUrl']??"-",
     );
   }
 }

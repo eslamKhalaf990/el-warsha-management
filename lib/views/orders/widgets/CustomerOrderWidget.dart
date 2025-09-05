@@ -46,7 +46,7 @@ class CustomerOrderWidget extends StatelessWidget {
                   txt: Provider.of<OrderVM>(context)
                           .orderModel
                           .customer
-                          ?.customerName ??
+                          ?.name ??
                       "Pick your customer",
                   bold: Provider.of<OrderVM>(context)
                       .orderModel

@@ -27,7 +27,7 @@ class CustomerList extends StatelessWidget {
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 return CustomerWidget(
-                  name: snapshot.data![index].customerName,
+                  name: snapshot.data![index].name,
                   email: snapshot.data![index].email,
                   address:snapshot.data![index].address,
                   phone: snapshot.data![index].phone,
@@ -37,7 +37,7 @@ class CustomerList extends StatelessWidget {
           );
         } else {
           return const Center(
-            child: Text("no products yet!"),
+            child: Text("No customers yet!"),
           );
         }
       },

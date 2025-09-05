@@ -1,0 +1,139 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:warsha_app/controllers/customer_provider.dart';
+import 'package:warsha_app/controllers/payment_provider.dart';
+import 'package:warsha_app/utils/const_values.dart';
+import 'package:warsha_app/utils/deafualt_form_field.dart';
+import 'package:warsha_app/utils/default_button.dart';
+import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/view_models/customers_v_m.dart';
+import 'package:warsha_app/view_models/order_v_m.dart';
+import 'package:warsha_app/view_models/product_v_m.dart';
+import 'package:warsha_app/views/orders/add_order/order_details.dart';
+import 'package:warsha_app/views/orders/add_order/customer_to_add.dart';
+import 'package:warsha_app/views/orders/add_order/product_to_add.dart';
+
+class AddOrder extends StatelessWidget {
+  const AddOrder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final orderVM = context.read<OrderVM>();
+    final payment = context.read<PaymentProvider>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      orderVM.clearOrder();
+      payment.clearPaymentDetails();
+    });
+    return Consumer<CustomerProvider>(
+      builder: (context, value, child) => Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            title: const DefaultText(txt: "Add Order")),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.blue.shade50,
+                Colors.yellow.shade200
+              ], // Replace with your colors
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Stack(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 45, bottom: 65, right: 7, left: 15),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          borderRadius: Constants.BORDER_RADIUS_15,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                                child: Row(
+                                  children: [DefaultText(txt: "Products")],
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              DefaultForm(
+                                title: 'Search For Products',
+                                controller: Provider.of<ProductVM>(context, listen: false).searchController,
+                                numberOfLines: 1,
+                              ),
+                              const SizedBox(height: 20),
+                              const ProductToAdd(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 45, bottom: 65, right: 15, left: 7),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          borderRadius: Constants.BORDER_RADIUS_15,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                                child: Row(
+                                  children: [DefaultText(txt: "Customers")],
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              DefaultForm(
+                                title: 'Search For Customer',
+                                controller: Provider.of<CustomerVM>(context, listen: false).searchController,
+                                numberOfLines: 1,
+                              ),
+                              const SizedBox(height: 20),
+                              const CustomerToAdd(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: DefaultButton(onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderDetailsStep()));
+                }, title: "Continue", margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 10)),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+

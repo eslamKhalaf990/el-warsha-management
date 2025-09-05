@@ -27,21 +27,21 @@ class ProductList extends StatelessWidget {
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 return ProductWidget(
-                  title: snapshot.data![index].productName,
+                  title: snapshot.data![index].name,
                   description: snapshot.data![index].productDescription,
-                  bPrice: snapshot.data![index].productBPrice,
-                  sPrice: snapshot.data![index].productSPrice,
-                  category: snapshot.data![index].productCategory,
-                  quantity: snapshot.data![index].productQuantity,
-                  sku: snapshot.data![index].productSKU ?? "-",
-                  image: snapshot.data![index].productImage ?? "-"
+                  bPrice: snapshot.data![index].buyingPrice,
+                  sPrice: snapshot.data![index].sellingPrice,
+                  category: snapshot.data![index].category,
+                  quantity: snapshot.data![index].quantity,
+                  sku: snapshot.data![index].sku ?? "-",
+                  image: snapshot.data![index].image ?? "-"
                 );
               },
             ),
           );
         } else {
           return const Center(
-            child: Text("no products yet!"),
+            child: Text("No products yet!"),
           );
         }
       },

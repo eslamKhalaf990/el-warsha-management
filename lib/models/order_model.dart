@@ -53,7 +53,7 @@ class OrderModel {
       orderItems: (json['orderItems'] as List)
           .map((item) => OrderItemsModel.fromJson(item))
           .toList(),
-      orderSource: json['orderSource'.toString()],
+      orderSource: json['orderSource'].toString(),
       paymentMethod: json['paymentMethod'].toString(),
       delivery: json['delivery'].toString(),
       downPayment: json['downPayment'].toString(),

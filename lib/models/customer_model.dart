@@ -1,19 +1,19 @@
 class CustomerModel {
-  String customerName;
+  String name;
   late String customerID;
   String email;
   String phone;
   String address;
 
   CustomerModel.add({
-    required this.customerName,
+    required this.name,
     required this.email,
     required this.phone,
     required this.address,
   });
 
   CustomerModel.get({
-    required this.customerName,
+    required this.name,
     required this.customerID,
     required this.email,
     required this.phone,
@@ -22,8 +22,8 @@ class CustomerModel {
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) {
     return CustomerModel.get(
-      customerName: json['fullName'],
-      customerID: json['customerID'].toString(),
+      name: json['fullName'],
+      customerID: (json['customerID'] ?? json['customerId']).toString()  ,
       email: json['email'],
       phone: json['phone'].toString(),
       address: json['address'],
@@ -32,7 +32,7 @@ class CustomerModel {
 
   factory CustomerModel.toJson(Map<String, dynamic> json) {
     return CustomerModel.add(
-      customerName: json['fullName'],
+      name: json['fullName'],
       email: json['email'],
       phone: json['phone'].toString(),
       address: json['address'],

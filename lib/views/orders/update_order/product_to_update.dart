@@ -6,8 +6,8 @@ import 'package:warsha_app/view_models/order_v_m.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
 import 'package:warsha_app/views/orders/product_widget.dart';
 
-class ProductToAdd extends StatelessWidget {
-  const ProductToAdd({super.key});
+class ProductToUpdate extends StatelessWidget {
+  const ProductToUpdate({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,8 @@ class ProductToAdd extends StatelessWidget {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.data!.isNotEmpty) {
           final filteredProducts = snapshot.data!.where((product) {
-            final name = product.productName.toLowerCase() ?? "";
-            final sku = product.productSKU?.toLowerCase() ?? "";
+            final name = product.name.toLowerCase() ?? "";
+            final sku = product.sku?.toLowerCase() ?? "";
             final query = Provider.of<ProductVM>(context).searchController.text.toLowerCase();
             return name.contains(query) || sku.contains(query);
           }).toList();
@@ -42,9 +42,9 @@ class ProductToAdd extends StatelessWidget {
 
                     OrderItemsModel orderItemsModel = OrderItemsModel(
                       productId: product.productID,
-                      productName: product.productName,
-                      quantity: product.productQuantity,
-                      unitPrice: product.productSPrice,
+                      name: product.name,
+                      quantity: product.quantity,
+                      unitPrice: product.sellingPrice,
                     );
 
                     final orderVM = Provider.of<OrderVM>(context, listen: false);
@@ -56,20 +56,12 @@ class ProductToAdd extends StatelessWidget {
                     if (!alreadyExists) {
                       orderVM.addToOrderItems = orderItemsModel;
                     } else {
-                      orderVM.removeByProductId = orderItemsModel.productId;
+                      orderVM.removeFromOrderItems = orderItemsModel.productId;
                     }
                   },
 
                   child: ProductWidget(
-                    title: filteredProducts[index].productName,
-                    description: filteredProducts[index].productDescription,
-                    bPrice: filteredProducts[index].productBPrice,
-                    sPrice: filteredProducts[index].productSPrice,
-                    category: filteredProducts[index].productCategory,
-                    quantity: filteredProducts[index].productQuantity,
-                    sku: filteredProducts[index].productSKU ?? "-",
-                    image: filteredProducts[index].productImage ?? "-",
-                    index: index, productID: filteredProducts[index].productID,
+                    productModel: filteredProducts[index],
                   ),
                 );
               },

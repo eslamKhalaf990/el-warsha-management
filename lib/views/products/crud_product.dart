@@ -34,7 +34,7 @@ class CRUDProduct extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddProduct(),
+                    builder: (context) => const AddProduct(),
                   ),
                 );
               },
@@ -57,22 +57,32 @@ class CRUDProduct extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceTint,
-                borderRadius: Constants.BORDER_RADIUS_50,
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Iconsax.edit,
-                    color: Theme.of(context).colorScheme.secondary,
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddProduct(),
                   ),
-                  const SizedBox(width: 5,),
-                  const DefaultText(txt: "Update Product"),
-                ],
-              )
+                );
+              },
+              icon: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceTint,
+                  borderRadius: Constants.BORDER_RADIUS_50,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Iconsax.edit,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    const SizedBox(width: 5,),
+                    const DefaultText(txt: "Update Product"),
+                  ],
+                )
+              ),
             ),
             const SizedBox(width: 10),
             Container(

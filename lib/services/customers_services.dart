@@ -33,7 +33,7 @@ class CustomerService {
     return response;
   }
   Future<http.Response> addCustomer(CustomerModel customer) async {
-    debugPrint("addCustomer called ${customer.customerName}");
+    debugPrint("addCustomer called ${customer.name}");
     http.Response response;
     try {
       response = await http.post(
@@ -45,7 +45,7 @@ class CustomerService {
             Baseurl.addCustomerAPI,
           ),
           body: jsonEncode({
-            "fullName": customer.customerName,
+            "fullName": customer.name,
             "phone": customer.phone,
             "email": customer.email,
             "address": customer.address,

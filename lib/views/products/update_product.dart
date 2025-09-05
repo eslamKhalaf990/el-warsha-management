@@ -10,8 +10,8 @@ import 'package:warsha_app/view_models/product_v_m.dart';
 
 import 'drag_drop_widget.dart';
 
-class AddProduct extends StatelessWidget {
-  const AddProduct({super.key});
+class UpdateProduct extends StatelessWidget {
+  const UpdateProduct({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,8 @@ class AddProduct extends StatelessWidget {
         extendBodyBehindAppBar: true,
         appBar: AppBar(
             backgroundColor: Colors.transparent,
-            title: const DefaultText(txt: "Add New Product")),
+            title: const DefaultText(txt: "Update Product"),
+        ),
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(

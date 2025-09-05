@@ -1,37 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:warsha_app/models/product_model.dart';
+import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/order_v_m.dart';
 
-import '../../../services/base_url.dart';
-
 class ProductWidget extends StatelessWidget {
-  final String title;
-  final String productID;
-  final int index;
-  final String description;
-  final String bPrice;
-  final String sPrice;
-  final String sku;
-  final String category;
-  final String quantity;
-  final String image;
+  const ProductWidget({super.key, required this.productModel});
 
-  const ProductWidget({
-    super.key,
-    required this.title,
-    required this.productID,
-    required this.sku,
-    required this.description,
-    required this.bPrice,
-    required this.sPrice,
-    required this.quantity,
-    required this.category,
-    required this.image,
-    required this.index,
-  });
+  final ProductModel productModel;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +18,10 @@ class ProductWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-        color: Provider.of<OrderVM>(context).orderModel.orderItems.any(
-                (product) => product.productId == productID)
+        color: Provider.of<OrderVM>(context)
+                .orderModel
+                .orderItems
+                .any((product) => product.productId == productModel.productID)
             ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
             : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
         borderRadius: Constants.BORDER_RADIUS_20,
@@ -58,7 +39,7 @@ class ProductWidget extends StatelessWidget {
                   borderRadius: Constants.BORDER_RADIUS_20,
                 ),
                 child: Image.network(
-                  "${Baseurl.baseURLImages}$image",
+                  productModel.image,
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,
@@ -92,7 +73,7 @@ class ProductWidget extends StatelessWidget {
                     // Title
                     Row(
                       children: [
-                        DefaultText(txt: sku, bold: true),
+                        DefaultText(txt: productModel.sku!, bold: true),
                         const SizedBox(width: 10),
                         Container(
                           decoration: BoxDecoration(
@@ -106,14 +87,14 @@ class ProductWidget extends StatelessWidget {
                           width: 10,
                         ),
                         DefaultText(
-                          txt: title,
+                          txt: productModel.name,
                           bold: true,
                         ),
 
                         const Expanded(child: SizedBox()),
 
                         // Dot indicator for new
-                        if (int.parse(quantity) < 1)
+                        if (int.parse(productModel.quantity) < 1)
                           Container(
                             decoration: BoxDecoration(
                                 color: Colors.red.shade300,
@@ -131,18 +112,18 @@ class ProductWidget extends StatelessWidget {
                     const SizedBox(height: 6),
                     // Message
                     Text(
-                      description,
+                      productModel.productDescription,
                     ),
                     const SizedBox(height: 6),
                     // Time
                     Row(
                       children: [
                         DefaultText(
-                          txt: "$category    |  ",
+                          txt: "${productModel.category}    |  ",
                           size: 14,
                         ),
                         DefaultText(
-                          txt: " $quantity Pieces",
+                          txt: " ${productModel.quantity} Pieces",
                           size: 14,
                         ),
                         const SizedBox(width: 15),
@@ -169,13 +150,9 @@ class ProductWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     const DefaultText(
-                        txt: "Buying Price  ",
-                        size: 14,
-                        color: Colors.white),
+                        txt: "Buying Price  ", size: 14, color: Colors.white),
                     DefaultText(
-                        txt: "$bPrice EGP",
-                        size: 14,
-                        color: Colors.white),
+                        txt: "${productModel.buyingPrice} EGP", size: 14, color: Colors.white),
                   ],
                 ),
               ),
@@ -185,33 +162,24 @@ class ProductWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: Colors.blue.shade300,
                     borderRadius: Constants.BORDER_RADIUS_20),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 15, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                 child: Row(
                   children: [
                     const DefaultText(
-                        txt: "Selling Price  ",
-                        size: 14,
-                        color: Colors.white),
+                        txt: "Selling Price  ", size: 14, color: Colors.white),
                     DefaultText(
-                        txt: "$sPrice EGP",
-                        size: 14,
-                        color: Colors.white),
+                        txt: "${productModel.sellingPrice} EGP", size: 14, color: Colors.white),
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(
-              height: 5
-          ),
-
+          const SizedBox(height: 5),
           Divider(
-            color:
-            Theme.of(context).colorScheme.onSurface.withAlpha(50),
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
             thickness: 0.5,
           )
-
         ],
       ),
     );

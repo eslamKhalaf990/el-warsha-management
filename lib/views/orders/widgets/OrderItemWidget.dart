@@ -24,7 +24,7 @@ class OrderItemWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          DefaultText(txt: orderItem.productName, center: true),
+          DefaultText(txt: orderItem.name, center: true),
           
           Row(
             children: [
