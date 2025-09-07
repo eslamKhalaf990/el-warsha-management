@@ -7,6 +7,7 @@ import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/product_v_m.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
@@ -73,25 +74,27 @@ class UpdateOrder extends StatelessWidget {
                                       final customer =
                                           orderVM.orderModel.customer;
                                       if (customer == null) return;
+                                      print(orderVM.orderModel.orderID);
 
                                       // UPDATE EXISTING
-                                      // await orderVM.updateOrder(
-                                      //   orderId: existingOrder!.id,
-                                      //   customerID: customer.customerID,
-                                      //   orderItems:
-                                      //   orderVM.orderModel.orderItems,
-                                      //   delivery: payment.delivery.text,
-                                      //   downPayment: payment.downPayment.text,
-                                      //   discount: payment.discount.text,
-                                      //   paymentMethod:
-                                      //   payment.paymentMethod.text,
-                                      //   orderSource:
-                                      //   payment.platformSource.text,
-                                      // );
+                                      await orderVM.updateOrder(
+                                        orderID: orderVM.orderModel.orderID,
+                                        customerID: customer.id,
+                                        orderItems:
+                                        orderVM.orderModel.orderItems,
+                                        delivery: payment.delivery.text,
+                                        downPayment: payment.downPayment.text,
+                                        discount: payment.discount.text,
+                                        paymentMethod:
+                                        payment.paymentMethod.text,
+                                        orderSource:
+                                        payment.platformSource.text,
+                                      );
 
                                       Navigator.pop(context);
                                       payment.clearPaymentDetails();
                                       value.clearCustomer();
+                                      Provider.of<AddOrderVM>(context,listen: false).initAllOrders();
                                     },
                                     isValid: !orderVM.isLoading,
                                     isLoading: orderVM.isLoading,
@@ -118,7 +121,7 @@ class UpdateOrder extends StatelessWidget {
                                       ),
                                       DefaultText(
                                         txt:
-                                            "${(payment.totalPrice + orderVM.getTotalPrice())} EGP",
+                                        "${(Provider.of<UpdatePaymentDetails>(context).totalPrice + Provider.of<UpdateOrderVM>(context).getTotalPrice())} EGP",
                                         color: Colors.white,
                                         bold: true,
                                         size: 16,

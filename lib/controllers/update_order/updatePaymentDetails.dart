@@ -33,17 +33,9 @@ class UpdatePaymentDetails extends ChangeNotifier {
     platformSource.text = existingOrder.orderSource ?? "";
     delivery.text = existingOrder.delivery ?? "";
 
-    // if you want to set base price too, calculate from items
-    if (existingOrder.orderItems.isNotEmpty) {
-      _basePrice = existingOrder.orderItems.fold(0, (sum, item) {
-        final unitPrice = double.tryParse(item.unitPrice) ?? 0;
-        return sum + unitPrice * item.quantityToOrder;
-      });
-    }
-
     notifyListeners();
   }
-  /// Calculate total price
+
   double get totalPrice {
     final double discountValue = double.tryParse(discount.text) ?? 0;
     final double downPaymentValue = double.tryParse(downPayment.text) ?? 0;

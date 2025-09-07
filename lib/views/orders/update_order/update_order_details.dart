@@ -12,6 +12,7 @@ import 'package:warsha_app/views/products/add_product.dart';
 
 import 'customer_details.dart';
 import 'delivery_address.dart';
+import 'order_item_widget.dart';
 
 class UpdateOrderDetails extends StatelessWidget {
   const UpdateOrderDetails({super.key});
@@ -68,7 +69,7 @@ class UpdateOrderDetails extends StatelessWidget {
                     (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: OrderItemWidget(index, orderItem: Provider.of<UpdateOrderVM>(context).orderModel.orderItems[index]),
+                        child: UpdateOrderItem(index, orderItem: Provider.of<UpdateOrderVM>(context).orderModel.orderItems[index]),
                       );
                     },
                     childCount: order.orderModel.orderItems.length,

@@ -39,7 +39,7 @@ class CRUDOrder extends StatelessWidget {
                 );
               },
               icon: Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 120),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceTint,
                   borderRadius: Constants.BORDER_RADIUS_50,
@@ -47,49 +47,13 @@ class CRUDOrder extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(
-                      Iconsax.add,
+                      Iconsax.receipt_item,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     const SizedBox(width: 5,),
                     const DefaultText(txt: "Add Order"),
                   ],
                 ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceTint,
-                  borderRadius: Constants.BORDER_RADIUS_50,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Iconsax.edit,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    const SizedBox(width: 5,),
-                    const DefaultText(txt: "Update Order"),
-                  ],
-                )
-            ),
-            const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceTint,
-                borderRadius: Constants.BORDER_RADIUS_50,
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Iconsax.close_square,
-                    color: Colors.red.shade300,
-                  ),
-                  const SizedBox(width: 5,),
-                  const DefaultText(txt: "Delete Order"),
-                ],
               ),
             ),
           ],

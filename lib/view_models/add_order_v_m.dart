@@ -89,7 +89,7 @@ class AddOrderVM extends ChangeNotifier {
 
   void loadOrder(OrderModel existingOrder) {
     orderModel = OrderModel.get(
-      orderItems: List<OrderItemsModel>.from(existingOrder.orderItems),
+      orderItems: existingOrder.orderItems,
       orderSource: existingOrder.orderSource,
       downPayment: existingOrder.downPayment,
       paymentMethod: existingOrder.paymentMethod,

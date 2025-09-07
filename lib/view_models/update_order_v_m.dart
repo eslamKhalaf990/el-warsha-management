@@ -16,6 +16,51 @@ class UpdateOrderVM extends ChangeNotifier {
 
   UpdateOrderVM(this._orderService, this.orderModel);
 
+  Future<String> updateOrder({
+    required String customerID,
+    required String orderID,
+    required String delivery,
+    required String discount,
+    required String orderSource,
+    required String paymentMethod,
+    required String downPayment,
+    required List<OrderItemsModel> orderItems,
+  }) async {
+    String status = "";
+    try {
+      isLoading = true;
+      notifyListeners();
+
+      OrderModel orderModel = OrderModel.add(
+          customerID: customerID,
+          orderItems: orderItems,
+          orderSource: orderSource,
+          downPayment: downPayment,
+          paymentMethod: paymentMethod,
+          delivery: delivery,
+          discount: discount,
+      );
+      orderModel.orderID = orderID;
+
+      final response = await _orderService.updateOrder(orderModel);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        status = "order_added";
+      } else {
+        status = "order_not_added";
+      }
+    } catch (e) {
+      status = "order_not_added";
+      print(e);
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+
+    return status;
+  }
+
+
   void loadOrder(OrderModel existingOrder) {
     orderModel = OrderModel.get(
       orderItems: List<OrderItemsModel>.from(existingOrder.orderItems),
