@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/view_models/product_v_m.dart';
 
 import 'add_product.dart';
 
@@ -24,7 +26,7 @@ class CRUDProduct extends StatelessWidget {
             Expanded(
               child: DefaultForm(
                 title: 'Search For Product By Name or ID',
-                controller: TextEditingController(),
+                controller: Provider.of<ProductVM>(context).searchController,
                 numberOfLines: 1,
               ),
             ),

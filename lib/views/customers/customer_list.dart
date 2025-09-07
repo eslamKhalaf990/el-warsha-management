@@ -21,16 +21,22 @@ class CustomerList extends StatelessWidget {
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.data!.isNotEmpty) {
+          final filteredCustomers = snapshot.data!.where((customer) {
+            final name = customer.name.toLowerCase();
+            final phone = customer.phone.toLowerCase();
+            final query = Provider.of<CustomerVM>(context).searchController.text.toLowerCase();
+            return name.contains(query) || phone.contains(query);
+          }).toList();
           return Expanded(
             child: ListView.builder(
-              itemCount: snapshot.data!.length,
+              itemCount: filteredCustomers.length,
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 return CustomerWidget(
-                  name: snapshot.data![index].name,
-                  email: snapshot.data![index].email,
-                  address:snapshot.data![index].address,
-                  phone: snapshot.data![index].phone,
+                  name: filteredCustomers[index].name,
+                  email: filteredCustomers[index].email,
+                  address:filteredCustomers[index].address,
+                  phone: filteredCustomers[index].phone,
                 );
               },
             ),

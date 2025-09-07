@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/views/customers/add_customer.dart';
 
 class CRUDCustomer extends StatelessWidget {
@@ -23,7 +25,7 @@ class CRUDCustomer extends StatelessWidget {
             Expanded(
               child: DefaultForm(
                 title: 'Search For Customer By Name or ID',
-                controller: TextEditingController(),
+                controller: Provider.of<CustomerVM>(context).searchController,
                 numberOfLines: 1,
               ),
             ),

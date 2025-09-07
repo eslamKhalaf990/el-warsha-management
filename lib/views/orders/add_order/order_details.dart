@@ -16,7 +16,8 @@ class OrderDetailsStep extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const DefaultText(txt: "Add New Order")),
+          title: const DefaultText(txt: "Add New Order"),
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
