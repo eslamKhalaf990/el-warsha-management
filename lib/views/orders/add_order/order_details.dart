@@ -5,7 +5,6 @@ import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/views/orders/add_order/widgets/order_details_widget.dart';
-import 'package:warsha_app/controllers/add_order/add_customer.dart';
 import 'package:warsha_app/utils/default_button.dart';
 
 class OrderDetailsStep extends StatelessWidget {
@@ -70,6 +69,7 @@ class OrderDetailsStep extends StatelessWidget {
                                               payment.platformSource.text,
                                         );
 
+                                        Navigator.pop(context);
                                         Navigator.pop(context);
                                         payment.clearPaymentDetails();
                                         order.clearOrder();

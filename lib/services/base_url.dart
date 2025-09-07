@@ -18,6 +18,7 @@ class Baseurl {
   static String getAllOrderAPI = '${baseURL}orders';
   static String addOrderAPI = '${baseURL}orders';
   static String updateOrderAPI = '${baseURL}orders';
+  static String deleteOrderAPI = '${baseURL}orders';
   static String invoiceAPI = '${baseURL}invoice/pdf';
   /// ===============   Orders APIs    ============== ///
 

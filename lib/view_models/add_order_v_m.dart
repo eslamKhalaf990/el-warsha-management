@@ -11,6 +11,7 @@ class AddOrderVM extends ChangeNotifier {
   OrderModel orderModel;
 
   bool isLoading = false;
+  String deletedOrder = "";
 
   Future<List<OrderModel>>? allOrders;
 
@@ -43,6 +44,31 @@ class AddOrderVM extends ChangeNotifier {
       notifyListeners();
     }
     return orders;
+  }
+
+  Future<String> deleteOrderByID(String orderID) async {
+    String state = "";
+    try {
+      isLoading = true;
+      deletedOrder = orderID;
+      notifyListeners();
+
+      final response = await _orderService.deleteOrder(orderID);
+      if (response.statusCode == 204) {
+        state = "deleted";
+
+      } else {
+        state = "not_deleted";
+        debugPrint("Failed to delete your order: ${response.statusCode}");
+      }
+    } catch (e) {
+      debugPrint("Error deleting your order: $e");
+    } finally {
+      isLoading = false;
+      deletedOrder = "";
+      notifyListeners();
+    }
+    return state;
   }
 
   Future<String> addOrder({

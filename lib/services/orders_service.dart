@@ -79,4 +79,27 @@ class OrdersService {
     }
     return response;
   }
+
+  Future<http.Response> deleteOrder(String order) async {
+    debugPrint("deleteOrder called $order");
+    http.Response response;
+    try {
+      response = await http.delete(
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          Uri.parse(
+            "${Baseurl.deleteOrderAPI}/$order",
+          ),
+      ).timeout(const Duration(seconds: Constants.TIMEOUT));
+      debugPrint(response.body);
+    } on TimeoutException {
+      throw Exception('The request timed out. Please try again later.');
+    } catch (e) {
+      throw Exception('Failed to add your new order: $e');
+    }
+    return response;
+  }
+
+
 }
