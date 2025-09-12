@@ -6,7 +6,7 @@ import 'package:warsha_app/controllers/drag_drop_controller.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/view_models/product_v_m.dart';
+import 'package:warsha_app/view_models/add_product_v_m.dart';
 
 import 'drag_drop_widget.dart';
 
@@ -37,7 +37,7 @@ class AddProduct extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 60, bottom: 50, left: 15),
+                  padding: const EdgeInsets.only(top: 60, bottom: 15, left: 15),
                   child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.onPrimary,
@@ -104,7 +104,7 @@ class AddProduct extends StatelessWidget {
                 flex: 2,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      top: 60, bottom: 50, right: 15, left: 15),
+                      top: 60, bottom: 15, right: 15, left: 15),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.onPrimary,

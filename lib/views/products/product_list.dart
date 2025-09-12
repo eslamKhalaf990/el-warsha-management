@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/product_model.dart';
-import 'package:warsha_app/view_models/product_v_m.dart';
+import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/views/products/product_widget.dart';
 
 class ProductList extends StatelessWidget {
@@ -33,14 +33,7 @@ class ProductList extends StatelessWidget {
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 return ProductWidget(
-                  title: filteredProducts[index].name,
-                  description: filteredProducts[index].productDescription,
-                  bPrice: filteredProducts[index].buyingPrice,
-                  sPrice: filteredProducts[index].sellingPrice,
-                  category: filteredProducts[index].category,
-                  quantity: filteredProducts[index].quantity,
-                  sku: filteredProducts[index].sku ?? "-",
-                  image: filteredProducts[index].image ?? "-"
+                  product: filteredProducts[index],
                 );
               },
             ),

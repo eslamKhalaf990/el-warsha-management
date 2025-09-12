@@ -1,30 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/utils/image_helper.dart';
+import 'package:warsha_app/views/products/update_product.dart';
 
 class ProductWidget extends StatelessWidget {
-  final String title;
-  final String description;
-  final String bPrice;
-  final String sPrice;
-  final String sku;
-  final String category;
-  final String quantity;
-  final String image;
+  final ProductModel product;
 
   const ProductWidget({
     super.key,
-    required this.title,
-    required this.sku,
-    required this.description,
-    required this.bPrice,
-    required this.sPrice,
-    required this.quantity,
-    required this.category,
-    required this.image,
+    required this.product,
   });
 
   @override
@@ -47,7 +35,7 @@ class ProductWidget extends StatelessWidget {
                   borderRadius: Constants.BORDER_RADIUS_20,
                 ),
                 child: Image.network(
-                  "${Baseurl.baseURLImages}${ImageHelper.extractFileId(image)}",
+                  "${Baseurl.baseURLImages}${ImageHelper.extractFileId(product.image)}",
                   width: 50,
                   height: 50,
                   fit: BoxFit.cover,
@@ -66,13 +54,14 @@ class ProductWidget extends StatelessWidget {
                   },
                   // Show a fallback if the image fails to load
                   errorBuilder: (context, error, stackTrace) {
-                    return const Icon(Iconsax.shopping_bag, size: 40,);
+                    return const Icon(
+                      Iconsax.shopping_bag,
+                      size: 40,
+                    );
                   },
                 ),
               ),
-              const SizedBox(
-                width: 20,
-              ),
+              const SizedBox(width: 20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,11 +70,11 @@ class ProductWidget extends StatelessWidget {
                     Row(
                       children: [
                         DefaultText(
-                          txt: sku,
+                          txt: product.sku!,
                           bold: true,
                         ),
                         const SizedBox(
-                          width: 10,
+                          width: 10
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -96,17 +85,28 @@ class ProductWidget extends StatelessWidget {
                           height: 5,
                         ),
                         const SizedBox(
-                          width: 10,
+                          width: 10
                         ),
                         DefaultText(
-                          txt: title,
+                          txt: product.name,
                           bold: true,
                         ),
-
-                        const Expanded(child: SizedBox()),
-
+                        const SizedBox(
+                            width: 10
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          width: 5,
+                          height: 5,
+                        ),
+                        const SizedBox(
+                            width: 10
+                        ),
                         // Dot indicator for new
-                        if (int.parse(quantity) < 1)
+                        if (int.parse(product.quantity) < 1)
                           Container(
                             decoration: BoxDecoration(
                                 color: Colors.red.shade300,
@@ -122,25 +122,23 @@ class ProductWidget extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 6),
+
                     // Message
-                    Text(
-                      description,
-                    ),
+                    Text(product.productDescription),
                     const SizedBox(height: 6),
+
                     // Time
                     Row(
                       children: [
                         DefaultText(
-                          txt: "$category    |  ",
+                          txt: "${product.category}    |  ",
                           size: 14,
                         ),
                         DefaultText(
-                          txt: " $quantity Pieces",
+                          txt: " ${product.quantity} Pieces",
                           size: 14,
                         ),
-                        const SizedBox(
-                          width: 15,
-                        ),
+                        const SizedBox(width: 15),
                         Container(
                           decoration: BoxDecoration(
                               color: Colors.green.shade300,
@@ -154,7 +152,7 @@ class ProductWidget extends StatelessWidget {
                                   size: 14,
                                   color: Colors.white),
                               DefaultText(
-                                  txt: "$bPrice EGP",
+                                  txt: "${product.buyingPrice} EGP",
                                   size: 14,
                                   color: Colors.white),
                             ],
@@ -176,7 +174,7 @@ class ProductWidget extends StatelessWidget {
                                   size: 14,
                                   color: Colors.white),
                               DefaultText(
-                                  txt: "$sPrice EGP",
+                                  txt: "${product.sellingPrice} EGP",
                                   size: 14,
                                   color: Colors.white),
                             ],
@@ -184,9 +182,7 @@ class ProductWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5),
                     Divider(
                       color:
                           Theme.of(context).colorScheme.onSurface.withAlpha(50),
@@ -194,6 +190,61 @@ class ProductWidget extends StatelessWidget {
                     )
                   ],
                 ),
+              ),
+
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateProduct(productModel: product)));
+                        },
+                        icon: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surfaceTint,
+                              borderRadius: Constants.BORDER_RADIUS_50,
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Iconsax.edit,
+                                  color: Theme.of(context).colorScheme.secondary,
+                                ),
+                                const SizedBox(width: 5,),
+                                DefaultText(txt: "Update Product", color: Theme.of(context).colorScheme.secondary,
+                                ),
+                              ],
+                            )
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: (){},
+                        icon: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.surfaceTint,
+                              borderRadius: Constants.BORDER_RADIUS_50,
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Iconsax.trash,
+                                  color: Colors.red.shade300,
+                                ),
+                                const SizedBox(width: 5,),
+                                DefaultText(txt: "Delete Order", color: Colors.red.shade300,
+                                ),
+                              ],
+                            )
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),

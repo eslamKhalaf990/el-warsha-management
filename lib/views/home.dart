@@ -14,7 +14,6 @@ class Home extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
-      appBar: const DefaultAppBar(),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -28,7 +27,7 @@ class Home extends StatelessWidget {
         ),
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 25.0, top: 65, right: 25, bottom: 15),
+              const EdgeInsets.only(left: 15, top: 15, right: 15, bottom: 15),
           child: Column(
             children: [
               Expanded(
@@ -46,6 +45,27 @@ class Home extends StatelessWidget {
                         builder: ( context, value,child) => Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            Container(
+                              // margin: const EdgeInsets.symmetric(horizontal: 15),
+                              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: Constants.BORDER_RADIUS_100,
+                                    child: Image.asset("assets/images/logo.jpg", width: 40,),
+                                  ),
+                                  const SizedBox(width: 10,),
+                                  const DefaultText(
+                                    txt: "ELWARSHA",
+                                    bold: true,
+                                  ),
+                                ],
+                              ),
+                            ),
                             Container(
                               decoration: BoxDecoration(
                                   borderRadius: Constants.BORDER_RADIUS_20),

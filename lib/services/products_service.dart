@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 
 import 'base_url.dart';
@@ -67,4 +68,41 @@ class ProductService {
     return await request.send();
   }
 
+  Future<http.StreamedResponse> updateProductWithImage({
+    required String id,
+    required String name,
+    required String description,
+    required String buyingPrice,
+    required String sellingPrice,
+    required String category,
+    required String quantity,
+    required Uint8List? imageBytes, // optional image
+    String? imageName, // optional filename
+  }) async {
+    var uri = Uri.parse("${Baseurl.updateProductAPI}/$id");
+
+    final product = jsonEncode({
+      "name": name,
+      "description": description,
+      "buyingPrice": buyingPrice,
+      "sellingPrice": sellingPrice,
+      "category": category,
+      "quantity": quantity,
+    });
+
+    var request = http.MultipartRequest("PUT", uri);
+    request.fields['product'] = product;
+
+    if (imageBytes != null) {
+      request.files.add(
+        http.MultipartFile.fromBytes(
+          'image',
+          imageBytes,
+          filename: imageName ?? "upload.jpg",
+        ),
+      );
+    }
+
+    return await request.send();
+  }
 }

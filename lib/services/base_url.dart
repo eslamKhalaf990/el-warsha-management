@@ -25,6 +25,7 @@ class Baseurl {
   /// ===============   Products APIs    ============== ///
   static String getAllProductsAPI = '${baseURL}products';
   static String addProductAPI = '${baseURL}products';
+  static String updateProductAPI = '${baseURL}products';
   /// ===============   Products APIs    ============== ///
 
 }

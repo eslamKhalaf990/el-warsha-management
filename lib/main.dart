@@ -4,6 +4,7 @@ import 'package:warsha_app/controllers/add_order/add_customer.dart';
 import 'package:warsha_app/controllers/add_order/add_product.dart';
 import 'package:warsha_app/controllers/drag_drop_controller.dart';
 import 'package:warsha_app/controllers/navigation.dart';
+import 'package:warsha_app/controllers/update_drag_drop.dart';
 import 'package:warsha_app/controllers/update_order/updatePaymentDetails.dart';
 import 'package:warsha_app/controllers/update_order/update_customer.dart';
 import 'package:warsha_app/models/order_model.dart';
@@ -12,8 +13,9 @@ import 'package:warsha_app/services/orders_service.dart';
 import 'package:warsha_app/services/products_service.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
-import 'package:warsha_app/view_models/product_v_m.dart';
+import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
+import 'package:warsha_app/view_models/update_product_v_m.dart';
 import 'package:warsha_app/views/home.dart';
 import 'controllers/add_order/add_payment.dart';
 import 'controllers/update_order/update_product.dart';
@@ -23,6 +25,7 @@ void main() {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_)=> DragDropController()),
+          ChangeNotifierProvider(create: (_)=> UpdateDragDropController()),
           ChangeNotifierProvider(create: (_)=> ProductProvider()),
           ChangeNotifierProvider(create: (_)=> Navigation()),
           ChangeNotifierProvider(create: (_)=> CustomerProvider()),
@@ -55,6 +58,11 @@ void main() {
             create: (context) => UpdateOrderVM(
               context.read<OrdersService>(),
               OrderModel()
+            ),
+          ),          //injecting product with api services
+          ChangeNotifierProvider<UpdateProductVM>(
+            create: (context) => UpdateProductVM(
+              context.read<ProductService>(),
             ),
           ),
 

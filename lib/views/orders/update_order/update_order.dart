@@ -9,7 +9,7 @@ import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
-import 'package:warsha_app/view_models/product_v_m.dart';
+import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
 import 'package:warsha_app/views/orders/update_order/customer_to_update.dart';
 import 'package:warsha_app/views/orders/update_order/product_to_update.dart';

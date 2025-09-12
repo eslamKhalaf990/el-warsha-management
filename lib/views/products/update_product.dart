@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/controllers/add_order/add_product.dart';
 import 'package:warsha_app/controllers/drag_drop_controller.dart';
+import 'package:warsha_app/controllers/update_drag_drop.dart';
 import 'package:warsha_app/controllers/update_order/update_product.dart';
+import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/view_models/product_v_m.dart';
-
+import 'package:warsha_app/view_models/add_product_v_m.dart';
+import 'package:warsha_app/view_models/update_product_v_m.dart';
+import 'package:warsha_app/views/products/update_drag_drop.dart';
 import 'drag_drop_widget.dart';
 
 class UpdateProduct extends StatelessWidget {
-  const UpdateProduct({super.key});
+  const UpdateProduct({super.key, required this.productModel});
+  final ProductModel productModel;
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = context.read<UpdateProductProvider>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      productProvider.loadProduct(productModel);
+    });
+
     return Consumer<UpdateProductProvider>(
       builder: (context, value, child) => Scaffold(
         extendBodyBehindAppBar: true,
@@ -48,9 +57,9 @@ class UpdateProduct extends StatelessWidget {
                       child: Column(
                         children: [
                           const SizedBox(height: 20),
-                          const Expanded(
+                          Expanded(
                             flex: 3,
-                            child: DragDropImageUpload(),
+                            child: UpdateDragDropImageUpload(productImage: productModel.image,),
                           ),
                           Container(
                             margin: const EdgeInsets.all(15),
@@ -174,14 +183,14 @@ class UpdateProduct extends StatelessWidget {
                           const SizedBox(height: 20),
                           Row(
                             children: [
-                              Consumer<ProductVM>(
+                              Consumer<UpdateProductVM>(
                                 builder: (context, productVM, child) =>
                                     Expanded(
                                   flex: 3,
                                   child: DefaultButton(
                                     onTap: () async {
                                       String status =
-                                          await productVM.addProduct(
+                                          await productVM.updateProduct(
                                         productName: value.productName.text,
                                         productDescription:
                                             value.productDescription.text,
@@ -194,29 +203,36 @@ class UpdateProduct extends StatelessWidget {
                                         productQuantity:
                                             value.productQuantity.text,
                                         imageBytes:
-                                            Provider.of<DragDropController>(
+                                            Provider.of<UpdateDragDropController>(
                                                     context,
                                                     listen: false)
-                                                .droppedBytes,
+                                                .droppedBytes, id: productModel.id,
                                       );
-                                      if (status == "product_added") {
+                                      if (status == "product_updated") {
                                         Navigator.pop(context);
-                                        productVM.initAllProducts();
-                                        productVM.getAllProducts();
+                                        Provider.of<ProductVM>(context, listen: false).initAllProducts();
+                                        Provider.of<ProductVM>(context, listen: false).getAllProducts();
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
                                             content: Text(
-                                                "Product added successfully"),
+                                                "Product updated successfully"),
                                           ),
                                         );
                                       }
+                                      debugPrint("Product Name: ${value.productName.text}");
+                                      debugPrint("Description: ${value.productDescription.text}");
+                                      debugPrint("Buying Price: ${value.productBuyingPrice.text}");
+                                      debugPrint("Selling Price: ${value.productSellingPrice.text}");
+                                      debugPrint("Category: ${value.productCategory.text}");
+                                      debugPrint("Quantity: ${value.productQuantity.text}");
+                                      debugPrint("Image Bytes: ${Provider.of<DragDropController>(context, listen: false).droppedBytes?.length ?? 0} bytes");
                                     },
-                                    isValid: !Provider.of<ProductVM>(context)
+                                    isValid: !Provider.of<UpdateProductVM>(context)
                                         .isLoading,
-                                    isLoading: Provider.of<ProductVM>(context)
+                                    isLoading: Provider.of<UpdateProductVM>(context)
                                         .isLoading,
-                                    title: "Add new product",
+                                    title: "Update product",
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 15),
                                   ),

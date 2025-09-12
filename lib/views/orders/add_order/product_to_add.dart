@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_items_model.dart';
 import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
-import 'package:warsha_app/view_models/product_v_m.dart';
+import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/views/orders/product_widget.dart';
 
 class ProductToAdd extends StatelessWidget {
@@ -42,7 +42,7 @@ class ProductToAdd extends StatelessWidget {
                     final orderVM = Provider.of<AddOrderVM>(context, listen: false);
 
                     OrderItemsModel orderItemsModel = OrderItemsModel(
-                      productId: product.productID,
+                      productId: product.id,
                       name: product.name,
                       quantity: product.quantity,
                       unitPrice: product.sellingPrice,
@@ -50,7 +50,7 @@ class ProductToAdd extends StatelessWidget {
 
                     // Check for duplicates by productId
                     bool alreadyExists = orderVM.orderModel.orderItems
-                        .any((item) => item.productId == product.productID);
+                        .any((item) => item.productId == product.id);
 
                     if (!alreadyExists) {
                       orderVM.addToOrderItems = orderItemsModel;

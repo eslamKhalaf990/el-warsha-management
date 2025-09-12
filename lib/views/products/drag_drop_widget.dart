@@ -16,23 +16,13 @@ class DragDropImageUpload extends StatefulWidget {
 
 class _DragDropImageUploadState extends State<DragDropImageUpload> {
   late DropzoneViewController _dropzoneController;
-  bool _dragging = false;
+  final bool _dragging = false;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<DragDropController>(
       builder: (context, drop, child) => Stack(
         children: [
-          // DropzoneView(
-          //   onCreated: (controller) => _dropzoneController = controller,
-          //   onHover: () => setState(() => _dragging = true),
-          //   onLeave: () => setState(() => _dragging = false),
-          //   onDrop: (event) async {
-          //     final bytes = await _dropzoneController.getFileData(event);
-          //     final name = await _dropzoneController.getFilename(event);
-          //     drop.updateDropFile(bytes, name);
-          //   },
-          // ),
           Container(
             width: double.infinity,
             height: 500,
@@ -40,59 +30,77 @@ class _DragDropImageUploadState extends State<DragDropImageUpload> {
             decoration: BoxDecoration(
               borderRadius: Constants.BORDER_RADIUS_20,
               color: _dragging
-                  ? Colors.grey.withOpacity(0.2)
+                  ? Colors.grey.withAlpha(100)
                   : Theme.of(context).colorScheme.surfaceTint,
             ),
             child: drop.droppedBytes == null
                 ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const DefaultText(
-                  txt: "Drop your image here\nor",
-                ),
-                const SizedBox(height: 5),
-                ElevatedButton.icon(
-                  style: ButtonStyle(
-                    elevation: WidgetStateProperty.all(0),
-                    padding: WidgetStateProperty.all(
-                        const EdgeInsets.all(15)),
-                  ),
-                  onPressed: () async {
-                    FilePickerResult? result =
-                    await FilePicker.platform.pickFiles(
-                      type: FileType.image,
-                      withData: true, // so we can get bytes on web
-                    );
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const DefaultText(
+                        txt: "Drop your image here\nor",
+                      ),
+                      const SizedBox(height: 5),
+                      ElevatedButton.icon(
+                        style: ButtonStyle(
+                          elevation: WidgetStateProperty.all(0),
+                          padding:
+                              WidgetStateProperty.all(const EdgeInsets.all(15)),
+                        ),
+                        onPressed: () async {
+                          FilePickerResult? result =
+                              await FilePicker.platform.pickFiles(
+                            type: FileType.image,
+                            withData: true, // so we can get bytes on web
+                          );
 
-                    if (result != null &&
-                        result.files.single.bytes != null) {
-                      drop.updateDropFile(
-                        result.files.single.bytes!,
-                        result.files.single.name,
-                      );
-                    }
-                  },
-                  icon: Icon(
-                    Iconsax.document_upload,
-                    color: Theme.of(context).colorScheme.secondary,
-                    size: 20,
+                          if (result != null &&
+                              result.files.single.bytes != null) {
+                            drop.updateDropFile(
+                              result.files.single.bytes!,
+                              result.files.single.name,
+                            );
+                          }
+                        },
+                        icon: Icon(
+                          Iconsax.document_upload,
+                          color: Theme.of(context).colorScheme.secondary,
+                          size: 20,
+                        ),
+                        label: DefaultText(
+                          txt: 'Browse Images',
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
+                  )
+                : Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: Constants.BORDER_RADIUS_20,
+                        child: Image.memory(
+                          drop.droppedBytes!,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: IconButton(
+                          onPressed: () {
+                            drop.clear();
+                          },
+                          icon: const Icon(
+                            Iconsax.close_circle,
+                            size: 30,
+                          ),
+                          color: Colors.red.shade300,
+                        ),
+                      )
+                    ],
                   ),
-                  label: DefaultText(
-                    txt: 'Browse Images',
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ),
-              ],
-            )
-                : ClipRRect(
-              borderRadius: Constants.BORDER_RADIUS_20,
-              child: Image.memory(
-                drop.droppedBytes!,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-              ),
-            ),
           ),
         ],
       ),

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/view_models/product_v_m.dart';
+import 'package:warsha_app/view_models/add_product_v_m.dart';
 
 import 'add_product.dart';
 
@@ -41,7 +41,7 @@ class CRUDProduct extends StatelessWidget {
                 );
               },
               icon: Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 115),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceTint,
                   borderRadius: Constants.BORDER_RADIUS_50,
@@ -56,52 +56,6 @@ class CRUDProduct extends StatelessWidget {
                     const DefaultText(txt: "Add Product"),
                   ],
                 ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddProduct(),
-                  ),
-                );
-              },
-              icon: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceTint,
-                  borderRadius: Constants.BORDER_RADIUS_50,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Iconsax.edit,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    const SizedBox(width: 5,),
-                    const DefaultText(txt: "Update Product"),
-                  ],
-                )
-              ),
-            ),
-            const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceTint,
-                borderRadius: Constants.BORDER_RADIUS_50,
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Iconsax.close_square,
-                    color: Colors.red.shade300,
-                  ),
-                  const SizedBox(width: 5,),
-                  const DefaultText(txt: "Delete Product"),
-                ],
               ),
             ),
           ],

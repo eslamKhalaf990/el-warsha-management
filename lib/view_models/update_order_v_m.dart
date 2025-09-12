@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/models/order_items_model.dart';
@@ -51,7 +49,6 @@ class UpdateOrderVM extends ChangeNotifier {
       }
     } catch (e) {
       status = "order_not_added";
-      print(e);
     } finally {
       isLoading = false;
       notifyListeners();

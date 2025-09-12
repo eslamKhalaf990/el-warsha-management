@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:warsha_app/models/product_model.dart';
 
 class UpdateProductProvider extends ChangeNotifier {
   // TextEditingControllers
@@ -25,6 +26,22 @@ class UpdateProductProvider extends ChangeNotifier {
 
   void updateSellingPrice(String value) {
     _sellingPrice = double.tryParse(value) ?? 0.0;
+    notifyListeners();
+  }
+
+  void loadProduct(ProductModel existingProduct) {
+    productName.text = existingProduct.name;
+    productDescription.text = existingProduct.productDescription;
+    productBuyingPrice.text = existingProduct.buyingPrice.toString();
+    productSellingPrice.text = existingProduct.sellingPrice.toString();
+    productCategory.text = existingProduct.category;
+    productQuantity.text = existingProduct.quantity.toString();
+    discount.text = "0.0";
+
+    // Update profit calculation values
+    _buyingPrice = double.tryParse(productBuyingPrice.text) ?? 0.0;
+    _sellingPrice = double.tryParse(productSellingPrice.text) ?? 0.0;
+
     notifyListeners();
   }
 

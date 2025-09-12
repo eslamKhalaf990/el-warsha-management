@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_items_model.dart';
 import 'package:warsha_app/models/product_model.dart';
-import 'package:warsha_app/view_models/product_v_m.dart';
+import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
@@ -43,7 +43,7 @@ class ProductToUpdate extends StatelessWidget {
                     final product = filteredProducts[index];
 
                     OrderItemsModel orderItemsModel = OrderItemsModel(
-                      productId: product.productID,
+                      productId: product.id,
                       name: product.name,
                       quantity: product.quantity,
                       unitPrice: product.sellingPrice,
@@ -53,7 +53,7 @@ class ProductToUpdate extends StatelessWidget {
 
                     // Check for duplicates by productId
                     bool alreadyExists = orderVM.orderModel.orderItems
-                        .any((item) => item.productId == product.productID);
+                        .any((item) => item.productId == product.id);
 
                     if (!alreadyExists) {
                       orderVM.addToOrderItems = orderItemsModel;
@@ -95,7 +95,7 @@ class ProductWidget extends StatelessWidget {
         color: Provider.of<UpdateOrderVM>(context)
             .orderModel
             .orderItems
-            .any((product) => product.productId == productModel.productID)
+            .any((product) => product.productId == productModel.id)
             ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
             : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
         borderRadius: Constants.BORDER_RADIUS_20,

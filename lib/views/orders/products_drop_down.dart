@@ -3,7 +3,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
-import 'package:warsha_app/view_models/product_v_m.dart';
+import 'package:warsha_app/view_models/add_product_v_m.dart';
 
 class ProductsDropdown extends StatefulWidget {
   const ProductsDropdown({super.key});
@@ -83,7 +83,7 @@ class _ProductsDropdownState extends State<ProductsDropdown> {
         dropdownMenuEntries: isLoading
             ? [
           DropdownMenuEntry(
-            value: ProductModel.get(name: "", productID: "", productDescription: "", buyingPrice: "", sellingPrice: "", category: "", quantity: "", image: ""),
+            value: ProductModel.get(name: "", id: "", productDescription: "", buyingPrice: "", sellingPrice: "", category: "", quantity: "", image: ""),
             label: 'Loading...',
             style: ButtonStyle(
               textStyle: WidgetStateProperty.all(

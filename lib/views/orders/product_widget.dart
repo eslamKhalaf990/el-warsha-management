@@ -21,7 +21,7 @@ class ProductWidget extends StatelessWidget {
         color: Provider.of<AddOrderVM>(context)
                 .orderModel
                 .orderItems
-                .any((product) => product.productId == productModel.productID)
+                .any((product) => product.productId == productModel.id)
             ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
             : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
         borderRadius: Constants.BORDER_RADIUS_20,
