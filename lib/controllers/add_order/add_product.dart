@@ -40,4 +40,15 @@ class ProductProvider extends ChangeNotifier {
     discount.dispose();
     super.dispose();
   }
+
+  void clear (){
+    productName.clear();
+    productName.clear();
+    productDescription.clear();
+    productBuyingPrice.clear();
+    productSellingPrice.clear();
+    productCategory.clear();
+    productQuantity.clear();
+    discount.clear();
+  }
 }

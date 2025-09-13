@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/views/customers/update_customer.dart';
 
 class CustomerWidget extends StatelessWidget {
-  final String name;
-  final String email;
-  final String phone;
-  final String address;
+  final CustomerModel customerModel;
 
   const CustomerWidget({
     super.key,
-    required this.name,
-    required this.address,
-    required this.email,
-    required this.phone,
+    required this.customerModel,
   });
 
   @override
@@ -40,9 +36,7 @@ class CustomerWidget extends StatelessWidget {
                     Iconsax.profile_circle,
                     size: 50,
                   )),
-              const SizedBox(
-                width: 20,
-              ),
+              const SizedBox(width: 20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +45,7 @@ class CustomerWidget extends StatelessWidget {
                     Row(
                       children: [
                         DefaultText(
-                          txt: name,
+                          txt: customerModel.name,
                           bold: true,
                         ),
                         const SizedBox(
@@ -67,14 +61,14 @@ class CustomerWidget extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         DefaultText(
-                          txt: email,
+                          txt: customerModel.governorate,
                           bold: true,
                         ),
                       ],
                     ),
                     const SizedBox(height: 6),
                     // Message
-                    Text(address),
+                    Text(customerModel.address),
                     const SizedBox(height: 6),
                     // Time
                     Row(
@@ -92,7 +86,9 @@ class CustomerWidget extends StatelessWidget {
                                   size: 14,
                                   color: Colors.white),
                               DefaultText(
-                                  txt: phone, size: 14, color: Colors.white),
+                                  txt: customerModel.phone,
+                                  size: 14,
+                                  color: Colors.white),
                             ],
                           ),
                         ),
@@ -106,6 +102,66 @@ class CustomerWidget extends StatelessWidget {
                     )
                   ],
                 ),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              UpdateCustomer(customerModel: customerModel),
+                        ),
+                      );
+                    },
+                    icon: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceTint,
+                          borderRadius: Constants.BORDER_RADIUS_50,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Iconsax.edit,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            DefaultText(
+                              txt: "Update Customer",
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ],
+                        )),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceTint,
+                          borderRadius: Constants.BORDER_RADIUS_50,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Iconsax.trash,
+                              color: Colors.red.shade300,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            DefaultText(
+                              txt: "Delete Customer",
+                              color: Colors.red.shade300,
+                            ),
+                          ],
+                        )),
+                  ),
+                ],
               ),
             ],
           ),

@@ -35,12 +35,12 @@ class CRUDCustomer extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddCustomer(),
+                    builder: (context) => const AddCustomer(),
                   ),
                 );
               },
               icon: Container(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 110),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceTint,
                   borderRadius: Constants.BORDER_RADIUS_50,
@@ -55,42 +55,6 @@ class CRUDCustomer extends StatelessWidget {
                     const DefaultText(txt: "Add Customer"),
                   ],
                 ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceTint,
-                  borderRadius: Constants.BORDER_RADIUS_50,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Iconsax.edit,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    const SizedBox(width: 5,),
-                    const DefaultText(txt: "Update Customer"),
-                  ],
-                )
-            ),
-            const SizedBox(width: 10),
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceTint,
-                borderRadius: Constants.BORDER_RADIUS_50,
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Iconsax.close_square,
-                    color: Colors.red.shade300,
-                  ),
-                  const SizedBox(width: 5,),
-                  const DefaultText(txt: "Delete Customer"),
-                ],
               ),
             ),
           ],

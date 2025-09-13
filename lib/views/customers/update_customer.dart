@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/controllers/add_order/add_customer.dart';
+import 'package:warsha_app/controllers/update_order/update_customer.dart';
+import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
 
-class AddCustomer extends StatelessWidget {
-  const AddCustomer({super.key});
+class UpdateCustomer extends StatelessWidget {
+  const UpdateCustomer({super.key, required this.customerModel});
+  final CustomerModel customerModel;
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CustomerProvider>(
+    final customerProvider = context.read<UpdateCustomerProvider>();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      customerProvider.loadCustomer(customerModel);
+    });
+
+
+    return Consumer<UpdateCustomerProvider>(
       builder: (context, value, child) => Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            title: const DefaultText(txt: "Add New Customer"),
+          backgroundColor: Colors.transparent,
+          title: const DefaultText(txt: "Update Customer"),
         ),
         body: Container(
           decoration: BoxDecoration(
@@ -61,7 +70,7 @@ class AddCustomer extends StatelessWidget {
                               const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DefaultCustomerForm(
                                 title: "Name",
-                                controller: value.governorate,
+                                controller: customerProvider.name,
                                 icon: Iconsax.bag,
                               ),
                             ),
@@ -74,7 +83,7 @@ class AddCustomer extends StatelessWidget {
                               const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DefaultCustomerForm(
                                 title: "Governorate",
-                                controller: value.email,
+                                controller: customerProvider.governorate,
                                 icon: Iconsax.building,
                               ),
                             ),
@@ -111,9 +120,11 @@ class AddCustomer extends StatelessWidget {
                                   flex: 3,
                                   child: DefaultButton(
                                     onTap: () async {
-                                      String status = await customerVM.addCustomer(
+                                      print(customerModel.id);
+                                      String status = await customerVM.updateCustomer(
+                                        customerModel.id,
+                                        value.name.text,
                                         value.governorate.text,
-                                        value.email.text,
                                         value.phone.text,
                                         value.address.text,
                                       );
@@ -126,12 +137,12 @@ class AddCustomer extends StatelessWidget {
                                             .showSnackBar(
                                           const SnackBar(
                                             content: Text(
-                                                "Customer added successfully"),
+                                                "Customer updated successfully"),
                                           ),
                                         );
                                       }
                                     },
-                                    title: "Add new Customer",
+                                    title: "Update Your Customer",
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 15),
                                   ),

@@ -144,11 +144,11 @@ class ProductWidget extends StatelessWidget {
                               color: Colors.green.shade300,
                               borderRadius: Constants.BORDER_RADIUS_20),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 2),
+                              horizontal: 10, vertical: 2),
                           child: Row(
                             children: [
                               const DefaultText(
-                                  txt: "Buying Price  ",
+                                  txt: "Buying  ",
                                   size: 14,
                                   color: Colors.white),
                               DefaultText(
@@ -166,11 +166,11 @@ class ProductWidget extends StatelessWidget {
                               color: Colors.blue.shade300,
                               borderRadius: Constants.BORDER_RADIUS_20),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 2),
+                              horizontal: 10, vertical: 2),
                           child: Row(
                             children: [
                               const DefaultText(
-                                  txt: "Selling Price  ",
+                                  txt: "Selling  ",
                                   size: 14,
                                   color: Colors.white),
                               DefaultText(

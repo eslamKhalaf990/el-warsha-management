@@ -1,13 +1,13 @@
 class CustomerModel {
   String name;
   late String id;
-  String email;
+  String governorate;
   String phone;
   String address;
 
   CustomerModel.add({
     required this.name,
-    required this.email,
+    required this.governorate,
     required this.phone,
     required this.address,
   });
@@ -15,16 +15,17 @@ class CustomerModel {
   CustomerModel.get({
     required this.name,
     required this.id,
-    required this.email,
+    required this.governorate,
     required this.phone,
     required this.address,
   });
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) {
+    print(json);
     return CustomerModel.get(
       name: json['fullName'],
       id: (json['customerID'] ?? json['customerId']).toString()  ,
-      email: json['email'],
+      governorate: json['email'],
       phone: json['phone'].toString(),
       address: json['address'],
     );
@@ -33,7 +34,7 @@ class CustomerModel {
   factory CustomerModel.toJson(Map<String, dynamic> json) {
     return CustomerModel.add(
       name: json['fullName'],
-      email: json['email'],
+      governorate: json['email'],
       phone: json['phone'].toString(),
       address: json['address'],
     );

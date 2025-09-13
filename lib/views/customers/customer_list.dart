@@ -33,10 +33,7 @@ class CustomerList extends StatelessWidget {
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 return CustomerWidget(
-                  name: filteredCustomers[index].name,
-                  email: filteredCustomers[index].email,
-                  address:filteredCustomers[index].address,
-                  phone: filteredCustomers[index].phone,
+                   customerModel: filteredCustomers[index],
                 );
               },
             ),

@@ -41,7 +41,7 @@ class CustomerToAdd extends StatelessWidget {
                   child: CustomerWidget(
                     index: index,
                     name: filteredCustomers[index].name,
-                    email: filteredCustomers[index].email,
+                    email: filteredCustomers[index].governorate,
                     address:filteredCustomers[index].address,
                     phone: filteredCustomers[index].phone,
                     id: filteredCustomers[index].id,

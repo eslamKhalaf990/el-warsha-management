@@ -47,7 +47,7 @@ class CustomerService {
           body: jsonEncode({
             "fullName": customer.name,
             "phone": customer.phone,
-            "email": customer.email,
+            "email": customer.governorate,
             "address": customer.address,
           })
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
@@ -59,4 +59,32 @@ class CustomerService {
     }
     return response;
   }
+
+  Future<http.Response> updateCustomer(String id, CustomerModel customer) async {
+    debugPrint("updateCustomer with id: $id");
+    http.Response response;
+    try {
+      response = await http.put(
+        Uri.parse('${Baseurl.updateCustomerAPI}/$id'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          "fullName": customer.name,
+          "phone": customer.phone,
+          "email": customer.governorate,
+          "address": customer.address,
+        }),
+      ).timeout(const Duration(seconds: Constants.TIMEOUT));
+
+      debugPrint(response.body);
+    } on TimeoutException {
+      throw Exception('The request timed out. Please try again later.');
+    } catch (e) {
+      throw Exception('Failed to update the customer: $e');
+    }
+    return response;
+  }
+
 }

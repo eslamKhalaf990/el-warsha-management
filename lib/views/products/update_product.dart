@@ -11,7 +11,6 @@ import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/view_models/update_product_v_m.dart';
 import 'package:warsha_app/views/products/update_drag_drop.dart';
-import 'drag_drop_widget.dart';
 
 class UpdateProduct extends StatelessWidget {
   const UpdateProduct({super.key, required this.productModel});

@@ -1,11 +1,10 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:printing/printing.dart';
-import 'package:warsha_app/utils/default_text.dart'; // 1. Import the printing package
+import 'package:warsha_app/utils/default_text.dart';
 
 class PDFViewPage extends StatefulWidget {
   const PDFViewPage({super.key, required this.pdfPath});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomerProvider extends ChangeNotifier {
   // TextEditingControllers
-  final TextEditingController name = TextEditingController();
+  final TextEditingController governorate = TextEditingController();
   final TextEditingController phone = TextEditingController();
   final TextEditingController email = TextEditingController();
   final TextEditingController address = TextEditingController();
@@ -10,7 +10,7 @@ class CustomerProvider extends ChangeNotifier {
   // Dispose controllers
   @override
   void dispose() {
-    name.dispose();
+    governorate.dispose();
     phone.dispose();
     email.dispose();
     address.dispose();
@@ -18,7 +18,7 @@ class CustomerProvider extends ChangeNotifier {
   }
 
   void clearCustomer (){
-    name.clear();
+    governorate.clear();
     phone.clear();
     email.clear();
     address.clear();

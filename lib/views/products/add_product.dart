@@ -201,6 +201,10 @@ class AddProduct extends StatelessWidget {
                                         Navigator.pop(context);
                                         productVM.initAllProducts();
                                         productVM.getAllProducts();
+                                        value.clear();
+                                        Provider.of<DragDropController>(
+                                            context,
+                                            listen: false).clear();
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
