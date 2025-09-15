@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/utils/image_helper.dart';
+import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/views/products/update_product.dart';
 
 class ProductWidget extends StatelessWidget {
@@ -222,23 +225,39 @@ class ProductWidget extends StatelessWidget {
                         ),
                       ),
                       IconButton(
-                        onPressed: (){},
+                        onPressed: !Provider.of<ProductVM>(context).isLoading ? () async {
+                          final productVM = Provider.of<ProductVM>(context, listen: false);
+                          final state = await productVM.deleteProduct(product.id);
+                          if (state == "product_deleted"){
+                            productVM.initAllProducts();
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    "Product deleted successfully"),
+                              ),
+                            );
+                          }
+                        }: null,
                         icon: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.surfaceTint,
                               borderRadius: Constants.BORDER_RADIUS_50,
                             ),
-                            child: Row(
+                            child: !Provider.of<ProductVM>(context).isLoading || (product.id) != Provider.of<ProductVM>(context).deletedProduct ? Row(
                               children: [
                                 Icon(
                                   Iconsax.trash,
                                   color: Colors.red.shade300,
                                 ),
                                 const SizedBox(width: 5,),
-                                DefaultText(txt: "Delete Order", color: Colors.red.shade300,
+                                DefaultText(txt: "Delete Product", color: Colors.red.shade300,
                                 ),
                               ],
+                            ): Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                              child: SpinKitThreeBounce(color: Colors.red.shade300, size: 20),
                             )
                         ),
                       ),

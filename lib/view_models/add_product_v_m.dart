@@ -8,6 +8,8 @@ class ProductVM extends ChangeNotifier {
   final ProductService _productService;
 
   bool isLoading = false;
+  String deletedProduct = "";
+
 
   Future<List<ProductModel>>? allProducts;
   final TextEditingController searchController = TextEditingController();
@@ -79,6 +81,35 @@ class ProductVM extends ChangeNotifier {
       }
     } catch (e) {
       status = "product_not_added";
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+
+    return status;
+  }
+
+  Future<String> deleteProduct(String productId) async {
+    String status = "";
+    try {
+      isLoading = true;
+      deletedProduct = productId;
+
+      notifyListeners();
+
+      final response = await _productService.deleteProduct(productId);
+      print(response.statusCode);
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        status = "product_deleted";
+        debugPrint("Product deleted successfully");
+      } else {
+        status = "product_not_deleted";
+        debugPrint("Failed to delete product: ${response.statusCode}");
+      }
+    } catch (e) {
+      status = "product_not_deleted";
+      debugPrint("Error deleting product: $e");
     } finally {
       isLoading = false;
       notifyListeners();

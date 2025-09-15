@@ -57,6 +57,31 @@ class OrdersService {
     return response;
   }
 
+  Future<http.Response> updateOrderStatus(String orderID, String status) async {
+    debugPrint("updateOrderStatus called $status");
+    http.Response response;
+    try {
+      response = await http.put(
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          Uri.parse(
+            "${Baseurl.addOrderAPI}/$orderID/status",
+          ),
+          body: jsonEncode({
+            "status": status
+          })
+      ).timeout(const Duration(seconds: Constants.TIMEOUT));
+      debugPrint(response.body);
+    } on TimeoutException {
+      throw Exception('The request timed out. Please try again later.');
+    } catch (e) {
+      throw Exception('Failed to add your new order: $e');
+    }
+    return response;
+  }
+
   Future<http.Response> updateOrder(OrderModel order) async {
     debugPrint("updateOrder called ${order.toJson()}");
     http.Response response;

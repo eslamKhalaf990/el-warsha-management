@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 
 import 'base_url.dart';
@@ -30,6 +29,28 @@ class ProductService {
     }
     return response;
   }
+
+  Future<http.Response> deleteProduct(String id) async {
+    debugPrint("deleteProduct with id: $id called");
+    http.Response response;
+    try {
+      response = await http.delete(
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        Uri.parse(
+          "${Baseurl.deleteProductAPI}/$id",
+        ),
+      ).timeout(const Duration(seconds: Constants.TIMEOUT));
+      debugPrint(response.body);
+    } on TimeoutException {
+      throw Exception('The request timed out. Please try again later.');
+    } catch (e) {
+      throw Exception('Failed to delete your product: $e');
+    }
+    return response;
+  }
+
 
   Future<http.StreamedResponse> addProductWithImage({
     required String name,
@@ -76,8 +97,8 @@ class ProductService {
     required String sellingPrice,
     required String category,
     required String quantity,
-    required Uint8List? imageBytes, // optional image
-    String? imageName, // optional filename
+    required Uint8List? imageBytes,
+    String? imageName,
   }) async {
     var uri = Uri.parse("${Baseurl.updateProductAPI}/$id");
 

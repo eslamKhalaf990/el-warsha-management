@@ -57,6 +57,40 @@ class UpdateOrderVM extends ChangeNotifier {
     return status;
   }
 
+  Future<String> updateOrderStatus({
+    required String orderID,
+    required String statusValue,
+  }) async {
+    String status = "";
+    try {
+      isLoading = true;
+      notifyListeners();
+
+      final response = await _orderService.updateOrderStatus(
+        orderID,
+        statusValue,
+      );
+
+      print(response.statusCode);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        status = "status_updated";
+        debugPrint("Order status updated: ${response.body}");
+      } else {
+        status = "status_not_updated";
+        debugPrint(
+            "Update failed: ${response.statusCode} - ${response.body}");
+      }
+    } catch (e) {
+      status = "status_not_updated";
+      debugPrint("Error updating order status: $e");
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+
+    return status;
+  }
+
 
   void loadOrder(OrderModel existingOrder) {
     orderModel = OrderModel.get(

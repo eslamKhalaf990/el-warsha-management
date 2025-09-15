@@ -1,7 +1,8 @@
 class Baseurl {
-  static String baseURL = "https://warsha-backend.onrender.com/";
-  // static String baseURL = "https://197.49.212.217:8080/";
-  // static String baseURL = "http://localhost:8080/";
+  // static String baseURL = "https://warsha-backend.onrender.com/";
+  static String baseURL = "http://localhost:8080/";
+  // static String baseURL = "http://67.211.210.15:8080/";
+  // static String baseURL = "https://awesome-thought-nervous-fl.trycloudflare.com/";
   static String baseURLImages = "${baseURL}api/files/";
 
   /// =============== Authentication APIs ============== ///
@@ -11,6 +12,7 @@ class Baseurl {
   static String getAllCustomersAPI = '${baseURL}customers';
   static String addCustomerAPI = '${baseURL}customers';
   static String updateCustomerAPI = '${baseURL}customers';
+  static String deleteCustomerAPI = '${baseURL}customers';
   /// ===============   Customers APIs    ============== ///
 
 
@@ -26,6 +28,7 @@ class Baseurl {
   static String getAllProductsAPI = '${baseURL}products';
   static String addProductAPI = '${baseURL}products';
   static String updateProductAPI = '${baseURL}products';
+  static String deleteProductAPI = '${baseURL}products';
   /// ===============   Products APIs    ============== ///
 
 }
