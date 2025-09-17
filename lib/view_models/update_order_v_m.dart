@@ -143,6 +143,22 @@ class UpdateOrderVM extends ChangeNotifier {
     }
   }
 
+  set incrementItemOrdered(int index) {
+    orderModel.orderItems[index].quantityOrdered++;
+    notifyListeners();
+  }
+
+  set decrementItemOrdered(int index) {
+    if(orderModel.orderItems[index].quantityOrdered > 1){
+      orderModel.orderItems[index].quantityOrdered--;
+      notifyListeners();
+    }
+    else {
+      orderModel.orderItems.remove(orderModel.orderItems[index]);
+      notifyListeners();
+    }
+  }
+
   double getTotalPrice (){
     double itemsTotal = 0.0;
 

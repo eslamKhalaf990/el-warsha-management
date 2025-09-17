@@ -74,7 +74,6 @@ class UpdateOrder extends StatelessWidget {
                                       final customer =
                                           orderVM.orderModel.customer;
                                       if (customer == null) return;
-                                      print(orderVM.orderModel.orderID);
 
                                       // UPDATE EXISTING
                                       await orderVM.updateOrder(

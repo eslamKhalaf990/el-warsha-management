@@ -5,11 +5,7 @@ import 'package:warsha_app/controllers/update_order/updatePaymentDetails.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
-import 'package:warsha_app/views/orders/widgets/CustomerOrderWidget.dart';
-import 'package:warsha_app/views/orders/widgets/DeliveryOrderWidget.dart';
-import 'package:warsha_app/views/orders/widgets/OrderItemWidget.dart';
 import 'package:warsha_app/views/products/add_product.dart';
-
 import 'customer_details.dart';
 import 'delivery_address.dart';
 import 'order_item_widget.dart';
@@ -69,7 +65,8 @@ class UpdateOrderDetails extends StatelessWidget {
                     (context, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: UpdateOrderItem(index, orderItem: Provider.of<UpdateOrderVM>(context).orderModel.orderItems[index]),
+                        child: UpdateOrderItem(index, orderItem: Provider.of<UpdateOrderVM>(context).
+                          orderModel.orderItems[index]),
                       );
                     },
                     childCount: order.orderModel.orderItems.length,

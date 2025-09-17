@@ -87,6 +87,8 @@ class CustomerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(Provider.of<UpdateOrderVM>(context).orderModel.customer?.id);
+    print(id);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),

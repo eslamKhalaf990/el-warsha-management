@@ -3,6 +3,7 @@ class OrderItemsModel {
   final String name;
   final String quantity;
   int quantityToOrder = 1;
+  int quantityOrdered = 1;
   final String unitPrice;
 
   OrderItemsModel({

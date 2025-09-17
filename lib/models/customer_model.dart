@@ -24,7 +24,7 @@ class CustomerModel {
     print(json);
     return CustomerModel.get(
       name: json['fullName'],
-      id: (json['customerID'] ?? json['customerId']).toString()  ,
+      id: (json['id'] ?? json['customerId']).toString()  ,
       governorate: json['email'],
       phone: json['phone'].toString(),
       address: json['address'],

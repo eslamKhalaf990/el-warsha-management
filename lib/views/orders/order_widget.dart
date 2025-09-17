@@ -77,9 +77,23 @@ class OrderWidget extends StatelessWidget {
                           width: 5,
                           height: 5,
                         ),
+                        //order status
                         const SizedBox(width: 10),
+                        SizedBox(
+                          width: 120,
+                          height: 25,
+                          child: OrderStatusDropdown(
+                            currentStatus: order.status,
+                            order: order,
+                            onStatusChanged: (value) {},
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
                         DefaultText(
-                          txt: "Total Price: ${order.totalPrice}",
+                          txt: "Total Price: ${order.totalPrice} EGP",
                           bold: true,
                         ),
                         const SizedBox(width: 10),
@@ -91,27 +105,24 @@ class OrderWidget extends StatelessWidget {
                           width: 5,
                           height: 5,
                         ),
-
-                        //order status
-                        const SizedBox(width: 10),
-                        Container(
-                          width: 120,
-                          height: 25,
-                          child: OrderStatusDropdown(currentStatus: order.status,
-                            order: order,
-                            onStatusChanged: (value) {
-                            print(value);
-                          },),
+                        const SizedBox(
+                          width: 10,
                         ),
+                        DefaultText(
+                          txt: "Payment method: ${order.paymentMethod}",
+                          bold: true,
+                        ),
+                        const SizedBox(width: 10),
                       ],
                     ),
+
 
                     const SizedBox(height: 6),
 
                     Row(
                       children: [
                         DefaultText(
-                          txt: "Delivery: ${order.delivery}",
+                          txt: "Delivery: ${order.delivery} EGP",
                           bold: true,
                         ),
                         const SizedBox(
@@ -127,23 +138,7 @@ class OrderWidget extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         DefaultText(
-                          txt: "Payment method: ${order.paymentMethod}",
-                          bold: true,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          width: 5,
-                          height: 5,
-                        ),
-                        const SizedBox(width: 10),
-                        DefaultText(
-                          txt: "Down payment: ${order.downPayment}",
+                          txt: "Down payment: ${order.downPayment} EGP",
                           bold: true,
                         ),
                       ],
@@ -227,7 +222,6 @@ class OrderWidget extends StatelessWidget {
               ],
             ),
           ),
-
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -239,7 +233,9 @@ class OrderWidget extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => UpdateOrder(existingOrder: order,),
+                          builder: (context) => UpdateOrder(
+                            existingOrder: order,
+                          ),
                         ),
                       );
                     },
@@ -255,41 +251,58 @@ class OrderWidget extends StatelessWidget {
                               Iconsax.edit,
                               color: Theme.of(context).colorScheme.secondary,
                             ),
-                            const SizedBox(width: 5,),
-                            DefaultText(txt: "Update Order", color: Theme.of(context).colorScheme.secondary,
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            DefaultText(
+                              txt: "Update Order",
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
                           ],
-                        )
-                    ),
+                        )),
                   ),
                   IconButton(
-                    onPressed: !Provider.of<AddOrderVM>(context).isLoading ? () async {
-                      final orderVM = Provider.of<AddOrderVM>(context, listen: false);
-                      final state = await orderVM.deleteOrderByID(order.orderID);
-                      if (state == "deleted"){
-                        orderVM.initAllOrders();
-                      }
-                    }: null,
+                    onPressed: !Provider.of<AddOrderVM>(context).isLoading
+                        ? () async {
+                            final orderVM =
+                                Provider.of<AddOrderVM>(context, listen: false);
+                            final state =
+                                await orderVM.deleteOrderByID(order.orderID);
+                            if (state == "deleted") {
+                              orderVM.initAllOrders();
+                            }
+                          }
+                        : null,
                     icon: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceTint,
-                          borderRadius: Constants.BORDER_RADIUS_50,
-                        ),
-                        child: !Provider.of<AddOrderVM>(context).isLoading || (order.orderID) != Provider.of<AddOrderVM>(context).deletedOrder ? Row(
-                          children: [
-                            Icon(
-                              Iconsax.trash,
-                              color: Colors.red.shade300,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceTint,
+                        borderRadius: Constants.BORDER_RADIUS_50,
+                      ),
+                      child: !Provider.of<AddOrderVM>(context).isLoading ||
+                              (order.orderID) !=
+                                  Provider.of<AddOrderVM>(context).deletedOrder
+                          ? Row(
+                              children: [
+                                Icon(
+                                  Iconsax.trash,
+                                  color: Colors.red.shade300,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                DefaultText(
+                                  txt: "Delete Order",
+                                  color: Colors.red.shade300,
+                                ),
+                              ],
+                            )
+                          : Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 33.0),
+                              child: SpinKitThreeBounce(
+                                  color: Colors.red.shade300, size: 20),
                             ),
-                            const SizedBox(width: 5,),
-                             DefaultText(txt: "Delete Order", color: Colors.red.shade300,
-                            ),
-                          ],
-                        ) : Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 33.0),
-                          child: SpinKitThreeBounce(color: Colors.red.shade300, size: 20),
-                        )
                     ),
                   ),
                 ],
@@ -305,7 +318,8 @@ class OrderWidget extends StatelessWidget {
                   );
                 },
                 icon: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 60),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 60),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surfaceTint,
                       borderRadius: Constants.BORDER_RADIUS_50,
@@ -314,13 +328,17 @@ class OrderWidget extends StatelessWidget {
                       children: [
                         Icon(
                           Iconsax.document_text,
-                           color: Colors.green.shade600,
+                          color: Colors.green.shade600,
                         ),
-                        const SizedBox(width: 5,),
-                        DefaultText(txt: "View Order Invoice", color: Colors.green.shade600,),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        DefaultText(
+                          txt: "View Order Invoice",
+                          color: Colors.green.shade600,
+                        ),
                       ],
-                    )
-                ),
+                    )),
               ),
             ],
           ),
@@ -329,6 +347,7 @@ class OrderWidget extends StatelessWidget {
     );
   }
 }
+
 class OrderStatusDropdown extends StatefulWidget {
   final String currentStatus;
   final OrderModel order;
@@ -337,13 +356,13 @@ class OrderStatusDropdown extends StatefulWidget {
   const OrderStatusDropdown({
     super.key,
     required this.currentStatus,
-    required this.onStatusChanged, required this.order,
+    required this.onStatusChanged,
+    required this.order,
   });
 
   @override
   State<OrderStatusDropdown> createState() => _OrderStatusDropdownState();
 }
-
 class _OrderStatusDropdownState extends State<OrderStatusDropdown> {
   late String selectedStatus;
 
@@ -372,12 +391,19 @@ class _OrderStatusDropdownState extends State<OrderStatusDropdown> {
         child: DropdownButton<String>(
           value: selectedStatus,
           isExpanded: true,
-          icon: const Icon(Iconsax.arrow_down_2_copy, size: 20,),
+          icon: const Icon(
+            Iconsax.arrow_down_2_copy,
+            size: 20,
+          ),
           dropdownColor: Colors.white,
           items: statuses.map((status) {
             return DropdownMenuItem(
               value: status,
-              child: DefaultText(txt: status, size: 14, bold: true,),
+              child: DefaultText(
+                txt: status,
+                size: 14,
+                bold: true,
+              ),
             );
           }).toList(),
           onChanged: (value) async {
@@ -385,8 +411,9 @@ class _OrderStatusDropdownState extends State<OrderStatusDropdown> {
               setState(() {
                 selectedStatus = value;
               });
-              await Provider.of<UpdateOrderVM>(context, listen: false).
-              updateOrderStatus(orderID: widget.order.orderID, statusValue: value);
+              await Provider.of<UpdateOrderVM>(context, listen: false)
+                  .updateOrderStatus(
+                      orderID: widget.order.orderID, statusValue: value);
               widget.onStatusChanged(value);
             }
           },

@@ -36,7 +36,7 @@ class UpdateOrderItem extends StatelessWidget {
                   child: const Icon(Iconsax.add_square_copy)),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: DefaultText(txt: order.quantityToOrder.toString()),
+                child: DefaultText(txt: (int.parse(order.quantityToOrder.toString()) + int.parse(order.quantity.toString()) - 1).toString()),
               ),
               InkWell(
                   onTap: (){
@@ -44,7 +44,7 @@ class UpdateOrderItem extends StatelessWidget {
                   },
                   child: const Icon(Iconsax.minus_square_copy)),
               const SizedBox(width: 15,),
-              DefaultText(txt: "${double.parse(order.unitPrice) * order.quantityToOrder} EGP", center: true),
+              DefaultText(txt: "${double.parse(order.unitPrice) * (int.parse(order.quantity))} EGP", center: true),
             ],
           ),
 
