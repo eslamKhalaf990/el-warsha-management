@@ -3,7 +3,7 @@ class OrderItemsModel {
   final String name;
   final String quantity;
   int quantityToOrder = 1;
-  int quantityOrdered = 1;
+  int orderedQuantity = 1;
   final String unitPrice;
 
   OrderItemsModel({
@@ -14,18 +14,28 @@ class OrderItemsModel {
   });
 
   factory OrderItemsModel.fromJson(Map<String, dynamic> json) {
-    return OrderItemsModel(
+    final model = OrderItemsModel(
       productId: json['productId'].toString(),
       name: json['productName'].toString(),
       quantity: json['quantity'].toString(),
       unitPrice: json['unitPrice'].toString(),
     );
+    model.orderedQuantity = json['quantity'] ?? "1";
+    return model;
   }
 
   Map<String, dynamic> toJson() {
     return {
       'productId': productId,
       'quantity': quantityToOrder,
+      'unitPrice': unitPrice,
+    };
+  }
+
+  Map<String, dynamic> toUpdateJson() {
+    return {
+      'productId': productId,
+      'quantity': orderedQuantity,
       'unitPrice': unitPrice,
     };
   }

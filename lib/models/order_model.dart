@@ -40,6 +40,7 @@ class OrderModel {
     required this.delivery,
     required this.downPayment,
     required this.orderDate,
+    required this.discount,
     required this.status,
     required this.orderItems,
   });
@@ -56,6 +57,7 @@ class OrderModel {
       orderSource: json['orderSource'].toString(),
       paymentMethod: json['paymentMethod'].toString(),
       delivery: json['delivery'].toString(),
+      discount: json['discount'].toString(),
       downPayment: json['downPayment'].toString(),
       totalPrice: json['totalPrice'].toString(),
     );
@@ -70,6 +72,18 @@ class OrderModel {
       'paymentMethod' : paymentMethod,
       'discount' : discount,
       'items': orderItems.map((item) => item.toJson()).toList(),
+    };
+  }
+
+  Map<String, dynamic> toUpdateJson() {
+    return {
+      'customerId': customerID,
+      'downPayment' : downPayment,
+      'delivery' : delivery,
+      'orderSource' : orderSource,
+      'paymentMethod' : paymentMethod,
+      'discount' : discount,
+      'items': orderItems.map((item) => item.toUpdateJson()).toList(),
     };
   }
 }

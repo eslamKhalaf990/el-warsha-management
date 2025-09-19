@@ -27,11 +27,11 @@ class UpdatePaymentDetails extends ChangeNotifier {
 
 
   void loadPayment(OrderModel existingOrder) {
-    downPayment.text = existingOrder.downPayment ?? "";
-    paymentMethod.text = existingOrder.paymentMethod ?? "";
-    discount.text ="0.0" ?? "";
-    platformSource.text = existingOrder.orderSource ?? "";
-    delivery.text = existingOrder.delivery ?? "";
+    downPayment.text = existingOrder.downPayment;
+    paymentMethod.text = existingOrder.paymentMethod;
+    discount.text = existingOrder.discount;
+    platformSource.text = existingOrder.orderSource;
+    delivery.text = existingOrder.delivery;
 
     notifyListeners();
   }

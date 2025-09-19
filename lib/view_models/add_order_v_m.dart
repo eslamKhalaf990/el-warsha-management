@@ -121,6 +121,7 @@ class AddOrderVM extends ChangeNotifier {
       paymentMethod: existingOrder.paymentMethod,
       delivery: existingOrder.delivery,
       customer: existingOrder.customer,
+      discount: existingOrder.discount,
       orderID: existingOrder.orderID,
       totalPrice: existingOrder.totalPrice,
       orderDate: existingOrder.orderDate,

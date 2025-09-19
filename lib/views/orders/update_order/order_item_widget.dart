@@ -31,20 +31,21 @@ class UpdateOrderItem extends StatelessWidget {
             children: [
               InkWell(
                   onTap: (){
-                    Provider.of<UpdateOrderVM>(context,listen: false).incrementItemQuantity = index;
+                    Provider.of<UpdateOrderVM>(context,listen: false).incrementItemOrdered = index;
                   },
                   child: const Icon(Iconsax.add_square_copy)),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: DefaultText(txt: (int.parse(order.quantityToOrder.toString()) + int.parse(order.quantity.toString()) - 1).toString()),
+                child: DefaultText(txt: (order.orderedQuantity.toString())),
               ),
               InkWell(
                   onTap: (){
-                    Provider.of<UpdateOrderVM>(context,listen: false).decrementItemQuantity = index;
+                    Provider.of<UpdateOrderVM>(context,listen: false).decrementItemOrdered = index;
                   },
-                  child: const Icon(Iconsax.minus_square_copy)),
+                  child: const Icon(Iconsax.minus_square_copy),
+              ),
               const SizedBox(width: 15,),
-              DefaultText(txt: "${double.parse(order.unitPrice) * (int.parse(order.quantity))} EGP", center: true),
+              DefaultText(txt: "${double.parse(order.unitPrice) * (order.orderedQuantity)} EGP", center: true),
             ],
           ),
 

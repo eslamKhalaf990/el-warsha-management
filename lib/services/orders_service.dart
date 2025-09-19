@@ -94,7 +94,7 @@ class OrdersService {
           Uri.parse(
             "${Baseurl.addOrderAPI}/${order.orderID}",
           ),
-          body: jsonEncode(order.toJson())
+          body: jsonEncode(order.toUpdateJson())
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
       debugPrint(response.body);
     } on TimeoutException {

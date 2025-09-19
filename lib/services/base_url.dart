@@ -1,8 +1,8 @@
 class Baseurl {
   // static String baseURL = "https://warsha-backend.onrender.com/";
-  static String baseURL = "http://localhost:8080/";
+  // static String baseURL = "http://localhost:8080/";
   // static String baseURL = "http://67.211.210.15:8080/";
-  // static String baseURL = "https://awesome-thought-nervous-fl.trycloudflare.com/";
+  static String baseURL = "https://awesome-thought-nervous-fl.trycloudflare.com/";
   static String baseURLImages = "${baseURL}api/files/";
 
   /// =============== Authentication APIs ============== ///

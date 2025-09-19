@@ -101,6 +101,7 @@ class UpdateOrderVM extends ChangeNotifier {
       delivery: existingOrder.delivery,
       customer: existingOrder.customer,
       orderID: existingOrder.orderID,
+      discount: existingOrder.discount,
       totalPrice: existingOrder.totalPrice,
       orderDate: existingOrder.orderDate,
       status: existingOrder.status,
@@ -144,13 +145,13 @@ class UpdateOrderVM extends ChangeNotifier {
   }
 
   set incrementItemOrdered(int index) {
-    orderModel.orderItems[index].quantityOrdered++;
+    orderModel.orderItems[index].orderedQuantity++;
     notifyListeners();
   }
 
   set decrementItemOrdered(int index) {
-    if(orderModel.orderItems[index].quantityOrdered > 1){
-      orderModel.orderItems[index].quantityOrdered--;
+    if(orderModel.orderItems[index].orderedQuantity > 1){
+      orderModel.orderItems[index].orderedQuantity--;
       notifyListeners();
     }
     else {
@@ -164,7 +165,7 @@ class UpdateOrderVM extends ChangeNotifier {
 
     itemsTotal = orderModel.orderItems.fold(0, (sum, item) {
       final unitPrice = double.tryParse(item.unitPrice) ?? 0;
-      return sum + unitPrice * (item.quantityToOrder);
+      return sum + unitPrice * (item.orderedQuantity);
     });
 
     return itemsTotal;
