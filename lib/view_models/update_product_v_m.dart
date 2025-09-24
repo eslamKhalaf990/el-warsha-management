@@ -3,14 +3,17 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/services/products_service.dart';
+import 'package:warsha_app/view_models/user_v_m.dart';
 
 class UpdateProductVM extends ChangeNotifier {
   final ProductService _productService;
   ProductModel? productModel;
+  final UserViewModel _userViewModel;
+
 
   bool isLoading = false;
 
-  UpdateProductVM(this._productService);
+  UpdateProductVM(this._productService, this._userViewModel);
 
   Future<String> updateProduct({
     required String id,
@@ -36,6 +39,7 @@ class UpdateProductVM extends ChangeNotifier {
         category: productCategory,
         quantity: productQuantity,
         imageBytes: imageBytes,
+        token: _userViewModel.token
       );
 
       final responseBody = await response.stream.bytesToString();

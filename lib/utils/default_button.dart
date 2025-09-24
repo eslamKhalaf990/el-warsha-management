@@ -11,7 +11,7 @@ class DefaultButton extends StatelessWidget {
     required this.margin,
     this.isValid,
     this.border,
-    this.isLoading, this.icon,
+    this.isLoading, this.icon, this.height,
   });
   final void Function() onTap;
   final String title;
@@ -20,11 +20,12 @@ class DefaultButton extends StatelessWidget {
   final bool? isValid;
   final bool? isLoading;
   final Icon? icon;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      height: height ?? 50,
       margin: margin,
       decoration: BoxDecoration(
         color: isValid ?? true

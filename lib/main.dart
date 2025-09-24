@@ -8,14 +8,18 @@ import 'package:warsha_app/controllers/update_drag_drop.dart';
 import 'package:warsha_app/controllers/update_order/updatePaymentDetails.dart';
 import 'package:warsha_app/controllers/update_order/update_customer.dart';
 import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/models/user.dart';
 import 'package:warsha_app/services/customers_services.dart';
 import 'package:warsha_app/services/orders_service.dart';
 import 'package:warsha_app/services/products_service.dart';
+import 'package:warsha_app/services/user_service.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
 import 'package:warsha_app/view_models/update_product_v_m.dart';
+import 'package:warsha_app/view_models/user_v_m.dart';
+import 'package:warsha_app/views/auth/login.dart';
 import 'package:warsha_app/views/home.dart';
 import 'controllers/add_order/add_payment.dart';
 import 'controllers/update_order/update_product.dart';
@@ -36,13 +40,21 @@ void main() {
 
           //providers used for dependency injection
           Provider<ProductService>(create: (_) => ProductService()),
+          Provider<UserService>(create: (_) => UserService()),
           Provider<OrdersService>(create: (_) => OrdersService()),
           Provider<CustomerService>(create: (_) => CustomerService()),
+
+          ChangeNotifierProvider<UserViewModel>(
+            create: (context) => UserViewModel(
+              context.read<UserService>(),
+            ),
+          ),
 
           //injecting product with api services
           ChangeNotifierProvider<ProductVM>(
             create: (context) => ProductVM(
               context.read<ProductService>(),
+              context.read<UserViewModel>(),
             ),
           ),
 
@@ -50,19 +62,24 @@ void main() {
           ChangeNotifierProvider<AddOrderVM>(
             create: (context) => AddOrderVM(
               context.read<OrdersService>(),
-              OrderModel()
+              OrderModel(),
+              context.read<UserViewModel>(),
             ),
           ),
           //injecting product with api services
           ChangeNotifierProvider<UpdateOrderVM>(
             create: (context) => UpdateOrderVM(
               context.read<OrdersService>(),
-              OrderModel()
+              OrderModel(),
+              context.read<UserViewModel>(),
             ),
-          ),          //injecting product with api services
+          ),
+          //injecting product with api services
           ChangeNotifierProvider<UpdateProductVM>(
             create: (context) => UpdateProductVM(
               context.read<ProductService>(),
+              context.read<UserViewModel>(),
+
             ),
           ),
 
@@ -70,6 +87,7 @@ void main() {
           ChangeNotifierProvider<CustomerVM>(
             create: (context) => CustomerVM(
               context.read<CustomerService>(),
+              context.read<UserViewModel>(),
             ),
           ),
         ],
@@ -98,7 +116,10 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const Home(),
+      home: Login(),
+      routes: {
+        '/home': (context) => const Home(),
+      },
     );
   }
 }

@@ -9,13 +9,14 @@ import 'base_url.dart';
 
 class ProductService {
   // This class will handle the logic for attendance management.
-  Future<http.Response> getAllProducts() async {
+  Future<http.Response> getAllProducts(String token) async {
     debugPrint("getAllProducts called");
     http.Response response;
     try {
       response = await http.get(
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
+          "Authorization": 'Bearer $token',
         },
         Uri.parse(
           Baseurl.getAllProductsAPI,
@@ -30,13 +31,14 @@ class ProductService {
     return response;
   }
 
-  Future<http.Response> deleteProduct(String id) async {
+  Future<http.Response> deleteProduct(String id, String token) async {
     debugPrint("deleteProduct with id: $id called");
     http.Response response;
     try {
       response = await http.delete(
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
+          "Authorization": 'Bearer $token',
         },
         Uri.parse(
           "${Baseurl.deleteProductAPI}/$id",
@@ -59,8 +61,9 @@ class ProductService {
     required String sellingPrice,
     required String category,
     required String quantity,
-    required Uint8List? imageBytes, // changed type
-    String? imageName, // optional, for proper filename
+    required Uint8List? imageBytes,
+    String? imageName,
+    required String token,
   }) async {
     var uri = Uri.parse(Baseurl.addProductAPI);
 
@@ -86,6 +89,11 @@ class ProductService {
       );
     }
 
+    request.headers.addAll({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+
     return await request.send();
   }
 
@@ -97,6 +105,7 @@ class ProductService {
     required String sellingPrice,
     required String category,
     required String quantity,
+    required String token,
     required Uint8List? imageBytes,
     String? imageName,
   }) async {
@@ -123,6 +132,11 @@ class ProductService {
         ),
       );
     }
+
+    request.headers.addAll({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
 
     return await request.send();
   }

@@ -61,24 +61,97 @@ class AddCustomer extends StatelessWidget {
                               const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DefaultCustomerForm(
                                 title: "Name",
-                                controller: value.governorate,
+                                controller: value.name,
                                 icon: Iconsax.bag,
                               ),
                             ),
                           ),
                           const SizedBox(height: 20),
 
+                          // Expanded(
+                          //   child: Padding(
+                          //     padding:
+                          //     const EdgeInsets.symmetric(horizontal: 15.0),
+                          //     child: DefaultCustomerForm(
+                          //       title: "Governorate",
+                          //       controller: value.governorate,
+                          //       icon: Iconsax.building,
+                          //     ),
+                          //   ),
+                          // ),
+
                           Expanded(
                             child: Padding(
-                              padding:
-                              const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: DefaultCustomerForm(
-                                title: "Governorate",
-                                controller: value.email,
-                                icon: Iconsax.building,
+                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: DropdownButtonFormField<String>(
+                                value: value.governorate.text.isNotEmpty ? value.governorate.text : null,
+                                borderRadius: Constants.BORDER_RADIUS_20,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.grey.shade100,
+                                  labelText: "Governorate",
+                                  labelStyle:
+                                  const TextStyle(color: Colors.grey, fontSize: 14),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.transparent,
+                                      ),
+                                      borderRadius: Constants.BORDER_RADIUS_15,
+                                  ),
+                                  prefixIcon: Padding(
+                                    padding: const EdgeInsets.only(left: 30.0, right: 30),
+                                    child: Icon(
+                                      Iconsax.message,
+                                      color: Theme.of(context).colorScheme.tertiary,
+                                    ),
+                                  ),
+                                ),
+                                items: [
+                                  "Cairo",
+                                  "Giza",
+                                  "Alexandria",
+                                  "Port Said",
+                                  "Suez",
+                                  "Damietta",
+                                  "Dakahlia",
+                                  "Sharqia",
+                                  "Qalyubia",
+                                  "Monufia",
+                                  "Beheira",
+                                  "Ismailia",
+                                  "Gharbia",
+                                  "Kafr El Sheikh",
+                                  "Faiyum",
+                                  "Beni Suef",
+                                  "Minya",
+                                  "Assiut",
+                                  "Sohag",
+                                  "Qena",
+                                  "Luxor",
+                                  "Aswan",
+                                  "Red Sea",
+                                  "New Valley",
+                                  "Matrouh",
+                                  "North Sinai",
+                                  "South Sinai",
+                                ].map((gov) {
+                                  return DropdownMenuItem(
+                                    value: gov,
+                                    child: Text(gov),
+                                  );
+                                }).toList(),
+                                onChanged: (String? newValue) {
+                                  if (newValue != null) {
+                                    value.governorate.text = newValue;
+                                  }
+                                },
                               ),
                             ),
                           ),
+
                           const SizedBox(height: 20),
                           Expanded(
                             child: Padding(
@@ -112,8 +185,8 @@ class AddCustomer extends StatelessWidget {
                                   child: DefaultButton(
                                     onTap: () async {
                                       String status = await customerVM.addCustomer(
+                                        value.name.text,
                                         value.governorate.text,
-                                        value.email.text,
                                         value.phone.text,
                                         value.address.text,
                                       );
@@ -131,6 +204,10 @@ class AddCustomer extends StatelessWidget {
                                         );
                                       }
                                     },
+                                    isValid: !Provider.of<CustomerVM>(context)
+                                        .isLoading,
+                                    isLoading: Provider.of<CustomerVM>(context)
+                                        .isLoading,
                                     title: "Add new Customer",
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 15),

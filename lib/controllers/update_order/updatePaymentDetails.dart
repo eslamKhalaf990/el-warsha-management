@@ -8,7 +8,7 @@ class UpdatePaymentDetails extends ChangeNotifier {
   final TextEditingController platformSource = TextEditingController();
   final TextEditingController delivery = TextEditingController();
 
-  double _basePrice = 0; // Original price (set it when order is created)
+  double _basePrice = 0;
 
   UpdatePaymentDetails() {
 

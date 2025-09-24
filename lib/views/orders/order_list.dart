@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
@@ -17,12 +18,14 @@ class OrderList extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-            child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary,),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 200.0),
+              child: SpinKitChasingDots(color: Theme.of(context).colorScheme.secondary, size: 30,),
+            ),
           );
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.data!.isNotEmpty) {
-
           return Expanded(
             child: ListView.builder(
               itemCount: snapshot.data!.length,

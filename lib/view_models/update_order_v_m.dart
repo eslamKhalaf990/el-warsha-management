@@ -3,16 +3,18 @@ import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/models/order_items_model.dart';
 import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/services/orders_service.dart';
+import 'package:warsha_app/view_models/user_v_m.dart';
 
 class UpdateOrderVM extends ChangeNotifier {
   final OrdersService _orderService;
   OrderModel orderModel;
+  final UserViewModel _userViewModel;
 
   bool isLoading = false;
 
   Future<List<OrderModel>>? allOrders;
 
-  UpdateOrderVM(this._orderService, this.orderModel);
+  UpdateOrderVM(this._orderService, this.orderModel, this._userViewModel);
 
   Future<String> updateOrder({
     required String customerID,
@@ -40,7 +42,7 @@ class UpdateOrderVM extends ChangeNotifier {
       );
       orderModel.orderID = orderID;
 
-      final response = await _orderService.updateOrder(orderModel);
+      final response = await _orderService.updateOrder(orderModel, _userViewModel.token);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         status = "order_added";
@@ -69,6 +71,7 @@ class UpdateOrderVM extends ChangeNotifier {
       final response = await _orderService.updateOrderStatus(
         orderID,
         statusValue,
+          _userViewModel.token
       );
 
       print(response.statusCode);

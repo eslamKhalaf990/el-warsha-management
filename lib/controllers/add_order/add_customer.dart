@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 
 class CustomerProvider extends ChangeNotifier {
   // TextEditingControllers
-  final TextEditingController governorate = TextEditingController();
+  final TextEditingController name = TextEditingController();
   final TextEditingController phone = TextEditingController();
-  final TextEditingController email = TextEditingController();
+  final TextEditingController governorate = TextEditingController();
   final TextEditingController address = TextEditingController();
 
   // Dispose controllers
   @override
   void dispose() {
-    governorate.dispose();
+    name.dispose();
     phone.dispose();
-    email.dispose();
+    governorate.dispose();
     address.dispose();
     super.dispose();
   }
 
   void clearCustomer (){
-    governorate.clear();
+    name.clear();
     phone.clear();
-    email.clear();
+    governorate.clear();
     address.clear();
   }
 }

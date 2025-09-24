@@ -6,6 +6,7 @@ class Baseurl {
   static String baseURLImages = "${baseURL}api/files/";
 
   /// =============== Authentication APIs ============== ///
+  static String loginApi = '${baseURL}auth/login';
   /// =============== Authentication APIs ============== ///
 
   /// ===============   Customers APIs    ============== ///

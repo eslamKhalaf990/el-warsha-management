@@ -5,9 +5,11 @@ import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/models/order_items_model.dart';
 import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/services/orders_service.dart';
+import 'package:warsha_app/view_models/user_v_m.dart';
 
 class AddOrderVM extends ChangeNotifier {
   final OrdersService _orderService;
+  final UserViewModel _userViewModel;
   OrderModel orderModel;
 
   bool isLoading = false;
@@ -15,7 +17,7 @@ class AddOrderVM extends ChangeNotifier {
 
   Future<List<OrderModel>>? allOrders;
 
-  AddOrderVM(this._orderService, this.orderModel) {
+  AddOrderVM(this._orderService, this.orderModel, this._userViewModel) {
     initAllOrders();
   }
 
@@ -29,7 +31,7 @@ class AddOrderVM extends ChangeNotifier {
     try {
       isLoading = true;
 
-      final response = await _orderService.getAllOrders();
+      final response = await _orderService.getAllOrders(_userViewModel.token);
       if (response.statusCode == 200) {
         final ordersData = jsonDecode(response.body);
         final List<dynamic> data = ordersData;
@@ -53,7 +55,7 @@ class AddOrderVM extends ChangeNotifier {
       deletedOrder = orderID;
       notifyListeners();
 
-      final response = await _orderService.deleteOrder(orderID);
+      final response = await _orderService.deleteOrder(orderID, _userViewModel.token);
       if (response.statusCode == 204) {
         state = "deleted";
 
@@ -91,7 +93,7 @@ class AddOrderVM extends ChangeNotifier {
           paymentMethod: paymentMethod,
           delivery: delivery, discount: discount);
 
-      final response = await _orderService.addOrder(orderModel);
+      final response = await _orderService.addOrder(orderModel,_userViewModel.token);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         status = "order_added";

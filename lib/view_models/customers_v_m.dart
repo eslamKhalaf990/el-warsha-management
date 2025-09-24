@@ -2,9 +2,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/services/customers_services.dart';
+import 'package:warsha_app/view_models/user_v_m.dart';
 
 class CustomerVM extends ChangeNotifier {
   final CustomerService _customerService;
+  final UserViewModel _userViewModel;
+
 
   bool isLoading = false;
 
@@ -12,7 +15,7 @@ class CustomerVM extends ChangeNotifier {
 
   final TextEditingController searchController = TextEditingController();
 
-  CustomerVM(this._customerService) {
+  CustomerVM(this._customerService, this._userViewModel) {
     initAllCustomers();
     searchController.addListener(() {
       notifyListeners();
@@ -29,7 +32,7 @@ class CustomerVM extends ChangeNotifier {
     List<CustomerModel> customers = [];
     try {
       isLoading = true;
-      final response = await _customerService.getAllCustomers();
+      final response = await _customerService.getAllCustomers(_userViewModel.token);
       if (response.statusCode == 200) {
         final productsData = jsonDecode(response.body);
         final List<dynamic> data = productsData;
@@ -53,7 +56,7 @@ class CustomerVM extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
       CustomerModel customer = CustomerModel.add(name: name, governorate: email, phone: phone, address: address);
-      final response = await _customerService.addCustomer(customer);
+      final response = await _customerService.addCustomer(customer, _userViewModel.token);
       if (response.statusCode == 201) {
         status = "customer_added";
         debugPrint("customer added successfully");
@@ -85,7 +88,7 @@ class CustomerVM extends ChangeNotifier {
         address: address,
       );
 
-      final response = await _customerService.updateCustomer(id, customer);
+      final response = await _customerService.updateCustomer(id, customer,_userViewModel.token );
 
       if (response.statusCode == 200) {
         status = "customer_updated";

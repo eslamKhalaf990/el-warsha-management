@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_model.dart';
-import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/view_models/add_order_v_m.dart';
-import 'package:warsha_app/view_models/update_order_v_m.dart';
-import 'package:warsha_app/views/orders/update_order/update_order.dart';
-import 'package:warsha_app/views/products/invoices.dart';
+import 'package:warsha_app/views/orders/widgets/items_list.dart';
+import 'package:warsha_app/views/orders/widgets/order_crud.dart';
+import 'package:warsha_app/views/orders/widgets/update_order_status.dart';
 
 class OrderWidget extends StatelessWidget {
   final OrderModel order;
@@ -28,6 +24,8 @@ class OrderWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
+          //profile picture
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -40,6 +38,7 @@ class OrderWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 20),
+
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,13 +89,18 @@ class OrderWidget extends StatelessWidget {
                         ),
                       ],
                     ),
+
+                    //total price, payment method,
                     Row(
                       children: [
+                        //total price
                         DefaultText(
                           txt: "Total Price: ${order.totalPrice} EGP",
                           bold: true,
                         ),
                         const SizedBox(width: 10),
+
+                        //separator
                         Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -105,9 +109,9 @@ class OrderWidget extends StatelessWidget {
                           width: 5,
                           height: 5,
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
+                        const SizedBox(width: 10),
+
+                        //payment
                         DefaultText(
                           txt: "Payment method: ${order.paymentMethod}",
                           bold: true,
@@ -116,18 +120,18 @@ class OrderWidget extends StatelessWidget {
                       ],
                     ),
 
-
                     const SizedBox(height: 6),
-
+                    //delivery, down payment
                     Row(
                       children: [
+                        //delivery
                         DefaultText(
                           txt: "Delivery: ${order.delivery} EGP",
                           bold: true,
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
+                        const SizedBox(width: 10),
+
+                        //separator
                         Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -137,6 +141,8 @@ class OrderWidget extends StatelessWidget {
                           height: 5,
                         ),
                         const SizedBox(width: 10),
+
+                        //payment
                         DefaultText(
                           txt: "Down payment: ${order.downPayment} EGP",
                           bold: true,
@@ -145,16 +151,17 @@ class OrderWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
 
-                    // Title
+                    // customer name, customer phone
                     Row(
                       children: [
+                        //customer name
                         DefaultText(
                           txt: order.customer!.name,
                           bold: true,
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
+                        const SizedBox(width: 10),
+
+                        //separator
                         Container(
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
@@ -164,6 +171,8 @@ class OrderWidget extends StatelessWidget {
                           height: 5,
                         ),
                         const SizedBox(width: 10),
+
+                        //phone
                         DefaultText(
                           txt: order.customer!.phone,
                           bold: true,
@@ -172,10 +181,11 @@ class OrderWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
 
-                    // Message
+                    // address
                     SizedBox(width: 500, child: Text(order.customer!.address)),
                     const SizedBox(height: 6),
 
+                    //items list header
                     const Row(
                       children: [
                         Icon(
@@ -189,26 +199,7 @@ class OrderWidget extends StatelessWidget {
                       ],
                     ),
 
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(
-                        order.orderItems.length,
-                        (index) => Container(
-                            decoration: BoxDecoration(
-                              borderRadius: Constants.BORDER_RADIUS_20,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .tertiary
-                                  .withAlpha(50),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 4),
-                            margin: const EdgeInsets.symmetric(vertical: 5),
-                            child: DefaultText(
-                                txt:
-                                    "${index + 1}. ${order.orderItems[index].name} \t\t ${order.orderItems[index].quantity} Piece \t\t ${order.orderItems[index].unitPrice} EGP")),
-                      ),
-                    ),
+                    ItemsList(order: order),
                     const SizedBox(height: 6),
 
                     const SizedBox(height: 5),
@@ -222,203 +213,11 @@ class OrderWidget extends StatelessWidget {
               ],
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UpdateOrder(
-                            existingOrder: order,
-                          ),
-                        ),
-                      );
-                    },
-                    icon: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceTint,
-                          borderRadius: Constants.BORDER_RADIUS_50,
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Iconsax.edit,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            DefaultText(
-                              txt: "Update Order",
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ],
-                        )),
-                  ),
-                  IconButton(
-                    onPressed: !Provider.of<AddOrderVM>(context).isLoading
-                        ? () async {
-                            final orderVM =
-                                Provider.of<AddOrderVM>(context, listen: false);
-                            final state =
-                                await orderVM.deleteOrderByID(order.orderID);
-                            if (state == "deleted") {
-                              orderVM.initAllOrders();
-                            }
-                          }
-                        : null,
-                    icon: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceTint,
-                        borderRadius: Constants.BORDER_RADIUS_50,
-                      ),
-                      child: !Provider.of<AddOrderVM>(context).isLoading ||
-                              (order.orderID) !=
-                                  Provider.of<AddOrderVM>(context).deletedOrder
-                          ? Row(
-                              children: [
-                                Icon(
-                                  Iconsax.trash,
-                                  color: Colors.red.shade300,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                DefaultText(
-                                  txt: "Delete Order",
-                                  color: Colors.red.shade300,
-                                ),
-                              ],
-                            )
-                          : Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 33.0),
-                              child: SpinKitThreeBounce(
-                                  color: Colors.red.shade300, size: 20),
-                            ),
-                    ),
-                  ),
-                ],
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PDFViewPage(
-                          pdfPath: "${Baseurl.invoiceAPI}/${order.orderID}"),
-                    ),
-                  );
-                },
-                icon: Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 60),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceTint,
-                      borderRadius: Constants.BORDER_RADIUS_50,
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Iconsax.document_text,
-                          color: Colors.green.shade600,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        DefaultText(
-                          txt: "View Order Invoice",
-                          color: Colors.green.shade600,
-                        ),
-                      ],
-                    )),
-              ),
-            ],
-          ),
+          OrderCRUD(order: order),
         ],
       ),
     );
   }
 }
 
-class OrderStatusDropdown extends StatefulWidget {
-  final String currentStatus;
-  final OrderModel order;
-  final Function(String) onStatusChanged;
 
-  const OrderStatusDropdown({
-    super.key,
-    required this.currentStatus,
-    required this.onStatusChanged,
-    required this.order,
-  });
-
-  @override
-  State<OrderStatusDropdown> createState() => _OrderStatusDropdownState();
-}
-class _OrderStatusDropdownState extends State<OrderStatusDropdown> {
-  late String selectedStatus;
-
-  final List<String> statuses = [
-    "Pending",
-    "Completed",
-    "Paid",
-    "Unpaid",
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    selectedStatus = widget.currentStatus;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.yellow.shade300,
-        borderRadius: Constants.BORDER_RADIUS_20,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: selectedStatus,
-          isExpanded: true,
-          icon: const Icon(
-            Iconsax.arrow_down_2_copy,
-            size: 20,
-          ),
-          dropdownColor: Colors.white,
-          items: statuses.map((status) {
-            return DropdownMenuItem(
-              value: status,
-              child: DefaultText(
-                txt: status,
-                size: 14,
-                bold: true,
-              ),
-            );
-          }).toList(),
-          onChanged: (value) async {
-            if (value != null) {
-              setState(() {
-                selectedStatus = value;
-              });
-              await Provider.of<UpdateOrderVM>(context, listen: false)
-                  .updateOrderStatus(
-                      orderID: widget.order.orderID, statusValue: value);
-              widget.onStatusChanged(value);
-            }
-          },
-        ),
-      ),
-    );
-  }
-}

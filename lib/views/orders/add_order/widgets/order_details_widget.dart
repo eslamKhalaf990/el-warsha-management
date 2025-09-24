@@ -5,9 +5,9 @@ import 'package:warsha_app/controllers/add_order/add_payment.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
-import 'package:warsha_app/views/orders/widgets/CustomerOrderWidget.dart';
-import 'package:warsha_app/views/orders/widgets/DeliveryOrderWidget.dart';
-import 'package:warsha_app/views/orders/widgets/OrderItemWidget.dart';
+import 'package:warsha_app/views/orders/widgets/customer_order_widget.dart';
+import 'package:warsha_app/views/orders/widgets/delivery_order_widget.dart';
+import 'package:warsha_app/views/orders/widgets/order_item_widget.dart';
 import 'package:warsha_app/views/products/add_product.dart';
 
 class OrderDetailsWidget extends StatelessWidget {

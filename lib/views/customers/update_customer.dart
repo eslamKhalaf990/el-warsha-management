@@ -128,7 +128,7 @@ class UpdateCustomer extends StatelessWidget {
                                         value.phone.text,
                                         value.address.text,
                                       );
-                                      if (status == "customer_added") {
+                                      if (status == "customer_updated") {
                                         Navigator.pop(context);
                                         customerVM.initAllCustomers();
                                         customerVM.getAllCustomers();
@@ -142,6 +142,10 @@ class UpdateCustomer extends StatelessWidget {
                                         );
                                       }
                                     },
+                                    isValid: !Provider.of<CustomerVM>(context)
+                                        .isLoading,
+                                    isLoading: Provider.of<CustomerVM>(context)
+                                        .isLoading,
                                     title: "Update Your Customer",
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 15),

@@ -219,13 +219,6 @@ class UpdateProduct extends StatelessWidget {
                                           ),
                                         );
                                       }
-                                      debugPrint("Product Name: ${value.productName.text}");
-                                      debugPrint("Description: ${value.productDescription.text}");
-                                      debugPrint("Buying Price: ${value.productBuyingPrice.text}");
-                                      debugPrint("Selling Price: ${value.productSellingPrice.text}");
-                                      debugPrint("Category: ${value.productCategory.text}");
-                                      debugPrint("Quantity: ${value.productQuantity.text}");
-                                      debugPrint("Image Bytes: ${Provider.of<DragDropController>(context, listen: false).droppedBytes?.length ?? 0} bytes");
                                     },
                                     isValid: !Provider.of<UpdateProductVM>(context)
                                         .isLoading,

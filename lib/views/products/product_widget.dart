@@ -37,31 +37,35 @@ class ProductWidget extends StatelessWidget {
                   color: Theme.of(context).colorScheme.surfaceTint,
                   borderRadius: Constants.BORDER_RADIUS_20,
                 ),
-                child: Image.network(
-                  "${Baseurl.baseURLImages}${ImageHelper.extractFileId(product.image)}",
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                  // Show a loading spinner while the image is loading
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Theme.of(context).colorScheme.secondary,
+                child: ClipRRect(
+                  borderRadius: Constants.BORDER_RADIUS_15,
+                  child: Image.network(
+                    "${Baseurl.baseURLImages}${ImageHelper.extractFileId(product.image)}",
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                    // Show a loading spinner while the image is loading
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Center(
+                          child: SpinKitChasingDots(
+                            color: Theme.of(context).colorScheme.secondary,
+                            size: 20,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  // Show a fallback if the image fails to load
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(
-                      Iconsax.shopping_bag,
-                      size: 40,
-                    );
-                  },
+                      );
+                    },
+                    // Show a fallback if the image fails to load
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(
+                        Iconsax.shopping_bag,
+                        size: 40,
+                      );
+                    },
+                  ),
                 ),
               ),
               const SizedBox(width: 20),

@@ -13,13 +13,14 @@ import 'base_url.dart';
 
 class OrdersService {
   // This class will handle the logic for attendance management.
-  Future<http.Response> getAllOrders() async {
+  Future<http.Response> getAllOrders(String token) async {
     debugPrint("getAllOrders called");
     http.Response response;
     try {
       response = await http.get(
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
+          "Authorization": 'Bearer $token',
         },
         Uri.parse(
           Baseurl.getAllOrderAPI,
@@ -34,7 +35,7 @@ class OrdersService {
     return response;
   }
 
-  Future<http.Response> addOrder(OrderModel order) async {
+  Future<http.Response> addOrder(OrderModel order, String token) async {
     debugPrint("addOrder called ${order.toJson()}");
     http.Response response;
     try {
@@ -42,6 +43,7 @@ class OrdersService {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            "Authorization": 'Bearer $token',
           },
           Uri.parse(
             Baseurl.addOrderAPI,
@@ -57,7 +59,7 @@ class OrdersService {
     return response;
   }
 
-  Future<http.Response> updateOrderStatus(String orderID, String status) async {
+  Future<http.Response> updateOrderStatus(String orderID, String status, String token) async {
     debugPrint("updateOrderStatus called $status");
     http.Response response;
     try {
@@ -65,6 +67,7 @@ class OrdersService {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            "Authorization": 'Bearer $token',
           },
           Uri.parse(
             "${Baseurl.addOrderAPI}/$orderID/status",
@@ -82,7 +85,7 @@ class OrdersService {
     return response;
   }
 
-  Future<http.Response> updateOrder(OrderModel order) async {
+  Future<http.Response> updateOrder(OrderModel order, String token) async {
     debugPrint("updateOrder called ${order.toJson()}");
     http.Response response;
     try {
@@ -90,6 +93,7 @@ class OrdersService {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            "Authorization": 'Bearer $token',
           },
           Uri.parse(
             "${Baseurl.addOrderAPI}/${order.orderID}",
@@ -105,13 +109,14 @@ class OrdersService {
     return response;
   }
 
-  Future<http.Response> deleteOrder(String order) async {
+  Future<http.Response> deleteOrder(String order, String token) async {
     debugPrint("deleteOrder called $order");
     http.Response response;
     try {
       response = await http.delete(
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
+            "Authorization": 'Bearer $token',
           },
           Uri.parse(
             "${Baseurl.deleteOrderAPI}/$order",
@@ -125,6 +130,5 @@ class OrdersService {
     }
     return response;
   }
-
 
 }

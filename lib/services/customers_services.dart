@@ -12,13 +12,14 @@ import 'base_url.dart';
 
 class CustomerService {
   // This class will handle the logic for attendance management.
-  Future<http.Response> getAllCustomers() async {
+  Future<http.Response> getAllCustomers(String token) async {
     debugPrint("getAllCustomers called");
     http.Response response;
     try {
       response = await http.get(
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
+          "Authorization": 'Bearer $token',
         },
         Uri.parse(
           Baseurl.getAllCustomersAPI,
@@ -32,7 +33,8 @@ class CustomerService {
     }
     return response;
   }
-  Future<http.Response> addCustomer(CustomerModel customer) async {
+
+  Future<http.Response> addCustomer(CustomerModel customer, String token) async {
     debugPrint("addCustomer called ${customer.name}");
     http.Response response;
     try {
@@ -40,6 +42,7 @@ class CustomerService {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            "Authorization": 'Bearer $token',
           },
           Uri.parse(
             Baseurl.addCustomerAPI,
@@ -60,7 +63,7 @@ class CustomerService {
     return response;
   }
 
-  Future<http.Response> updateCustomer(String id, CustomerModel customer) async {
+  Future<http.Response> updateCustomer(String id, CustomerModel customer, String token) async {
     debugPrint("updateCustomer with id: $id");
     http.Response response;
     try {
@@ -69,6 +72,7 @@ class CustomerService {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          "Authorization": 'Bearer $token',
         },
         body: jsonEncode({
           "fullName": customer.name,
@@ -86,5 +90,4 @@ class CustomerService {
     }
     return response;
   }
-
 }

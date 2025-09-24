@@ -3,9 +3,12 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/services/products_service.dart';
+import 'package:warsha_app/view_models/user_v_m.dart';
 
 class ProductVM extends ChangeNotifier {
   final ProductService _productService;
+  final UserViewModel _userViewModel;
+
 
   bool isLoading = false;
   String deletedProduct = "";
@@ -14,7 +17,7 @@ class ProductVM extends ChangeNotifier {
   Future<List<ProductModel>>? allProducts;
   final TextEditingController searchController = TextEditingController();
 
-  ProductVM(this._productService) {
+  ProductVM(this._productService, this._userViewModel) {
     initAllProducts();
     searchController.addListener(() {
       notifyListeners();
@@ -30,7 +33,7 @@ class ProductVM extends ChangeNotifier {
     List<ProductModel> products = [];
     try {
       isLoading = true;
-      final response = await _productService.getAllProducts();
+      final response = await _productService.getAllProducts(_userViewModel.token);
       if (response.statusCode == 200) {
         final productsData = jsonDecode(response.body);
         final List<dynamic> data = productsData;
@@ -69,6 +72,7 @@ class ProductVM extends ChangeNotifier {
         category: productCategory,
         quantity: productQuantity,
         imageBytes: imageBytes,
+          token: _userViewModel.token
       );
 
       final responseBody = await response.stream.bytesToString();
@@ -97,7 +101,7 @@ class ProductVM extends ChangeNotifier {
 
       notifyListeners();
 
-      final response = await _productService.deleteProduct(productId);
+      final response = await _productService.deleteProduct(productId, _userViewModel.token);
       print(response.statusCode);
 
       if (response.statusCode == 200 || response.statusCode == 204) {
