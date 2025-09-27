@@ -3,10 +3,10 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
-import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
 
-class OrderStatusDropdown extends StatefulWidget {
+class OrderStatusDropdown extends StatelessWidget {
   final String currentStatus;
   final OrderModel order;
   final Function(String) onStatusChanged;
@@ -18,60 +18,67 @@ class OrderStatusDropdown extends StatefulWidget {
     required this.order,
   });
 
-  @override
-  State<OrderStatusDropdown> createState() => _OrderStatusDropdownState();
-}
-class _OrderStatusDropdownState extends State<OrderStatusDropdown> {
-  late String selectedStatus;
-
-  final List<String> statuses = [
+  final List<String> statuses = const [
     "Pending",
     "Completed",
     "Shipped",
   ];
 
   @override
-  void initState() {
-    super.initState();
-    selectedStatus = widget.currentStatus;
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.yellow.shade300,
+        color: currentStatus == "Pending"
+            ? Colors.yellow.shade800
+            : currentStatus == "Completed"
+            ? Colors.green.shade300
+            : Colors.brown.shade300,
         borderRadius: Constants.BORDER_RADIUS_20,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: selectedStatus,
+          value: currentStatus,
           isExpanded: true,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
           icon: const Icon(
             Iconsax.arrow_down_2_copy,
             size: 20,
+            color: Colors.white,
           ),
           dropdownColor: Colors.white,
           items: statuses.map((status) {
             return DropdownMenuItem(
               value: status,
-              child: DefaultText(
-                txt: status,
-                size: 14,
-                bold: true,
+              child: Text(
+                status,
+                style: TextStyle(
+                  color: status == currentStatus
+                      ? Colors.white
+                      : Colors.grey.shade700,
+                  fontSize: 14,
+                ),
               ),
             );
           }).toList(),
           onChanged: (value) async {
             if (value != null) {
-              setState(() {
-                selectedStatus = value;
-              });
+              // update in backend/provider
               await Provider.of<UpdateOrderVM>(context, listen: false)
                   .updateOrderStatus(
-                  orderID: widget.order.orderID, statusValue: value);
-              widget.onStatusChanged(value);
+                orderID: order.orderID,
+                statusValue: value,
+              );
+
+              // notify parent
+              onStatusChanged(value);
+
+              // refresh orders list
+              Provider.of<AddOrderVM>(context, listen: false).initAllOrders();
             }
           },
         ),

@@ -10,6 +10,7 @@ import 'package:warsha_app/view_models/user_v_m.dart';
 class AddOrderVM extends ChangeNotifier {
   final OrdersService _orderService;
   final UserViewModel _userViewModel;
+  final TextEditingController searchController = TextEditingController();
   OrderModel orderModel;
 
   bool isLoading = false;
@@ -19,6 +20,9 @@ class AddOrderVM extends ChangeNotifier {
 
   AddOrderVM(this._orderService, this.orderModel, this._userViewModel) {
     initAllOrders();
+    searchController.addListener(() {
+      notifyListeners();
+    });
   }
 
   void initAllOrders () {
@@ -172,5 +176,11 @@ class AddOrderVM extends ChangeNotifier {
     });
 
     return itemsTotal;
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 }

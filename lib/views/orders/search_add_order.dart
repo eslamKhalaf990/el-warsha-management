@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:warsha_app/models/order_model.dart';
+import 'package:provider/provider.dart';
+import 'package:warsha_app/controllers/filter_orders.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/views/orders/add_order/add_order.dart';
+import 'package:warsha_app/views/orders/order_filter.dart';
 
 class CRUDOrder extends StatelessWidget {
   const CRUDOrder({super.key});
@@ -24,7 +27,7 @@ class CRUDOrder extends StatelessWidget {
             Expanded(
               child: DefaultForm(
                 title: 'Search By Order ID',
-                controller: TextEditingController(),
+                controller: Provider.of<AddOrderVM>(context).searchController,
                 numberOfLines: 1,
               ),
             ),
@@ -39,7 +42,8 @@ class CRUDOrder extends StatelessWidget {
                 );
               },
               icon: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 120),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 60),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceTint,
                   borderRadius: Constants.BORDER_RADIUS_50,
@@ -50,9 +54,47 @@ class CRUDOrder extends StatelessWidget {
                       Iconsax.receipt_item,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
-                    const SizedBox(width: 5,),
+                    const SizedBox(
+                      width: 5,
+                    ),
                     const DefaultText(txt: "Add Order"),
                   ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Consumer<GovernorateProvider>(
+              builder: (context, value, child) => IconButton(
+                onPressed: () {
+                  value.selectedGovernorate == null ?
+                  OrderFilter.showGovernorateBottomSheet(context) : value.removeFilter();
+                },
+                icon: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceTint,
+                    borderRadius: Constants.BORDER_RADIUS_50,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        value.selectedGovernorate == null
+                            ? Iconsax.setting_3
+                            : Iconsax.close_circle,
+                        color: value.selectedGovernorate == null
+                            ? Theme.of(context).colorScheme.secondary
+                            : Colors.red.shade300,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      DefaultText(
+                          txt: value.selectedGovernorate == null
+                              ? "Filter"
+                              : "Remove Filter"),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -22,6 +22,7 @@ import 'package:warsha_app/view_models/user_v_m.dart';
 import 'package:warsha_app/views/auth/login.dart';
 import 'package:warsha_app/views/home.dart';
 import 'controllers/add_order/add_payment.dart';
+import 'controllers/filter_orders.dart';
 import 'controllers/update_order/update_product.dart';
 
 void main() {
@@ -37,6 +38,7 @@ void main() {
           ChangeNotifierProvider(create: (_)=> UpdatePaymentDetails()),
           ChangeNotifierProvider(create: (_)=> UpdateProductProvider()),
           ChangeNotifierProvider(create: (_)=> PaymentProvider()),
+          ChangeNotifierProvider(create: (_)=> GovernorateProvider()),
 
           //providers used for dependency injection
           Provider<ProductService>(create: (_) => ProductService()),

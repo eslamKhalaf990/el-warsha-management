@@ -49,13 +49,13 @@ class CustomerVM extends ChangeNotifier {
     return customers;
   }
 
-  Future<String> addCustomer(String name, String email,
+  Future<String> addCustomer(String name, String governorate,
       String phone, String address) async {
     String status = "";
     try {
       isLoading = true;
       notifyListeners();
-      CustomerModel customer = CustomerModel.add(name: name, governorate: email, phone: phone, address: address);
+      CustomerModel customer = CustomerModel.add(name: name, governorate: governorate, phone: phone, address: address);
       final response = await _customerService.addCustomer(customer, _userViewModel.token);
       if (response.statusCode == 201) {
         status = "customer_added";
@@ -74,7 +74,7 @@ class CustomerVM extends ChangeNotifier {
     return status;
   }
 
-  Future<String> updateCustomer(String id, String name, String email,
+  Future<String> updateCustomer(String id, String name, String governorate,
       String phone, String address) async {
     String status = "";
     try {
@@ -83,7 +83,7 @@ class CustomerVM extends ChangeNotifier {
 
       CustomerModel customer = CustomerModel.add(
         name: name,
-        governorate: email,
+        governorate: governorate,
         phone: phone,
         address: address,
       );

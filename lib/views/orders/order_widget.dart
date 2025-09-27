@@ -177,6 +177,25 @@ class OrderWidget extends StatelessWidget {
                           txt: order.customer!.phone,
                           bold: true,
                         ),
+
+                        const SizedBox(width: 10),
+
+                        //separator
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          width: 5,
+                          height: 5,
+                        ),
+                        const SizedBox(width: 10),
+
+                        //phone
+                        DefaultText(
+                          txt: order.customer!.governorate,
+                          bold: true,
+                        ),
                       ],
                     ),
                     const SizedBox(height: 6),

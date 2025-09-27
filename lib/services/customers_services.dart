@@ -50,7 +50,7 @@ class CustomerService {
           body: jsonEncode({
             "fullName": customer.name,
             "phone": customer.phone,
-            "email": customer.governorate,
+            "governorate": customer.governorate,
             "address": customer.address,
           })
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
@@ -77,7 +77,7 @@ class CustomerService {
         body: jsonEncode({
           "fullName": customer.name,
           "phone": customer.phone,
-          "email": customer.governorate,
+          "governorate": customer.governorate,
           "address": customer.address,
         }),
       ).timeout(const Duration(seconds: Constants.TIMEOUT));

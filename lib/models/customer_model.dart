@@ -21,11 +21,10 @@ class CustomerModel {
   });
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) {
-    print(json);
     return CustomerModel.get(
       name: json['fullName'],
       id: (json['id'] ?? json['customerId']).toString()  ,
-      governorate: json['email'],
+      governorate: json['governorate'],
       phone: json['phone'].toString(),
       address: json['address'],
     );
@@ -34,7 +33,7 @@ class CustomerModel {
   factory CustomerModel.toJson(Map<String, dynamic> json) {
     return CustomerModel.add(
       name: json['fullName'],
-      governorate: json['email'],
+      governorate: json['governorate'],
       phone: json['phone'].toString(),
       address: json['address'],
     );
