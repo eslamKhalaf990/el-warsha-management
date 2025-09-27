@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:warsha_app/models/customer_model.dart';
+import 'package:warsha_app/models/governorate_count.dart';
 import 'package:warsha_app/services/customers_services.dart';
 import 'package:warsha_app/view_models/user_v_m.dart';
 
@@ -12,6 +13,7 @@ class CustomerVM extends ChangeNotifier {
   bool isLoading = false;
 
   Future<List<CustomerModel>>? allCustomers;
+  Future<List<GovernorateCountPerCustomer>>? allCounts;
 
   final TextEditingController searchController = TextEditingController();
 
@@ -22,9 +24,9 @@ class CustomerVM extends ChangeNotifier {
     });
   }
 
-
   void initAllCustomers () {
     allCustomers = getAllCustomers();
+    allCounts = getGovernorateCounts();
     notifyListeners();
   }
 
@@ -47,6 +49,27 @@ class CustomerVM extends ChangeNotifier {
       notifyListeners();
     }
     return customers;
+  }
+
+  Future<List<GovernorateCountPerCustomer>> getGovernorateCounts() async {
+    debugPrint("getGovernorateCounts called");
+    List<GovernorateCountPerCustomer> governorateCounts = [];
+    try {
+      final response = await _customerService.getGovernorateCounts(_userViewModel.token);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        governorateCounts = data.map((item) => GovernorateCountPerCustomer.fromJson(item)).toList();
+      } else {
+        debugPrint("Failed to fetch governorate counts: ${response.statusCode}");
+      }
+    } catch (e) {
+      debugPrint("Error fetching governorate counts: $e");
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+    return governorateCounts;
   }
 
   Future<String> addCustomer(String name, String governorate,

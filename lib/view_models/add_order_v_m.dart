@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:warsha_app/models/customer_model.dart';
+import 'package:warsha_app/models/order_governorate_count.dart';
 import 'package:warsha_app/models/order_items_model.dart';
 import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/services/orders_service.dart';
@@ -17,6 +18,7 @@ class AddOrderVM extends ChangeNotifier {
   String deletedOrder = "";
 
   Future<List<OrderModel>>? allOrders;
+  Future<List<GovernorateCountPerOrder>>? allCounts;
 
   AddOrderVM(this._orderService, this.orderModel, this._userViewModel) {
     initAllOrders();
@@ -27,6 +29,7 @@ class AddOrderVM extends ChangeNotifier {
 
   void initAllOrders () {
     allOrders = getAllOrders();
+    allCounts = getGovernorateCounts();
     notifyListeners();
   }
 
@@ -51,6 +54,29 @@ class AddOrderVM extends ChangeNotifier {
     }
     return orders;
   }
+
+
+  Future<List<GovernorateCountPerOrder>> getGovernorateCounts() async {
+    debugPrint("getGovernorateCounts called");
+    List<GovernorateCountPerOrder> governorateCounts = [];
+    try {
+      final response = await _orderService.getGovernorateCounts(_userViewModel.token);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        governorateCounts = data.map((item) => GovernorateCountPerOrder.fromJson(item)).toList();
+      } else {
+        debugPrint("Failed to fetch governorate counts: ${response.statusCode}");
+      }
+    } catch (e) {
+      debugPrint("Error fetching governorate counts: $e");
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+    return governorateCounts;
+  }
+
 
   Future<String> deleteOrderByID(String orderID) async {
     String state = "";

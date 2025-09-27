@@ -131,4 +131,27 @@ class OrdersService {
     return response;
   }
 
+  Future<http.Response> getGovernorateCounts(String token) async {
+    debugPrint("getGovernorateCountsPerOrder called");
+    http.Response response;
+    try {
+      response = await http.get(
+        Uri.parse(
+          Baseurl.countGovernoratePerOrderAPI,
+        ),
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": 'Bearer $token',
+        },
+      ).timeout(const Duration(seconds: Constants.TIMEOUT));
+      debugPrint(response.body);
+    } on TimeoutException {
+      throw Exception('The request timed out. Please check your internet connection and try again.');
+    } catch (e) {
+      throw Exception('Failed to get governorate counts: $e');
+    }
+    return response;
+  }
+
+
 }

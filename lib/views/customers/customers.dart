@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:warsha_app/views/customers/crud_customer.dart';
 import 'customer_list.dart';
+import 'governorate_counts_list.dart';
 
 class Customers extends StatelessWidget {
   const Customers({super.key});
@@ -23,6 +24,7 @@ class Customers extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 15.0),
               child: CRUDCustomer(),
             ),
+            GovernorateCountList(),
             CustomerList()
           ],
         ),
