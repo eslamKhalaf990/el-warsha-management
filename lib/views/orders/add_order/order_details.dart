@@ -24,7 +24,7 @@ class OrderDetailsStep extends StatelessWidget {
             colors: [
               Colors.blue.shade50,
               Colors.yellow.shade200
-            ], // Replace with your colors
+            ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -68,6 +68,7 @@ class OrderDetailsStep extends StatelessWidget {
                                               payment.paymentMethod.text,
                                           orderSource:
                                               payment.platformSource.text,
+                                          notes: payment.notes.text,
                                         );
 
                                         Navigator.pop(context);

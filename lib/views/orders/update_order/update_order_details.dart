@@ -287,6 +287,24 @@ class UpdateOrderDetails extends StatelessWidget {
                         },
                       ),
                     ),
+
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20.0, left: 20),
+                      child: DefaultProductForm(
+                        fillColor: Theme.of(context)
+                            .colorScheme
+                            .tertiary
+                            .withAlpha(30),
+                        title: "Additional notes",
+                        controller: payment.notes,
+                        onChange: (value) {},
+                        icon: Iconsax.note,
+                        maxLines: 3,
+                      ),
+                    ),
                   ],
                 ),
               ],

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/add_order/add_customer.dart';
-import 'package:warsha_app/controllers/add_order/add_payment.dart';
-import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_button.dart';

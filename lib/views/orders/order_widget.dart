@@ -25,20 +25,6 @@ class OrderWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
-          //profile picture
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceTint,
-              borderRadius: Constants.BORDER_RADIUS_20,
-            ),
-            child: const Icon(
-              Iconsax.profile_circle,
-              size: 50,
-            ),
-          ),
-          const SizedBox(width: 20),
-
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

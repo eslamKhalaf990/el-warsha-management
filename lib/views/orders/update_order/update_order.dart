@@ -74,6 +74,7 @@ class UpdateOrder extends StatelessWidget {
                                       final customer =
                                           orderVM.orderModel.customer;
                                       if (customer == null) return;
+                                      print("updated");
 
                                       await orderVM.updateOrder(
                                         orderID: orderVM.orderModel.orderID,
@@ -83,6 +84,7 @@ class UpdateOrder extends StatelessWidget {
                                         delivery: payment.delivery.text,
                                         downPayment: payment.downPayment.text,
                                         discount: payment.discount.text,
+                                        notes: payment.notes.text,
                                         paymentMethod:
                                         payment.paymentMethod.text,
                                         orderSource:

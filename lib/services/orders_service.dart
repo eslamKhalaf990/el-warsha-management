@@ -26,7 +26,7 @@ class OrdersService {
           Baseurl.getAllOrderAPI,
         ),
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
+
     } on TimeoutException {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {
@@ -50,7 +50,7 @@ class OrdersService {
           ),
           body: jsonEncode(order.toJson())
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
+
     } on TimeoutException {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {
@@ -76,7 +76,7 @@ class OrdersService {
             "status": status
           })
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
+
     } on TimeoutException {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {
@@ -100,7 +100,7 @@ class OrdersService {
           ),
           body: jsonEncode(order.toUpdateJson())
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
+
     } on TimeoutException {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {
@@ -122,7 +122,7 @@ class OrdersService {
             "${Baseurl.deleteOrderAPI}/$order",
           ),
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
+
     } on TimeoutException {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {
@@ -144,7 +144,7 @@ class OrdersService {
           "Authorization": 'Bearer $token',
         },
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
+
     } on TimeoutException {
       throw Exception('The request timed out. Please check your internet connection and try again.');
     } catch (e) {

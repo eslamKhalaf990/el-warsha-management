@@ -5,6 +5,7 @@ class UpdatePaymentDetails extends ChangeNotifier {
   final TextEditingController downPayment = TextEditingController();
   final TextEditingController paymentMethod = TextEditingController();
   final TextEditingController discount = TextEditingController();
+  final TextEditingController notes = TextEditingController();
   final TextEditingController platformSource = TextEditingController();
   final TextEditingController delivery = TextEditingController();
 
@@ -16,6 +17,7 @@ class UpdatePaymentDetails extends ChangeNotifier {
     downPayment.addListener(_onFieldChanged);
     discount.addListener(_onFieldChanged);
     delivery.addListener(_onFieldChanged);
+    notes.addListener(_onFieldChanged);
   }
 
   double get basePrice => _basePrice;
@@ -32,6 +34,7 @@ class UpdatePaymentDetails extends ChangeNotifier {
     discount.text = existingOrder.discount;
     platformSource.text = existingOrder.orderSource;
     delivery.text = existingOrder.delivery;
+    notes.text = existingOrder.notes;
 
     notifyListeners();
   }
@@ -55,6 +58,7 @@ class UpdatePaymentDetails extends ChangeNotifier {
     discount.dispose();
     platformSource.dispose();
     delivery.dispose();
+    notes.dispose();
     super.dispose();
   }
 
@@ -65,6 +69,7 @@ class UpdatePaymentDetails extends ChangeNotifier {
     discount.clear();
     platformSource.clear();
     delivery.clear();
+    notes.clear();
     notifyListeners();
   }
 }

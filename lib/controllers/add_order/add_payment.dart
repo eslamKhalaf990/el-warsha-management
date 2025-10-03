@@ -7,6 +7,7 @@ class PaymentProvider extends ChangeNotifier {
   final TextEditingController discount = TextEditingController();
   final TextEditingController platformSource = TextEditingController();
   final TextEditingController delivery = TextEditingController();
+  final TextEditingController notes = TextEditingController();
 
   double _basePrice = 0;
 
@@ -16,6 +17,7 @@ class PaymentProvider extends ChangeNotifier {
     downPayment.addListener(_onFieldChanged);
     discount.addListener(_onFieldChanged);
     delivery.addListener(_onFieldChanged);
+    notes.addListener(_onFieldChanged);
   }
 
   double get basePrice => _basePrice;
@@ -31,6 +33,7 @@ class PaymentProvider extends ChangeNotifier {
     discount.text ="0.0";
     platformSource.text = existingOrder.orderSource;
     delivery.text = existingOrder.delivery;
+    notes.text = existingOrder.notes;
 
     // if you want to set base price too, calculate from items
     if (existingOrder.orderItems.isNotEmpty) {
@@ -62,6 +65,7 @@ class PaymentProvider extends ChangeNotifier {
     discount.dispose();
     platformSource.dispose();
     delivery.dispose();
+    notes.dispose();
     super.dispose();
   }
 
@@ -71,6 +75,7 @@ class PaymentProvider extends ChangeNotifier {
     discount.clear();
     platformSource.clear();
     delivery.clear();
+    notes.clear();
     _basePrice = 0;
     notifyListeners();
   }

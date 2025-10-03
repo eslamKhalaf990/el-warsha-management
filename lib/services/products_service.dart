@@ -22,7 +22,6 @@ class ProductService {
           Baseurl.getAllProductsAPI,
         ),
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
     } on TimeoutException {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {
@@ -44,7 +43,7 @@ class ProductService {
           "${Baseurl.deleteProductAPI}/$id",
         ),
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
+
     } on TimeoutException {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {

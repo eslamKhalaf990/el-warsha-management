@@ -20,6 +20,7 @@ class UpdateOrderVM extends ChangeNotifier {
     required String customerID,
     required String orderID,
     required String delivery,
+    required String notes,
     required String discount,
     required String orderSource,
     required String paymentMethod,
@@ -38,7 +39,7 @@ class UpdateOrderVM extends ChangeNotifier {
           downPayment: downPayment,
           paymentMethod: paymentMethod,
           delivery: delivery,
-          discount: discount,
+          discount: discount, notes: notes,
       );
       orderModel.orderID = orderID;
 
@@ -108,6 +109,7 @@ class UpdateOrderVM extends ChangeNotifier {
       totalPrice: existingOrder.totalPrice,
       orderDate: existingOrder.orderDate,
       status: existingOrder.status,
+      notes: existingOrder.notes,
     );
     notifyListeners();
   }

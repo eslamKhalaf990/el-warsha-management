@@ -23,7 +23,7 @@ class UserService {
             "password": password,
           })
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
+
     } on TimeoutException {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {

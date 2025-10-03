@@ -295,6 +295,74 @@ class OrderDetailsWidget extends StatelessWidget {
             ),
           ),
 
+          const SliverToBoxAdapter(child: SizedBox(height: 15)),
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0, left: 20),
+                  child: DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Theme.of(context)
+                          .colorScheme
+                          .tertiary
+                          .withAlpha(30),
+                      labelText: "Payment Method",
+                      labelStyle:
+                      const TextStyle(color: Colors.grey, fontSize: 14),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
+                          borderRadius: Constants.BORDER_RADIUS_15),
+                      prefixIcon: Icon(Iconsax.wallet_1,
+                          color: Theme.of(context).colorScheme.tertiary),
+                    ),
+                    value: value.paymentMethod.text.isNotEmpty
+                        ? value.paymentMethod.text
+                        : null, // preselect if controller has value
+                    items: const [
+                      DropdownMenuItem(
+                          value: "vodafone cash",
+                          child: Text("Vodafone Cash")),
+                      DropdownMenuItem(
+                          value: "instapay", child: Text("Instapay")),
+                      DropdownMenuItem(value: "cash", child: Text("Cash")),
+                    ],
+                    onChanged: (selected) {
+                      if (selected != null) {
+                        value.paymentMethod.text =
+                            selected; // sync with controller
+                      }
+                    },
+                  ),
+                ),
+
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0, left: 20),
+                  child: DefaultProductForm(
+                    fillColor: Theme.of(context)
+                        .colorScheme
+                        .tertiary
+                        .withAlpha(30),
+                    title: "Additional notes",
+                    controller: value.notes,
+                    onChange: (value) {},
+                    icon: Iconsax.note,
+                    maxLines: 3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
           const SliverToBoxAdapter(child: SizedBox(height: 80)),
         ],
       ),

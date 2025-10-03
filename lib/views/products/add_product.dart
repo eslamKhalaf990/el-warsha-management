@@ -273,7 +273,7 @@ class DefaultProductForm extends StatelessWidget {
     required this.icon,
     required this.controller,
     this.onChange,
-    this.fillColor, this.currency,
+    this.fillColor, this.currency, this.maxLines,
   });
   final String title;
   final TextEditingController controller;
@@ -281,11 +281,13 @@ class DefaultProductForm extends StatelessWidget {
   final IconData? icon;
   final bool? currency;
   final Color? fillColor;
+  final int? maxLines;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       onChanged: onChange,
+      maxLines: maxLines,
       cursorColor: Theme.of(context)
           .colorScheme
           .tertiary

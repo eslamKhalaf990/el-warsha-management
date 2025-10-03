@@ -9,6 +9,7 @@ class OrderModel {
   //order
   late String orderID;
   late String delivery;
+  late String notes;
   late String totalPrice;
   late String discount;
   late String orderSource;
@@ -25,6 +26,7 @@ class OrderModel {
     required this.customerID,
     required this.delivery,
     required this.orderSource,
+    required this.notes,
     required this.paymentMethod,
     required this.downPayment,
     required this.discount,
@@ -39,6 +41,7 @@ class OrderModel {
     required this.totalPrice,
     required this.delivery,
     required this.downPayment,
+    required this.notes,
     required this.orderDate,
     required this.discount,
     required this.status,
@@ -58,6 +61,7 @@ class OrderModel {
       paymentMethod: json['paymentMethod'].toString(),
       delivery: json['delivery'].toString(),
       discount: json['discount'].toString(),
+      notes: json['notes'].toString() ,
       downPayment: json['downPayment'].toString(),
       totalPrice: json['totalPrice'].toString(),
     );
@@ -68,6 +72,7 @@ class OrderModel {
       'customerId': customerID,
       'downPayment' : downPayment,
       'delivery' : delivery,
+      'notes' : notes,
       'orderSource' : orderSource,
       'paymentMethod' : paymentMethod,
       'discount' : discount,
@@ -79,6 +84,7 @@ class OrderModel {
     return {
       'customerId': customerID,
       'downPayment' : downPayment,
+      'notes' : notes,
       'delivery' : delivery,
       'orderSource' : orderSource,
       'paymentMethod' : paymentMethod,

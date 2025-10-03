@@ -107,6 +107,7 @@ class AddOrderVM extends ChangeNotifier {
     required String customerID,
     required String delivery,
     required String discount,
+    required String notes,
     required String orderSource,
     required String paymentMethod,
     required String downPayment,
@@ -121,7 +122,7 @@ class AddOrderVM extends ChangeNotifier {
           orderSource: orderSource,
           downPayment: downPayment,
           paymentMethod: paymentMethod,
-          delivery: delivery, discount: discount);
+          delivery: delivery, discount: discount, notes: notes);
 
       final response = await _orderService.addOrder(orderModel,_userViewModel.token);
 
@@ -157,7 +158,7 @@ class AddOrderVM extends ChangeNotifier {
       orderID: existingOrder.orderID,
       totalPrice: existingOrder.totalPrice,
       orderDate: existingOrder.orderDate,
-      status: existingOrder.status,
+      status: existingOrder.status, notes: existingOrder.notes,
     );
     notifyListeners();
   }

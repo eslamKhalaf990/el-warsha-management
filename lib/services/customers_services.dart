@@ -25,7 +25,7 @@ class CustomerService {
           Baseurl.getAllCustomersAPI,
         ),
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
+
     } on TimeoutException {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {
@@ -47,7 +47,7 @@ class CustomerService {
           "Authorization": 'Bearer $token',
         },
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
+
     } on TimeoutException {
       throw Exception('The request timed out. Please check your internet connection and try again.');
     } catch (e) {
@@ -76,7 +76,7 @@ class CustomerService {
             "address": customer.address,
           })
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
-      debugPrint(response.body);
+
     } on TimeoutException {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {
@@ -104,7 +104,7 @@ class CustomerService {
         }),
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
 
-      debugPrint(response.body);
+
     } on TimeoutException {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {
