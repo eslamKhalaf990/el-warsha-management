@@ -70,7 +70,7 @@ class OrdersService {
             "Authorization": 'Bearer $token',
           },
           Uri.parse(
-            "${Baseurl.addOrderAPI}/$orderID/status",
+            "${Baseurl.addOrderAPI}/status/$orderID",
           ),
           body: jsonEncode({
             "status": status
