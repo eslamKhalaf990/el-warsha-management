@@ -10,12 +10,14 @@ import 'package:warsha_app/controllers/update_order/update_customer.dart';
 import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/models/user.dart';
 import 'package:warsha_app/services/customers_services.dart';
+import 'package:warsha_app/services/home_service.dart';
 import 'package:warsha_app/services/orders_service.dart';
 import 'package:warsha_app/services/products_service.dart';
 import 'package:warsha_app/services/user_service.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/add_product_v_m.dart';
+import 'package:warsha_app/view_models/home_v_m.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
 import 'package:warsha_app/view_models/update_product_v_m.dart';
 import 'package:warsha_app/view_models/user_v_m.dart';
@@ -42,6 +44,7 @@ void main() {
 
           //providers used for dependency injection
           Provider<ProductService>(create: (_) => ProductService()),
+          Provider<HomeService>(create: (_) => HomeService()),
           Provider<UserService>(create: (_) => UserService()),
           Provider<OrdersService>(create: (_) => OrdersService()),
           Provider<CustomerService>(create: (_) => CustomerService()),
@@ -89,6 +92,13 @@ void main() {
           ChangeNotifierProvider<CustomerVM>(
             create: (context) => CustomerVM(
               context.read<CustomerService>(),
+              context.read<UserViewModel>(),
+            ),
+          ),
+
+          ChangeNotifierProvider<HomeVM>(
+            create: (context) => HomeVM(
+              context.read<HomeService>(),
               context.read<UserViewModel>(),
             ),
           ),

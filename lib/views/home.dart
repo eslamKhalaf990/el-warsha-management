@@ -46,7 +46,6 @@ class Home extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Container(
-                              // margin: const EdgeInsets.symmetric(horizontal: 15),
                               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.onPrimary,
@@ -66,35 +65,42 @@ class Home extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: Constants.BORDER_RADIUS_20),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 15),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Iconsax.home,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  ),
-                                  const SizedBox(width: 15),
-                                  const DefaultText(
-                                    txt: "Home",
-                                    bold: true,
-                                  )
-                                ],
-                              ),
-                            ),
-                            // const SizedBox(height: 70),
                             InkWell(
                               onTap: (){
                                 value.updatePage(0);
-
                               },
                               child: Container(
                                 decoration: BoxDecoration(
                                     color: value.page == 0 ? Theme.of(context)
+                                        .colorScheme
+                                        .secondary
+                                        .withAlpha(50) : null,
+                                    borderRadius: Constants.BORDER_RADIUS_20),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 15),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Iconsax.home,
+                                      color:
+                                      Theme.of(context).colorScheme.secondary,
+                                    ),
+                                    const SizedBox(width: 15),
+                                    const DefaultText(
+                                      txt: "Home",
+                                      bold: true,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: (){
+                                value.updatePage(1);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: value.page == 1 ? Theme.of(context)
                                         .colorScheme
                                         .secondary
                                         .withAlpha(50) : null,
@@ -117,14 +123,13 @@ class Home extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            // const SizedBox(height: 70),
                             InkWell(
                               onTap: (){
-                                value.updatePage(1);
+                                value.updatePage(2);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                    color: value.page == 1 ? Theme.of(context)
+                                    color: value.page == 2 ? Theme.of(context)
                                         .colorScheme
                                         .secondary
                                         .withAlpha(50) : null,
@@ -149,14 +154,13 @@ class Home extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            // const SizedBox(height: 70),
                             InkWell(
                               onTap: (){
-                                value.updatePage(2);
+                                value.updatePage(3);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                    color: value.page == 2 ? Theme.of(context)
+                                    color: value.page == 3 ? Theme.of(context)
                                         .colorScheme
                                         .secondary
                                         .withAlpha(50) : null,
@@ -179,10 +183,8 @@ class Home extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            // const SizedBox(height: 70),
                             Container(
                               decoration: BoxDecoration(
-                                  // color: Theme.of(context).colorScheme.secondary.withAlpha(50),
                                   borderRadius: Constants.BORDER_RADIUS_20),
                               padding: const EdgeInsets.symmetric(
                                   vertical: 15, horizontal: 15),
