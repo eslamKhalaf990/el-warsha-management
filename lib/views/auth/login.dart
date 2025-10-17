@@ -23,8 +23,24 @@ class Login extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
         ),
-        child: Row(
+        child: Stack(
           children: [
+            // Right side: Image takes half
+            Expanded(
+              flex: 1, // takes the other half
+              child: SizedBox.expand(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 300.0),
+                  child: Opacity(
+                    opacity: 0.2,
+                    child: Image.asset(
+                      "assets/images/low-poly-abstract-design.png",
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             // Left side: Login Card
             Expanded(
               flex: 1, // takes half the screen
@@ -60,6 +76,7 @@ class Login extends StatelessWidget {
                         icon: Iconsax.sms_copy,
                         controller: username,
                         title: "Email",
+                        isPassword: false,
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -71,13 +88,15 @@ class Login extends StatelessWidget {
                         icon: Iconsax.key_copy,
                         controller: password,
                         title: "Password",
+                        isPassword: true,
                       ),
                     ),
                     const SizedBox(height: 20),
 
                     const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 80.0),
+                      padding: EdgeInsets.only(right: 200.0),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           DefaultText(txt: "Remember me"),
                           SizedBox(width: 10),
@@ -111,20 +130,6 @@ class Login extends StatelessWidget {
                 ),
               ),
             ),
-
-            // Right side: Image takes half
-            Expanded(
-              flex: 1, // takes the other half
-              child: SizedBox.expand(
-                child: Opacity(
-                  opacity: 0.3,
-                  child: Image.asset(
-                    "assets/images/low-poly-abstract-design.png",
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -133,15 +138,17 @@ class Login extends StatelessWidget {
 }
 
 class LoginForm extends StatelessWidget {
-  const LoginForm({super.key, required this.icon, required this.title, required this.controller});
+  const LoginForm({super.key, required this.icon, required this.title, required this.controller, required this.isPassword});
   final IconData icon;
   final String title;
+  final bool isPassword;
   final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      obscureText: isPassword,
       cursorColor: Theme.of(context)
           .colorScheme
           .tertiary

@@ -48,6 +48,7 @@ dependencies:
   path: ^1.9.0
   file_picker: ^8.3.2
   printing: ^5.14.2
+  syncfusion_flutter_charts: ^31.1.23
 dev_dependencies:
   flutter_test:
     sdk: flutter

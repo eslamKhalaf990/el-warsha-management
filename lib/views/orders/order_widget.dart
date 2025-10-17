@@ -107,6 +107,7 @@ class OrderWidget extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 6),
+
                     //delivery, down payment
                     Row(
                       children: [
@@ -210,8 +211,8 @@ class OrderWidget extends StatelessWidget {
                     const SizedBox(height: 5),
                     Divider(
                       color:
-                          Theme.of(context).colorScheme.onSurface.withAlpha(50),
-                      thickness: 0.5,
+                          Theme.of(context).colorScheme.tertiary.withAlpha(50),
+                      thickness: 5,
                     )
                   ],
                 ),

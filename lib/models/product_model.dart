@@ -39,7 +39,7 @@ class ProductModel {
       productDescription: json['description'],
       sellingPrice: json['sellingPrice'].toString(),
       buyingPrice: json['buyingPrice'].toString(),
-      category: json['category'],
+      category: json['categoryName'],
       quantity: json['quantity'],
       sku: json['sku'], image: json['imageUrl'] ?? "-",
     );
@@ -52,7 +52,7 @@ class ProductModel {
       'buyingPrice': buyingPrice.toString(),
       'sellingPrice': sellingPrice.toString(),
       'quantity': quantity,
-      'category': category,
+      'categoryName': category,
       'sku': sku,
     };
   }

@@ -1,6 +1,6 @@
 class Baseurl {
-  static String baseURL = "http://localhost:8080/";
-  // static String baseURL = "https://answering-labour-terrace-completing.trycloudflare.com/";
+  // static String baseURL = "http://localhost:8080/";
+  static String baseURL = "https://accommodation-led-comprehensive-floating.trycloudflare.com/";
   static String baseURLImages = "${baseURL}api/files/";
 
   /// =============== Authentication APIs ============== ///
@@ -33,6 +33,7 @@ class Baseurl {
 
   /// ===============   Cash Flow APIs    ============== ///
   static String getRevenueSummaryAPI = '${baseURL}cashFlow/revenueSummary';
+  static String getDailyCashFlowAPI = '${baseURL}cashFlow/daily';
 /// ===============   Products APIs    ============== ///
 
 }
