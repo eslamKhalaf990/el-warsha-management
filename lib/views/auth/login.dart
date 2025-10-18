@@ -26,108 +26,100 @@ class Login extends StatelessWidget {
         child: Stack(
           children: [
             // Right side: Image takes half
-            Expanded(
-              flex: 1, // takes the other half
-              child: SizedBox.expand(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 300.0),
-                  child: Opacity(
-                    opacity: 0.2,
-                    child: Image.asset(
-                      "assets/images/low-poly-abstract-design.png",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+            Padding(
+              padding: const EdgeInsets.only(left: 300.0),
+              child: Opacity(
+                opacity: 0.2,
+                child: Image.asset(
+                  "assets/images/low-poly-abstract-design.png",
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
             // Left side: Login Card
-            Expanded(
-              flex: 1, // takes half the screen
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onPrimary.withAlpha(120),
-                  borderRadius: Constants.BORDER_RADIUS_25,
-                ),
-                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ClipRRect(
-                      borderRadius: Constants.BORDER_RADIUS_100,
-                      child: Image.asset(
-                        "assets/images/logo-no-back.png",
-                        width: 150,
-                        height: 140,
-                      ),
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onPrimary.withAlpha(120),
+                borderRadius: Constants.BORDER_RADIUS_25,
+              ),
+              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: Constants.BORDER_RADIUS_100,
+                    child: Image.asset(
+                      "assets/images/logo-no-back.png",
+                      width: 150,
+                      height: 140,
                     ),
-                    const DefaultText(
-                      txt: "EL WARSHA ERP",
-                      size: 26,
-                      bold: true,
-                    ),
-                    const SizedBox(height: 30),
+                  ),
+                  const DefaultText(
+                    txt: "EL WARSHA ERP",
+                    size: 26,
+                    bold: true,
+                  ),
+                  const SizedBox(height: 30),
 
-                    // Email
-                    SizedBox(
-                      width: 400,
-                      child: LoginForm(
-                        icon: Iconsax.sms_copy,
-                        controller: username,
-                        title: "Email",
-                        isPassword: false,
-                      ),
+                  // Email
+                  SizedBox(
+                    width: 400,
+                    child: LoginForm(
+                      icon: Iconsax.sms_copy,
+                      controller: username,
+                      title: "Email",
+                      isPassword: false,
                     ),
-                    const SizedBox(height: 15),
+                  ),
+                  const SizedBox(height: 15),
 
-                    // Password
-                    SizedBox(
-                      width: 400,
-                      child: LoginForm(
-                        icon: Iconsax.key_copy,
-                        controller: password,
-                        title: "Password",
-                        isPassword: true,
-                      ),
+                  // Password
+                  SizedBox(
+                    width: 400,
+                    child: LoginForm(
+                      icon: Iconsax.key_copy,
+                      controller: password,
+                      title: "Password",
+                      isPassword: true,
                     ),
-                    const SizedBox(height: 20),
+                  ),
+                  const SizedBox(height: 20),
 
-                    const Padding(
-                      padding: EdgeInsets.only(right: 200.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          DefaultText(txt: "Remember me"),
-                          SizedBox(width: 10),
-                          Icon(Iconsax.tick_square_copy, size: 16),
-                        ],
-                      ),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 200.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DefaultText(txt: "Remember me"),
+                        SizedBox(width: 10),
+                        Icon(Iconsax.tick_square_copy, size: 16),
+                      ],
                     ),
-                    const SizedBox(height: 20),
+                  ),
+                  const SizedBox(height: 20),
 
-                    SizedBox(
-                      width: 400,
-                      child: Consumer<UserViewModel>(
-                        builder: (context, userVM, child) => DefaultButton(
-                          onTap: () async {
-                            final status = await userVM.login(username.text, password.text);
-                            print(status);
-                            if(status == "logged_in") {
-                              Navigator.pushNamed(context, "/home");
-                            }
-                          },
-                          height: 45,
-                          title: "Login",
-                          isValid: !userVM.isLoading,
-                          isLoading: userVM.isLoading,
-                          margin: EdgeInsets.zero,
-                          border: 30,
-                        ),
+                  SizedBox(
+                    width: 400,
+                    child: Consumer<UserViewModel>(
+                      builder: (context, userVM, child) => DefaultButton(
+                        onTap: () async {
+                          final status = await userVM.login(username.text, password.text);
+                          print(status);
+                          if(status == "logged_in") {
+                            Navigator.pushNamed(context, "/home");
+                          }
+                        },
+                        height: 45,
+                        title: "Login",
+                        isValid: !userVM.isLoading,
+                        isLoading: userVM.isLoading,
+                        margin: EdgeInsets.zero,
+                        border: 30,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
