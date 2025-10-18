@@ -28,7 +28,7 @@ class ProductToUpdate extends StatelessWidget {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.data!.isNotEmpty) {
           final filteredProducts = snapshot.data!.where((product) {
-            final name = product.name.toLowerCase() ?? "";
+            final name = product.name.toLowerCase();
             final sku = product.sku?.toLowerCase() ?? "";
             final query = Provider.of<ProductVM>(context).searchController.text.toLowerCase();
             return name.contains(query) || sku.contains(query);

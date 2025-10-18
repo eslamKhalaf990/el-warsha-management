@@ -29,7 +29,7 @@ class OrderList extends StatelessWidget {
         } else if (snapshot.data!.isNotEmpty) {
           final filteredOrders = snapshot.data!.where((order) {
             final governorate = order.customer!.governorate.toLowerCase();
-            final status = order.status.toLowerCase() ?? "";
+            final status = order.status.toLowerCase();
             final query = Provider.of<GovernorateProvider>(context).selectedGovernorate;
             return governorate.contains(query ?? "") || status.contains(query ?? "");
           }).toList();

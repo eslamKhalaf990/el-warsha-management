@@ -8,7 +8,6 @@ import 'package:warsha_app/controllers/update_drag_drop.dart';
 import 'package:warsha_app/controllers/update_order/updatePaymentDetails.dart';
 import 'package:warsha_app/controllers/update_order/update_customer.dart';
 import 'package:warsha_app/models/order_model.dart';
-import 'package:warsha_app/models/user.dart';
 import 'package:warsha_app/services/customers_services.dart';
 import 'package:warsha_app/services/home_service.dart';
 import 'package:warsha_app/services/orders_service.dart';

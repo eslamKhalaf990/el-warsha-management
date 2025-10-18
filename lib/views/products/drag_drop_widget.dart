@@ -1,6 +1,5 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/drag_drop_controller.dart';
@@ -15,7 +14,6 @@ class DragDropImageUpload extends StatefulWidget {
 }
 
 class _DragDropImageUploadState extends State<DragDropImageUpload> {
-  late DropzoneViewController _dropzoneController;
   final bool _dragging = false;
 
   @override

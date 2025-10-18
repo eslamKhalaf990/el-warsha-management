@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/navigation.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import '../utils/default_text.dart';
+// ignore: unused_import
 import '../utils/app_bar_widget.dart';
 
 class Home extends StatelessWidget {
