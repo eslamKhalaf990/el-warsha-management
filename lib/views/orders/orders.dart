@@ -26,6 +26,8 @@ class Orders extends StatelessWidget {
               child: CRUDOrder(),
             ),
             const GovernorateCountList(),
+            const SizedBox(height: 8),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 35.0),
               child: Row(
