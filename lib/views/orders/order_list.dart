@@ -38,9 +38,13 @@ class OrderList extends StatelessWidget {
               itemCount: filteredOrders.length,
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
-                return OrderWidget(
+                return OrderExpandableRow(
                   order: filteredOrders[index],
+                  onView: () => filteredOrders[index],
+                  onEdit: () => filteredOrders[index],
+                  onDelete: () => filteredOrders[index],
                 );
+
               },
             ),
           );

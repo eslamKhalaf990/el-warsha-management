@@ -1,229 +1,346 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
-import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/views/orders/widgets/items_list.dart';
-import 'package:warsha_app/views/orders/widgets/order_crud.dart';
+import 'package:warsha_app/utils/date.dart';
+import 'package:warsha_app/view_models/add_order_v_m.dart';
+import 'package:warsha_app/views/orders/update_order/update_order.dart';
+import 'package:warsha_app/views/orders/widgets/build_cell.dart';
 import 'package:warsha_app/views/orders/widgets/update_order_status.dart';
+import 'package:warsha_app/views/products/invoices.dart';
 
-class OrderWidget extends StatelessWidget {
+class OrderExpandableRow extends StatefulWidget {
   final OrderModel order;
+  final VoidCallback onView;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
-  const OrderWidget({super.key, required this.order});
+  const OrderExpandableRow({
+    super.key,
+    required this.order,
+    required this.onView,
+    required this.onEdit,
+    required this.onDelete,
+  });
+
+  @override
+  State<OrderExpandableRow> createState() => _OrderExpandableRowState();
+}
+
+class _OrderExpandableRowState extends State<OrderExpandableRow> {
+  bool _expanded = false;
+
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onPrimary.withAlpha(100),
-        borderRadius: Constants.BORDER_RADIUS_20,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    final order = widget.order;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40.0),
+      child: Column(
         children: [
-
-          Expanded(
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+              ),
+            ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // order id, order date and status
-                    Row(
-                      children: [
-                        DefaultText(
-                          txt: "Order ID: ${order.orderID}",
-                          bold: true,
+                buildCell('#${order.orderID}', flex: 2, isBold: true),
+                buildCell(DateHelper.formatDate1(order.orderDate), flex: 2, isBold: true),
+                buildCell(order.orderSource, flex: 2, isBold: true),
+                buildCell(order.customer!.name, flex: 4, isBold: true),
+                buildCell(order.customer!.phone,
+                    flex: 3, isBold: true),
+                Expanded(
+                  flex: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                    child: Chip(
+                      label: SizedBox(
+                        width: 120,
+                        height: 25,
+                        child: OrderStatusDropdown(
+                          currentStatus: order.status,
+                          order: order,
+                          onStatusChanged: (value) {},
                         ),
-                        const SizedBox(width: 10),
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          width: 5,
-                          height: 5,
-                        ),
-                        const SizedBox(width: 10),
-                        DefaultText(
-                          txt: order.orderDate,
-                          bold: true,
-                        ),
-                        const SizedBox(width: 10),
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          width: 5,
-                          height: 5,
-                        ),
-                        //order status
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 120,
-                          height: 25,
-                          child: OrderStatusDropdown(
-                            currentStatus: order.status,
-                            order: order,
-                            onStatusChanged: (value) {},
-                          ),
-                        ),
-                      ],
+                      ),
+                      padding: EdgeInsets.zero,
+                      labelStyle: const TextStyle(fontSize: 12),
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                      side: BorderSide.none,
                     ),
+                  ),
+                ),
+                buildCell('${order.totalPrice} EGP',
+                    flex: 2, isBold: double.parse(order.totalPrice) > 0),
+                buildCell(order.paymentMethod, flex: 4, isBold: true),
+                Expanded(
+                  flex: 4,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Iconsax.eye_copy, size: 20),
+                        onPressed: () => setState(() => _expanded = !_expanded),
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.document_text_copy,
+                            size: 20, color: Colors.green),
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PDFViewPage(
+                                  pdfPath: "${Baseurl.invoiceAPI}/${order.orderID}"),
+                            ),
+                          );
+                        },
+                      ),
+                      IconButton(
+                          icon: const Icon(Iconsax.edit_2_copy,
+                              size: 20, color: Colors.blue),
+                          onPressed: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateOrder(
+                                  existingOrder: order,
+                                ),
+                              ),
+                            );
+                          },
+                      ),
+                      IconButton(
+                        icon: !Provider.of<AddOrderVM>(context).isLoading ||
+                            (order.orderID) != Provider.of<AddOrderVM>(context).deletedOrder
+                            ? const Icon(Iconsax.trash_copy, size: 20, color: Colors.red)
+                            : const SpinKitChasingDots(color: Colors.red, size: 20),
+                        onPressed: !Provider.of<AddOrderVM>(context).isLoading
+                            ? () async {
+                          final confirm = await showDialog<bool>(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Confirm Deletion'),
+                                content: Text('Are you sure you want to delete order #${order.orderID}?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                                    onPressed: () => Navigator.pop(context, true),
+                                    child: const Text('Delete'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
 
-                    //total price, payment method,
-                    Row(
-                      children: [
-                        //total price
-                        DefaultText(
-                          txt: "Total Price: ${order.totalPrice} EGP",
-                          bold: true,
-                        ),
-                        const SizedBox(width: 10),
+                          if (confirm != true) return; // Cancel pressed
 
-                        //separator
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          width: 5,
-                          height: 5,
-                        ),
-                        const SizedBox(width: 10),
+                          final orderVM = Provider.of<AddOrderVM>(context, listen: false);
+                          final state = await orderVM.deleteOrderByID(order.orderID);
 
-                        //payment
-                        DefaultText(
-                          txt: "Payment method: ${order.paymentMethod}",
-                          bold: true,
-                        ),
-                        const SizedBox(width: 10),
-                      ],
-                    ),
-
-                    const SizedBox(height: 6),
-
-                    //delivery, down payment
-                    Row(
-                      children: [
-                        //delivery
-                        DefaultText(
-                          txt: "Delivery: ${order.delivery} EGP",
-                          bold: true,
-                        ),
-                        const SizedBox(width: 10),
-
-                        //separator
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          width: 5,
-                          height: 5,
-                        ),
-                        const SizedBox(width: 10),
-
-                        //payment
-                        DefaultText(
-                          txt: "Down payment: ${order.downPayment} EGP",
-                          bold: true,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-
-                    // customer name, customer phone
-                    Row(
-                      children: [
-                        //customer name
-                        DefaultText(
-                          txt: order.customer!.name,
-                          bold: true,
-                        ),
-                        const SizedBox(width: 10),
-
-                        //separator
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          width: 5,
-                          height: 5,
-                        ),
-                        const SizedBox(width: 10),
-
-                        //phone
-                        DefaultText(
-                          txt: order.customer!.phone,
-                          bold: true,
-                        ),
-
-                        const SizedBox(width: 10),
-
-                        //separator
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          width: 5,
-                          height: 5,
-                        ),
-                        const SizedBox(width: 10),
-
-                        //phone
-                        DefaultText(
-                          txt: order.customer!.governorate,
-                          bold: true,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-
-                    // address
-                    SizedBox(width: 500, child: Text(order.customer!.address)),
-                    const SizedBox(height: 6),
-
-                    //items list header
-                    const Row(
-                      children: [
-                        Icon(
-                          Iconsax.receipt_item_copy,
-                          size: 16,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text("Items List"),
-                      ],
-                    ),
-
-                    ItemsList(order: order),
-                    const SizedBox(height: 6),
-
-                    const SizedBox(height: 5),
-                    Divider(
-                      color:
-                          Theme.of(context).colorScheme.tertiary.withAlpha(50),
-                      thickness: 5,
-                    )
-                  ],
+                          if (state == "deleted") {
+                            orderVM.initAllOrders();
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Order #${order.orderID} deleted successfully.'),
+                                  backgroundColor: Colors.red,
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          }
+                        }
+                            : null,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-          OrderCRUD(order: order),
+
+          // Expanded order items (only visible when expanded)
+          _expanded
+              ? Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+            child: Column(
+              children: [
+                // Address and down payment
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+                  child: const Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Text("Down payment",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text("Delivery",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+
+                      Expanded(
+                        flex: 2,
+                        child: Text("Address details",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+
+                    ],
+                  ),
+                ),
+
+                // Address and down payment
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Theme.of(context).colorScheme.tertiary.withAlpha(50), width: 1),
+                      borderRadius: Constants.BORDER_RADIUS_20
+                  ),
+                  child: Row(
+                    children: [
+
+                    Expanded(
+                      flex: 4,
+                      child: Text("${order.customer!.address} - ${order.customer!.governorate}",
+                          style: const TextStyle()),
+                    ),
+                      Expanded(
+                        flex: 2,
+                        child: Text("${order.delivery} EGP",
+                            style: const TextStyle()),
+                      ),Expanded(
+                        flex: 2,
+                        child: Text("${order.downPayment} EGP",
+                            style: const TextStyle()),
+                      )
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Header for items
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Theme.of(context).colorScheme.tertiary.withAlpha(50), width: 1),
+                      borderRadius: Constants.BORDER_RADIUS_20
+                  ),
+                  child: const Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Text('Product',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text('Qty',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text('Price',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text('Total',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Order items
+                Center(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Theme.of(context).colorScheme.tertiary.withAlpha(50), width: 1),
+                        borderRadius: Constants.BORDER_RADIUS_20
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ...order.orderItems.map((item) {
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex: 4,
+                                child:
+                                Text(item.name, overflow: TextOverflow.ellipsis,style: const TextStyle(),),
+                              ),
+                              Expanded(flex: 2, child: Text(item.quantity.toString())),
+                              Expanded(flex: 2, child: Text("${item.unitPrice} EGP")),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  '${double.parse(item.unitPrice) * double.parse(item.quantity)} EGP',
+                                ),
+                              ),
+                            ],
+                          );
+                        }).toList(),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+                  child: const Row(
+                    children: [
+                      Text("Additional notes",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
+
+                // notes
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Theme.of(context).colorScheme.tertiary.withAlpha(50), width: 1),
+                    borderRadius: Constants.BORDER_RADIUS_20
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Text("${order.notes}",
+                            style: const TextStyle()),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+              : const SizedBox.shrink(),
         ],
       ),
     );
   }
 }
-
-

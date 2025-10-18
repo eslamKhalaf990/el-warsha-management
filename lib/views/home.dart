@@ -34,7 +34,7 @@ class Home extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                      width: 250,
+                      width: 200,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 15),
                       decoration: BoxDecoration(
