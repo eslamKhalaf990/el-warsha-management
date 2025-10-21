@@ -68,6 +68,7 @@ class UpdateProductVM extends ChangeNotifier {
       buyingPrice: existingProduct.buyingPrice,
       sellingPrice: existingProduct.sellingPrice,
       category: existingProduct.category,
+      categoryId: existingProduct.categoryId,
       quantity: existingProduct.quantity,
       productDescription: existingProduct.productDescription,
       image: existingProduct.image,

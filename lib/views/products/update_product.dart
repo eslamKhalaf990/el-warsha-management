@@ -3,6 +3,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/update_drag_drop.dart';
 import 'package:warsha_app/controllers/update_order/update_product.dart';
+import 'package:warsha_app/models/category_model.dart';
 import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_button.dart';
@@ -154,18 +155,65 @@ class UpdateProduct extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 20),
                           Expanded(
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: DefaultProductForm(
-                                title: "Product category",
-                                controller: value.productCategory,
-                                icon: Iconsax.category,
+                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Product category",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  DropdownButtonFormField<CategoryModel>(
+                                    // Find the matching category instance from the list
+                                    value: Provider.of<ProductVM>(context, listen: false).allCategories?.firstWhere(
+                                          (c) => c.categoryId.toString() == productModel.categoryId,
+                                      orElse: () => Provider.of<ProductVM>(context, listen: false).allCategories!.first,
+                                    ),
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.grey.shade100,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                          color: Colors.transparent,
+                                        ),
+                                        borderRadius: Constants.BORDER_RADIUS_15,
+                                      ),
+                                      prefixIcon: Padding(
+                                        padding: const EdgeInsets.only(left: 30.0, right: 30),
+                                        child: Icon(
+                                          Iconsax.category,
+                                          color: Theme.of(context).colorScheme.tertiary,
+                                        ),
+                                      ),
+                                    ),
+                                    hint: const Text("Select a category"),
+                                    items: Provider.of<ProductVM>(context, listen: false).allCategories?.map((category) {
+                                      return DropdownMenuItem<CategoryModel>(
+                                        value: category,
+                                        child: Text(category.name),
+                                      );
+                                    }).toList(),
+                                    onChanged: (selectedCategory) {
+                                      if (selectedCategory != null) {
+                                        value.productCategory.text = selectedCategory.categoryId.toString();
+                                        productModel.category = selectedCategory.name;
+                                        productModel.categoryId = selectedCategory.categoryId.toString();
+                                      }
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
                           ),
+
                           const SizedBox(height: 20),
                           Expanded(
                             child: Padding(
@@ -196,8 +244,7 @@ class UpdateProduct extends StatelessWidget {
                                             value.productBuyingPrice.text,
                                         productSPrice:
                                             value.productSellingPrice.text,
-                                        productCategory:
-                                            value.productCategory.text,
+                                        productCategory: productModel.categoryId,
                                         productQuantity:
                                             value.productQuantity.text,
                                         imageBytes:

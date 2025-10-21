@@ -185,7 +185,7 @@ class _OrderExpandableRowState extends State<OrderExpandableRow> {
                     children: [
                       Expanded(
                         flex: 4,
-                        child: Text("Down payment",
+                        child: Text("Address details",
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                       Expanded(
@@ -193,12 +193,12 @@ class _OrderExpandableRowState extends State<OrderExpandableRow> {
                         child: Text("Delivery",
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
-
                       Expanded(
                         flex: 2,
-                        child: Text("Address details",
+                        child: Text("Down payment",
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
+
 
                     ],
                   ),
@@ -300,7 +300,7 @@ class _OrderExpandableRowState extends State<OrderExpandableRow> {
                               ),
                             ],
                           );
-                        }).toList(),
+                        }),
                       ],
                     ),
                   ),

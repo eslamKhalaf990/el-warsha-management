@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/models/product_model.dart';
+import 'package:warsha_app/models/category_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/view_models/add_product_v_m.dart';
 
-class ProductsDropdown extends StatefulWidget {
-  const ProductsDropdown({super.key});
+class CategoryDropdown extends StatefulWidget {
+  const CategoryDropdown({super.key});
 
   @override
-  State<ProductsDropdown> createState() => _ProductsDropdownState();
+  State<CategoryDropdown> createState() => _CategoryDropdownState();
 }
 
-class _ProductsDropdownState extends State<ProductsDropdown> {
-  ProductModel? product;
-  List<ProductModel>? products;
+class _CategoryDropdownState extends State<CategoryDropdown> {
+  CategoryModel? product;
+  List<CategoryModel>? category;
   bool isLoading = true;
 
   @override
@@ -25,9 +25,9 @@ class _ProductsDropdownState extends State<ProductsDropdown> {
 
   Future<void> _loadProducts() async {
     try {
-      final data = await Provider.of<ProductVM>(context, listen: false).getAllProducts();
+      final data = await Provider.of<ProductVM>(context, listen: false).getAllCategories();
       setState(() {
-        products = data;
+        category = data;
         isLoading = false;
       });
     } catch (e) {
@@ -47,7 +47,7 @@ class _ProductsDropdownState extends State<ProductsDropdown> {
         ),
         borderRadius: Constants.BORDER_RADIUS_15,
       ),
-      child: DropdownMenu<ProductModel>(
+      child: DropdownMenu<CategoryModel>(
         initialSelection: product,
         width: MediaQuery.of(context).size.width * 0.9,
         textStyle: const TextStyle(fontSize: 14),
@@ -83,11 +83,11 @@ class _ProductsDropdownState extends State<ProductsDropdown> {
         dropdownMenuEntries: isLoading
             ? [
           DropdownMenuEntry(
-            value: ProductModel.get(name: "", id: "", productDescription: "", buyingPrice: "", sellingPrice: "", category: "", quantity: "", image: ""),
+            value: CategoryModel(categoryId: category?[0].categoryId ?? 0, name:category?[0].name ?? "-"),
             label: 'Loading...',
             style: ButtonStyle(
               textStyle: WidgetStateProperty.all(
-                const TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+                const TextStyle(fontSize: 14, fontStyle: FontStyle.italic, color: Colors.black),
               ),
               foregroundColor: WidgetStateProperty.all(
                 Theme.of(context).colorScheme.primary,
@@ -100,7 +100,7 @@ class _ProductsDropdownState extends State<ProductsDropdown> {
             ),
           )
         ]
-            : (products ?? [])
+            : (category ?? [])
             .map((type) {
           return DropdownMenuEntry(
             value: type,

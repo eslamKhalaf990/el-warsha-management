@@ -1,6 +1,6 @@
 class Baseurl {
-  // static String baseURL = "http://localhost:8080/";
-  static String baseURL = "https://accommodation-led-comprehensive-floating.trycloudflare.com/";
+  static String baseURL = "http://localhost:8080/";
+  // static String baseURL = "https://accommodation-led-comprehensive-floating.trycloudflare.com/";
   static String baseURLImages = "${baseURL}api/files/";
 
   /// =============== Authentication APIs ============== ///
@@ -26,6 +26,7 @@ class Baseurl {
 
   /// ===============   Products APIs    ============== ///
   static String getAllProductsAPI = '${baseURL}products';
+  static String getAllCategoriesAPI = '${baseURL}category';
   static String addProductAPI = '${baseURL}products';
   static String updateProductAPI = '${baseURL}products';
   static String deleteProductAPI = '${baseURL}products';
@@ -34,6 +35,6 @@ class Baseurl {
   /// ===============   Cash Flow APIs    ============== ///
   static String getRevenueSummaryAPI = '${baseURL}cashFlow/revenueSummary';
   static String getDailyCashFlowAPI = '${baseURL}cashFlow/daily';
-/// ===============   Products APIs    ============== ///
+  /// ===============   Products APIs    ============== ///
 
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
+import 'package:warsha_app/models/category_model.dart';
 import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/services/products_service.dart';
 import 'package:warsha_app/view_models/user_v_m.dart';
@@ -9,12 +10,11 @@ class ProductVM extends ChangeNotifier {
   final ProductService _productService;
   final UserViewModel _userViewModel;
 
-
   bool isLoading = false;
   String deletedProduct = "";
 
-
   Future<List<ProductModel>>? allProducts;
+  List<CategoryModel>? allCategories;
   final TextEditingController searchController = TextEditingController();
 
   ProductVM(this._productService, this._userViewModel) {
@@ -24,8 +24,9 @@ class ProductVM extends ChangeNotifier {
     });
   }
 
-  void initAllProducts () {
+  Future<void> initAllProducts () async {
     allProducts = getAllProducts();
+    allCategories = await getAllCategories();
     notifyListeners();
   }
 
@@ -48,6 +49,27 @@ class ProductVM extends ChangeNotifier {
       notifyListeners();
     }
     return products;
+  }
+
+  Future<List<CategoryModel>> getAllCategories() async {
+    List<CategoryModel> categories = [];
+    try {
+      isLoading = true;
+      final response = await _productService.getAllCategories(_userViewModel.token);
+      if (response.statusCode == 200) {
+        final categoriesData = jsonDecode(response.body);
+        final List<dynamic> data = categoriesData;
+        categories = data.map((item) => CategoryModel.fromJson(item)).toList();
+      } else {
+        debugPrint("Failed to fetch categories: ${response.statusCode}");
+      }
+    } catch (e) {
+      debugPrint("Error fetching categories: $e");
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+    return categories;
   }
 
   Future<String> addProduct({

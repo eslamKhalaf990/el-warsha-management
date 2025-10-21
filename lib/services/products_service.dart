@@ -30,6 +30,28 @@ class ProductService {
     return response;
   }
 
+  // This class will handle the logic for attendance management.
+  Future<http.Response> getAllCategories(String token) async {
+    debugPrint("getAllCategories called");
+    http.Response response;
+    try {
+      response = await http.get(
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          "Authorization": 'Bearer $token',
+        },
+        Uri.parse(
+          Baseurl.getAllCategoriesAPI,
+        ),
+      ).timeout(const Duration(seconds: Constants.TIMEOUT));
+    } on TimeoutException {
+      throw Exception('The request timed out. Please try again later.');
+    } catch (e) {
+      throw Exception('Failed to get your requests: $e');
+    }
+    return response;
+  }
+
   Future<http.Response> deleteProduct(String id, String token) async {
     debugPrint("deleteProduct with id: $id called");
     http.Response response;
@@ -52,7 +74,6 @@ class ProductService {
     return response;
   }
 
-
   Future<http.StreamedResponse> addProductWithImage({
     required String name,
     required String description,
@@ -71,7 +92,7 @@ class ProductService {
       "description": description,
       "buyingPrice": buyingPrice,
       "sellingPrice": sellingPrice,
-      "category": category,
+      "category": {"categoryId": category},
       "quantity": quantity,
     });
 
@@ -115,7 +136,7 @@ class ProductService {
       "description": description,
       "buyingPrice": buyingPrice,
       "sellingPrice": sellingPrice,
-      "category": category,
+      "category": {"categoryId": category},
       "quantity": quantity,
     });
 
