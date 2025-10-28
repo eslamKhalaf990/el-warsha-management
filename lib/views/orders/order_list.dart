@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/filter_orders.dart';
 import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
-
 import 'order_widget.dart';
 
 class OrderList extends StatelessWidget {
@@ -31,7 +30,11 @@ class OrderList extends StatelessWidget {
             final governorate = order.customer!.governorate.toLowerCase();
             final status = order.status.toLowerCase();
             final query = Provider.of<GovernorateProvider>(context).selectedGovernorate;
-            return governorate.contains(query ?? "") || status.contains(query ?? "");
+            return governorate.contains(query ?? "") ||
+                status.contains(query ?? "") ||
+                order.orderSource.contains( query ?? "") ||
+                order.paymentMethod.contains(query ?? "")
+            ;
           }).toList();
           return Expanded(
             child: ListView.builder(
@@ -44,7 +47,6 @@ class OrderList extends StatelessWidget {
                   onEdit: () => filteredOrders[index],
                   onDelete: () => filteredOrders[index],
                 );
-
               },
             ),
           );

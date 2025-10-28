@@ -3,6 +3,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
+import 'package:warsha_app/view_models/accountings_v_m.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
 
@@ -66,7 +67,7 @@ class OrderStatusDropdown extends StatelessWidget {
             );
           }).toList(),
           onChanged: (value) async {
-            if (value != null) {
+            if (value != null && currentStatus != "Completed") {
               // update in backend/provider
               await Provider.of<UpdateOrderVM>(context, listen: false)
                   .updateOrderStatus(
@@ -79,6 +80,7 @@ class OrderStatusDropdown extends StatelessWidget {
 
               // refresh orders list
               Provider.of<AddOrderVM>(context, listen: false).initAllOrders();
+              Provider.of<AccountingVM>(context, listen: false).initAccounting();
             }
           },
         ),

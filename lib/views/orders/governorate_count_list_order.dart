@@ -31,7 +31,6 @@ class GovernorateCountList extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final item = governorateCounts[index];
                   final colorScheme = Theme.of(context).colorScheme;
-
                   return Container(
                     width: 180,
                     decoration: BoxDecoration(

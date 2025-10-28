@@ -37,4 +37,11 @@ class Baseurl {
   static String getDailyCashFlowAPI = '${baseURL}cashFlow/daily';
   /// ===============   Products APIs    ============== ///
 
+  /// ===============   Accounting APIs    ============== ///
+  static String getAccountsBalanceAPI = '${baseURL}api/bank/accounts';
+  static String addTransactionAPI = '${baseURL}api/bank/transaction';
+  static String getTransactionsAPI = '${baseURL}api/bank/transactions';
+  static String getTransactionCategoriesAPI = '${baseURL}api/bank/transactionCategories';
+  /// ===============   Products APIs    ============== ///
+
 }

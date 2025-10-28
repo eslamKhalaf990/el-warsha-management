@@ -10,8 +10,8 @@ class DateHelper {
 
   static String formatDate2(String date) {
 
-    final parsed = DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(date);
-    return DateFormat('d MMM yyyy').format(parsed);
+    final parsed = DateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(date);
+    return DateFormat('EEE, d MMM yy hh:mm a').format(parsed);
   }
 
   static String formatDatePicker (String date){

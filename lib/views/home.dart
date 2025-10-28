@@ -184,24 +184,33 @@ class Home extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: Constants.BORDER_RADIUS_20),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 15),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Iconsax.document_text,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  ),
-                                  const SizedBox(width: 15),
-                                  const DefaultText(
-                                    txt: "Invoices",
-                                    bold: true,
-                                  )
-                                ],
+                            InkWell(
+                              onTap: (){
+                                value.updatePage(4);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: value.page == 4 ? Theme.of(context)
+                                        .colorScheme
+                                        .secondary
+                                        .withAlpha(50) : null,
+                                    borderRadius: Constants.BORDER_RADIUS_20),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 15),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Iconsax.empty_wallet,
+                                      color:
+                                          Theme.of(context).colorScheme.secondary,
+                                    ),
+                                    const SizedBox(width: 15),
+                                    const DefaultText(
+                                      txt: "Accounting",
+                                      bold: true,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ],

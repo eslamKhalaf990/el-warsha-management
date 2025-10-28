@@ -8,11 +8,13 @@ import 'package:warsha_app/controllers/update_drag_drop.dart';
 import 'package:warsha_app/controllers/update_order/updatePaymentDetails.dart';
 import 'package:warsha_app/controllers/update_order/update_customer.dart';
 import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/services/accounting_service.dart';
 import 'package:warsha_app/services/customers_services.dart';
 import 'package:warsha_app/services/home_service.dart';
 import 'package:warsha_app/services/orders_service.dart';
 import 'package:warsha_app/services/products_service.dart';
 import 'package:warsha_app/services/user_service.dart';
+import 'package:warsha_app/view_models/accountings_v_m.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/add_product_v_m.dart';
@@ -43,6 +45,7 @@ void main() {
 
           //providers used for dependency injection
           Provider<ProductService>(create: (_) => ProductService()),
+          Provider<AccountingService>(create: (_) => AccountingService()),
           Provider<HomeService>(create: (_) => HomeService()),
           Provider<UserService>(create: (_) => UserService()),
           Provider<OrdersService>(create: (_) => OrdersService()),
@@ -70,6 +73,7 @@ void main() {
               context.read<UserViewModel>(),
             ),
           ),
+
           //injecting product with api services
           ChangeNotifierProvider<UpdateOrderVM>(
             create: (context) => UpdateOrderVM(
@@ -78,6 +82,7 @@ void main() {
               context.read<UserViewModel>(),
             ),
           ),
+
           //injecting product with api services
           ChangeNotifierProvider<UpdateProductVM>(
             create: (context) => UpdateProductVM(
@@ -98,6 +103,13 @@ void main() {
           ChangeNotifierProvider<HomeVM>(
             create: (context) => HomeVM(
               context.read<HomeService>(),
+              context.read<UserViewModel>(),
+            ),
+          ),
+
+          ChangeNotifierProvider<AccountingVM>(
+            create: (context) => AccountingVM(
+              context.read<AccountingService>(),
               context.read<UserViewModel>(),
             ),
           ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class GovernorateProvider with ChangeNotifier {
-  String? _selectedGovernorate;
+  String? _selectedQuery;
 
-  String? get selectedGovernorate => _selectedGovernorate;
+  String? get selectedGovernorate => _selectedQuery;
 
   final List<String> governorates = [
     "القاهرة",
@@ -35,11 +35,17 @@ class GovernorateProvider with ChangeNotifier {
   ];
 
   void selectGovernorate(String governorate) {
-    _selectedGovernorate = governorate;
+    _selectedQuery = governorate;
     notifyListeners();
   }
+
+  void selectPayment(String query) {
+    _selectedQuery = query;
+    notifyListeners();
+  }
+
   void removeFilter (){
-    _selectedGovernorate = null;
+    _selectedQuery = null;
     notifyListeners();
   }
 }
