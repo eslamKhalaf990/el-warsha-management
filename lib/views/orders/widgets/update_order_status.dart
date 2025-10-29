@@ -22,6 +22,7 @@ class OrderStatusDropdown extends StatelessWidget {
   final List<String> statuses = const [
     "Pending",
     "Completed",
+    "Processing",
     "Shipped",
   ];
 
@@ -32,7 +33,9 @@ class OrderStatusDropdown extends StatelessWidget {
         color: currentStatus == "Pending"
             ? Colors.yellow.shade800
             : currentStatus == "Completed"
-            ? Colors.green.shade300
+            ? Colors.green.shade300:
+            currentStatus == "Processing"
+            ? Colors.red.shade300
             : Colors.brown.shade300,
         borderRadius: Constants.BORDER_RADIUS_20,
       ),

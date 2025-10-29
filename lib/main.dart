@@ -26,6 +26,7 @@ import 'package:warsha_app/views/auth/login.dart';
 import 'package:warsha_app/views/home.dart';
 import 'controllers/add_order/add_payment.dart';
 import 'controllers/filter_orders.dart';
+import 'controllers/transaction_provider.dart';
 import 'controllers/update_order/update_product.dart';
 
 void main() {
@@ -42,6 +43,8 @@ void main() {
           ChangeNotifierProvider(create: (_)=> UpdateProductProvider()),
           ChangeNotifierProvider(create: (_)=> PaymentProvider()),
           ChangeNotifierProvider(create: (_)=> GovernorateProvider()),
+          ChangeNotifierProvider(create: (_) => TransactionsProvider()),
+
 
           //providers used for dependency injection
           Provider<ProductService>(create: (_) => ProductService()),
@@ -129,6 +132,11 @@ class MyApp extends StatelessWidget {
       title: 'El Warsha ERP',
       theme: ThemeData(
         fontFamily: 'cairo',
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Colors.blue.shade400,
+          selectionColor: Colors.blue.shade400.withAlpha(50),        // highlight color
+          selectionHandleColor: Colors.blue.shade400.withAlpha(50),    // handle dots color
+        ),
         colorScheme: ColorScheme.light(
           onPrimary: Colors.white.withAlpha(200),
           secondary: Colors.blue.shade400,
