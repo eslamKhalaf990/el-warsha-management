@@ -49,14 +49,14 @@ class ProductToAdd extends StatelessWidget {
                     );
 
                     // Check for duplicates by productId
-                    bool alreadyExists = orderVM.orderModel.orderItems
-                        .any((item) => item.productId == product.id);
+                    // bool alreadyExists = orderVM.orderModel.orderItems
+                    //     .any((item) => item.productId == product.id);
 
-                    if (!alreadyExists) {
-                      orderVM.addToOrderItems = orderItemsModel;
-                    } else {
-                      orderVM.removeFromOrderItems = orderItemsModel.productId;
-                    }
+                    // if (!alreadyExists) {
+                    //   orderVM.addToOrderItems = orderItemsModel;
+                    // } else {
+                    //   orderVM.removeFromOrderItems = orderItemsModel.productId;
+                    // }
                   },
 
                   child: ProductWidget(

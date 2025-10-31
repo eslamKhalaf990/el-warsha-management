@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/order_upgrading/models/orderModel.dart';
 import 'package:warsha_app/utils/const_values.dart';
 
 import 'base_url.dart';
@@ -92,9 +93,9 @@ class OrdersService {
             "Authorization": 'Bearer $token',
           },
           Uri.parse(
-            "${Baseurl.addOrderAPI}/${order.orderID}",
+            "${Baseurl.addOrderAPI}/${order.orderId}",
           ),
-          body: jsonEncode(order.toUpdateJson())
+          body: jsonEncode(order.toJson())
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
 
     } on TimeoutException {

@@ -47,7 +47,6 @@ class OrderFilter {
                           onTap: (){
                             provider.selectPayment(method['name'].toString().toLowerCase());
                             Navigator.pop(context);
-
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8.0),

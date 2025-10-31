@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:warsha_app/views/accounting/accounting.dart';
 import 'package:warsha_app/views/customers/customers.dart';
 import 'package:warsha_app/views/home/home.dart';
+import 'package:warsha_app/views/orders/new_order_ui.dart';
 import 'package:warsha_app/views/orders/orders.dart';
 import 'package:warsha_app/views/products/products.dart';
 
@@ -10,7 +11,7 @@ class Navigation extends ChangeNotifier {
   List<Widget> pages = [
     const HomeCashFlow(),
     const Products(),
-    const Orders(),
+    const NewOrderUi(),
     const Customers(),
     const Accounting(),
   ];

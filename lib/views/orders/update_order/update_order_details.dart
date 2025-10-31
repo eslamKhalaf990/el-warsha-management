@@ -58,38 +58,38 @@ class UpdateOrderDetails extends StatelessWidget {
           ),
 
           //list of order items
-          order.orderModel.orderItems.isNotEmpty
-              ? SliverFixedExtentList(
-                  itemExtent: 60,
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: UpdateOrderItem(index, orderItem: Provider.of<UpdateOrderVM>(context).
-                          orderModel.orderItems[index]),
-                      );
-                    },
-                    childCount: order.orderModel.orderItems.length,
-                  ),
-                )
-              : SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Iconsax.shopping_cart,
-                          color: Colors.red.shade300,
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        const DefaultText(txt: "Put items in list first!"),
-                      ],
-                    ),
-                  ),
-                ),
+          // order.orderModel.orderItems.isNotEmpty
+          //     ? SliverFixedExtentList(
+          //         itemExtent: 60,
+          //         delegate: SliverChildBuilderDelegate(
+          //           (context, index) {
+          //             return Padding(
+          //               padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          //               child: UpdateOrderItem(index, orderItem: Provider.of<UpdateOrderVM>(context).
+          //                 orderModel.orderItems[index]),
+          //             );
+          //           },
+          //           childCount: order.orderModel.orderItems.length,
+          //         ),
+          //       )
+          //     : SliverToBoxAdapter(
+          //         child: Padding(
+          //           padding: const EdgeInsets.all(15.0),
+          //           child: Row(
+          //             mainAxisAlignment: MainAxisAlignment.center,
+          //             children: [
+          //               Icon(
+          //                 Iconsax.shopping_cart,
+          //                 color: Colors.red.shade300,
+          //               ),
+          //               const SizedBox(
+          //                 width: 15,
+          //               ),
+          //               const DefaultText(txt: "Put items in list first!"),
+          //             ],
+          //           ),
+          //         ),
+          //       ),
 
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
           SliverToBoxAdapter(

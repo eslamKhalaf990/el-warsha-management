@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_items_model.dart';
+import 'package:warsha_app/order_upgrading/models/orderItemModel.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
 
 class UpdateOrderItem extends StatelessWidget {
   final int index;
-  final OrderItemsModel orderItem;
+  final OrderItemModel orderItem;
   const UpdateOrderItem(this.index, {super.key, required this.orderItem});
 
   @override
@@ -25,7 +26,7 @@ class UpdateOrderItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          DefaultText(txt: order.name, center: true),
+          DefaultText(txt: order.productName, center: true),
           
           Row(
             children: [
@@ -34,10 +35,10 @@ class UpdateOrderItem extends StatelessWidget {
                     Provider.of<UpdateOrderVM>(context,listen: false).incrementItemOrdered = index;
                   },
                   child: const Icon(Iconsax.add_square_copy)),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: DefaultText(txt: (order.orderedQuantity.toString())),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              //   child: DefaultText(txt: (order.orderedQuantity.toString())),
+              // ),
               InkWell(
                   onTap: (){
                     Provider.of<UpdateOrderVM>(context,listen: false).decrementItemOrdered = index;
@@ -45,7 +46,7 @@ class UpdateOrderItem extends StatelessWidget {
                   child: const Icon(Iconsax.minus_square_copy),
               ),
               const SizedBox(width: 15,),
-              DefaultText(txt: "${double.parse(order.unitPrice) * (order.orderedQuantity)} EGP", center: true),
+              // DefaultText(txt: "${double.parse(order.unitPrice) * (order.orderedQuantity)} EGP", center: true),
             ],
           ),
 

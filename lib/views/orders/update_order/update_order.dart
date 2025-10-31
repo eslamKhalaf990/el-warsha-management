@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/add_order/add_customer.dart';
+import 'package:warsha_app/controllers/new_order_provider.dart';
 import 'package:warsha_app/controllers/update_order/updatePaymentDetails.dart';
 import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/order_upgrading/models/orderModel.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_button.dart';
@@ -71,29 +73,30 @@ class UpdateOrder extends StatelessWidget {
                                 Expanded(
                                   child: DefaultButton(
                                     onTap: () async {
-                                      final customer =
-                                          orderVM.orderModel.customer;
-                                      if (customer == null) return;
-                                      print("updated");
-
-                                      await orderVM.updateOrder(
-                                        orderID: orderVM.orderModel.orderID,
-                                        customerID: customer.id,
-                                        orderItems:
-                                        orderVM.orderModel.orderItems,
-                                        delivery: payment.delivery.text,
-                                        downPayment: payment.downPayment.text,
-                                        discount: payment.discount.text,
-                                        notes: payment.notes.text,
-                                        paymentMethod:
-                                        payment.paymentMethod.text,
-                                        orderSource:
-                                        payment.platformSource.text,
-                                      );
+                                      // final customer =
+                                      //     orderVM.orderModel.customer;
+                                      // if (customer == null) return;
+                                      // print("updated");
+                                      //
+                                      // await orderVM.updateOrder(
+                                      //   orderID: orderVM.orderModel.orderId.toString(),
+                                      //   customerID: customer.customerId.toString(),
+                                      //   orderItems:
+                                      //   orderVM.orderModel.orderItems,
+                                      //   delivery: payment.delivery.text,
+                                      //   downPayment: payment.downPayment.text,
+                                      //   discount: payment.discount.text,
+                                      //   notes: payment.notes.text,
+                                      //   paymentMethod:
+                                      //   payment.paymentMethod.text,
+                                      //   orderSource:
+                                      //   payment.platformSource.text,
+                                      // );
 
                                       Navigator.pop(context);
                                       payment.clearPaymentDetails();
                                       value.clearCustomer();
+                                      // Provider.of<OrdersTableProvider>(context,listen: false).clear();
                                       Provider.of<AddOrderVM>(context,listen: false).initAllOrders();
                                     },
                                     isValid: !orderVM.isLoading,

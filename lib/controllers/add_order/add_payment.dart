@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/order_upgrading/models/orderModel.dart';
 
 class PaymentProvider extends ChangeNotifier {
   final TextEditingController downPayment = TextEditingController();
@@ -28,17 +29,17 @@ class PaymentProvider extends ChangeNotifier {
   }
 
   void loadPayment(OrderModel existingOrder) {
-    downPayment.text = existingOrder.downPayment;
+    downPayment.text = existingOrder.downPayment.toString();
     paymentMethod.text = existingOrder.paymentMethod;
     discount.text ="0.0";
     platformSource.text = existingOrder.orderSource;
-    delivery.text = existingOrder.delivery;
+    delivery.text = existingOrder.delivery.toString();
     notes.text = existingOrder.notes;
 
     // if you want to set base price too, calculate from items
     if (existingOrder.orderItems.isNotEmpty) {
       _basePrice = existingOrder.orderItems.fold(0, (sum, item) {
-        final unitPrice = double.tryParse(item.unitPrice) ?? 0;
+        final unitPrice = item.unitPrice;
         return sum + unitPrice * item.quantityToOrder;
       });
     }

@@ -28,9 +28,9 @@ class CustomerWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-        color: Provider.of<AddOrderVM>(context).orderModel.customer?.id == id ?
-        Theme.of(context).colorScheme.tertiary.withAlpha(30):
-        Theme.of(context).colorScheme.onPrimary.withAlpha(100),
+        // color: Provider.of<AddOrderVM>(context).orderModel.customer.customerId.toString() == id ?
+        // Theme.of(context).colorScheme.tertiary.withAlpha(30):
+        // Theme.of(context).colorScheme.onPrimary.withAlpha(100),
         borderRadius: Constants.BORDER_RADIUS_20,
       ),
       child: Column(

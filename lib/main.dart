@@ -7,7 +7,6 @@ import 'package:warsha_app/controllers/navigation.dart';
 import 'package:warsha_app/controllers/update_drag_drop.dart';
 import 'package:warsha_app/controllers/update_order/updatePaymentDetails.dart';
 import 'package:warsha_app/controllers/update_order/update_customer.dart';
-import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/services/accounting_service.dart';
 import 'package:warsha_app/services/customers_services.dart';
 import 'package:warsha_app/services/home_service.dart';
@@ -28,12 +27,15 @@ import 'controllers/add_order/add_payment.dart';
 import 'controllers/filter_orders.dart';
 import 'controllers/transaction_provider.dart';
 import 'controllers/update_order/update_product.dart';
+import 'order_upgrading/provider/orderProvider.dart';
+import 'order_upgrading/service/orderService.dart';
 
 void main() {
     runApp(
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_)=> DragDropController()),
+          // ChangeNotifierProvider(create: (_)=> OrdersTableProvider()),
           ChangeNotifierProvider(create: (_)=> UpdateDragDropController()),
           ChangeNotifierProvider(create: (_)=> ProductProvider()),
           ChangeNotifierProvider(create: (_)=> Navigation()),
@@ -54,6 +56,18 @@ void main() {
           Provider<OrdersService>(create: (_) => OrdersService()),
           Provider<CustomerService>(create: (_) => CustomerService()),
 
+          Provider<OrderService>(
+            create: (_) => OrderService(),
+          ),
+
+          // 2. Provide the ChangeNotifier (ViewModel)
+          // It depends on OrderService and fetches data immediately.
+          ChangeNotifierProvider<GetDeleteOrderVM>(
+            create: (context) => GetDeleteOrderVM(
+              context.read<OrderService>(),
+            )..fetchOrders(),
+          ),
+
           ChangeNotifierProvider<UserViewModel>(
             create: (context) => UserViewModel(
               context.read<UserService>(),
@@ -72,7 +86,7 @@ void main() {
           ChangeNotifierProvider<AddOrderVM>(
             create: (context) => AddOrderVM(
               context.read<OrdersService>(),
-              OrderModel(),
+              // OrderModel(),
               context.read<UserViewModel>(),
             ),
           ),
@@ -81,7 +95,7 @@ void main() {
           ChangeNotifierProvider<UpdateOrderVM>(
             create: (context) => UpdateOrderVM(
               context.read<OrdersService>(),
-              OrderModel(),
+              // OrderModel(),
               context.read<UserViewModel>(),
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/order_upgrading/models/orderModel.dart';
 
 class UpdatePaymentDetails extends ChangeNotifier {
   final TextEditingController downPayment = TextEditingController();
@@ -29,11 +30,11 @@ class UpdatePaymentDetails extends ChangeNotifier {
 
 
   void loadPayment(OrderModel existingOrder) {
-    downPayment.text = existingOrder.downPayment;
+    downPayment.text = existingOrder.downPayment.toString();
     paymentMethod.text = existingOrder.paymentMethod;
-    discount.text = existingOrder.discount;
+    discount.text = existingOrder.discount.toString();
     platformSource.text = existingOrder.orderSource;
-    delivery.text = existingOrder.delivery;
+    delivery.text = existingOrder.delivery.toString();
     notes.text = existingOrder.notes;
 
     notifyListeners();

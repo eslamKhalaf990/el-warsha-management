@@ -58,40 +58,40 @@ class OrderDetailsWidget extends StatelessWidget {
           ),
 
           //list of order items
-          Provider.of<AddOrderVM>(context).orderModel.orderItems.isNotEmpty
-              ? SliverFixedExtentList(
-            itemExtent: 60,
-            delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: OrderItemWidget(index, orderItem: Provider.of<AddOrderVM>(context).orderModel.orderItems[index]),
-                );
-              },
-              childCount: Provider.of<AddOrderVM>(context)
-                  .orderModel
-                  .orderItems
-                  .length,
-            ),
-          )
-              : SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Iconsax.shopping_cart,
-                    color: Colors.red.shade300,
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  const DefaultText(txt: "Put items in list first!"),
-                ],
-              ),
-            ),
-          ),
+          // Provider.of<AddOrderVM>(context).orderModel.orderItems.isNotEmpty
+          //     ? SliverFixedExtentList(
+          //   itemExtent: 60,
+          //   delegate: SliverChildBuilderDelegate(
+          //         (context, index) {
+          //       return Padding(
+          //         padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          //         child: OrderItemWidget(index, orderItem: Provider.of<AddOrderVM>(context).orderModel.orderItems[index]),
+          //       );
+          //     },
+          //     childCount: Provider.of<AddOrderVM>(context)
+          //         .orderModel
+          //         .orderItems
+          //         .length,
+          //   ),
+          // )
+          //     : SliverToBoxAdapter(
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(15.0),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       children: [
+          //         Icon(
+          //           Iconsax.shopping_cart,
+          //           color: Colors.red.shade300,
+          //         ),
+          //         const SizedBox(
+          //           width: 15,
+          //         ),
+          //         const DefaultText(txt: "Put items in list first!"),
+          //       ],
+          //     ),
+          //   ),
+          // ),
 
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
           SliverToBoxAdapter(
@@ -244,51 +244,52 @@ class OrderDetailsWidget extends StatelessWidget {
                         icon: Iconsax.discount_shape,
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20.0, left: 20),
-                      child: DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Theme.of(context)
-                              .colorScheme
-                              .tertiary
-                              .withAlpha(30),
-                          labelText: "Payment Method",
-                          labelStyle:
-                          const TextStyle(color: Colors.grey, fontSize: 14),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.transparent,
-                              ),
-                              borderRadius: Constants.BORDER_RADIUS_15),
-                          prefixIcon: Icon(Iconsax.wallet_1,
-                              color: Theme.of(context).colorScheme.tertiary),
-                        ),
-                        value: value.paymentMethod.text.isNotEmpty
-                            ? value.paymentMethod.text
-                            : null, // preselect if controller has value
-                        items: const [
-                          DropdownMenuItem(
-                              value: "vodafone cash",
-                              child: Text("Vodafone Cash")),
-                          DropdownMenuItem(
-                              value: "instapay", child: Text("Instapay")),
-                          DropdownMenuItem(value: "cash", child: Text("Cash")),
-                        ],
-                        onChanged: (selected) {
-                          if (selected != null) {
-                            value.paymentMethod.text =
-                                selected; // sync with controller
-                          }
-                        },
-                      ),
-                    ),
+
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(right: 20.0, left: 20),
+                    //   child: DropdownButtonFormField<String>(
+                    //     decoration: InputDecoration(
+                    //       filled: true,
+                    //       fillColor: Theme.of(context)
+                    //           .colorScheme
+                    //           .tertiary
+                    //           .withAlpha(30),
+                    //       labelText: "Payment Method",
+                    //       labelStyle:
+                    //       const TextStyle(color: Colors.grey, fontSize: 14),
+                    //       border: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(12),
+                    //       ),
+                    //       enabledBorder: OutlineInputBorder(
+                    //           borderSide: const BorderSide(
+                    //             color: Colors.transparent,
+                    //           ),
+                    //           borderRadius: Constants.BORDER_RADIUS_15),
+                    //       prefixIcon: Icon(Iconsax.wallet_1,
+                    //           color: Theme.of(context).colorScheme.tertiary),
+                    //     ),
+                    //     value: value.paymentMethod.text.isNotEmpty
+                    //         ? value.paymentMethod.text
+                    //         : null, // preselect if controller has value
+                    //     items: const [
+                    //       DropdownMenuItem(
+                    //           value: "vodafone cash",
+                    //           child: Text("Vodafone Cash")),
+                    //       DropdownMenuItem(
+                    //           value: "instapay", child: Text("Instapay")),
+                    //       DropdownMenuItem(value: "cash", child: Text("Cash")),
+                    //     ],
+                    //     onChanged: (selected) {
+                    //       if (selected != null) {
+                    //         value.paymentMethod.text =
+                    //             selected; // sync with controller
+                    //       }
+                    //     },
+                    //   ),
+                    // ),
                   ],
                 ),
               ],

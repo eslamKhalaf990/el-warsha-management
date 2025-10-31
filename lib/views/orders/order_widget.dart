@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/order_upgrading/models/orderModel.dart';
 import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/date.dart';
@@ -50,11 +51,11 @@ class _OrderExpandableRowState extends State<OrderExpandableRow> {
             ),
             child: Row(
               children: [
-                buildCell('#${order.orderID}', flex: 2, isBold: true),
-                buildCell(DateHelper.formatDate1(order.orderDate), flex: 2, isBold: true),
+                buildCell('#${order.orderId}', flex: 2, isBold: true),
+                buildCell(DateHelper.formatDate1(order.orderDate.toString()), flex: 2, isBold: true),
                 buildCell(order.orderSource, flex: 2, isBold: true),
-                buildCell(order.customer!.name, flex: 4, isBold: true),
-                buildCell(order.customer!.phone,
+                buildCell(order.customer.fullName, flex: 4, isBold: true),
+                buildCell(order.customer.phone,
                     flex: 3, isBold: true),
                 Expanded(
                   flex: 4,
@@ -78,7 +79,7 @@ class _OrderExpandableRowState extends State<OrderExpandableRow> {
                   ),
                 ),
                 buildCell('${order.totalPrice} EGP',
-                    flex: 2, isBold: double.parse(order.totalPrice) > 0),
+                    flex: 2, isBold: order.totalPrice > 0),
                 buildCell(order.paymentMethod, flex: 4, isBold: true),
                 Expanded(
                   flex: 4,
@@ -97,7 +98,7 @@ class _OrderExpandableRowState extends State<OrderExpandableRow> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => PDFViewPage(
-                                  pdfPath: "${Baseurl.invoiceAPI}/${order.orderID}"),
+                                  pdfPath: "${Baseurl.invoiceAPI}/${order.orderId}"),
                             ),
                           );
                         },
@@ -118,7 +119,7 @@ class _OrderExpandableRowState extends State<OrderExpandableRow> {
                       ),
                       IconButton(
                         icon: !Provider.of<AddOrderVM>(context).isLoading ||
-                            (order.orderID) != Provider.of<AddOrderVM>(context).deletedOrder
+                            (order.orderId) != Provider.of<AddOrderVM>(context).deletedOrder
                             ? const Icon(Iconsax.trash_copy, size: 20, color: Colors.red)
                             : const SpinKitChasingDots(color: Colors.red, size: 20),
                         onPressed: !Provider.of<AddOrderVM>(context).isLoading
@@ -128,7 +129,7 @@ class _OrderExpandableRowState extends State<OrderExpandableRow> {
                             builder: (context) {
                               return AlertDialog(
                                 title: const Text('Confirm Deletion'),
-                                content: Text('Are you sure you want to delete order #${order.orderID}?'),
+                                content: Text('Are you sure you want to delete order #${order.orderId}?'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(context, false),
@@ -147,14 +148,14 @@ class _OrderExpandableRowState extends State<OrderExpandableRow> {
                           if (confirm != true) return; // Cancel pressed
 
                           final orderVM = Provider.of<AddOrderVM>(context, listen: false);
-                          final state = await orderVM.deleteOrderByID(order.orderID);
+                          final state = await orderVM.deleteOrderByID(order.orderId.toString());
 
                           if (state == "deleted") {
                             orderVM.initAllOrders();
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Order #${order.orderID} deleted successfully.'),
+                                  content: Text('Order #${order.orderId} deleted successfully.'),
                                   backgroundColor: Colors.red,
                                   duration: const Duration(seconds: 2),
                                 ),
@@ -288,14 +289,14 @@ class _OrderExpandableRowState extends State<OrderExpandableRow> {
                               Expanded(
                                 flex: 4,
                                 child:
-                                Text(item.name, overflow: TextOverflow.ellipsis,style: const TextStyle(),),
+                                Text(item.productName, overflow: TextOverflow.ellipsis,style: const TextStyle(),),
                               ),
                               Expanded(flex: 2, child: Text(item.quantity.toString())),
                               Expanded(flex: 2, child: Text("${item.unitPrice} EGP")),
                               Expanded(
                                 flex: 2,
                                 child: Text(
-                                  '${double.parse(item.unitPrice) * double.parse(item.quantity)} EGP',
+                                  '${item.unitPrice * item.quantity} EGP',
                                 ),
                               ),
                             ],

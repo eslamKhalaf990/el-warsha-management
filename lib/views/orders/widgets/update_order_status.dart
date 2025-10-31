@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:warsha_app/controllers/new_order_provider.dart';
 import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/order_upgrading/models/orderModel.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/view_models/accountings_v_m.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
@@ -74,7 +76,7 @@ class OrderStatusDropdown extends StatelessWidget {
               // update in backend/provider
               await Provider.of<UpdateOrderVM>(context, listen: false)
                   .updateOrderStatus(
-                orderID: order.orderID,
+                orderID: order.orderId.toString(),
                 statusValue: value,
               );
 
@@ -82,7 +84,6 @@ class OrderStatusDropdown extends StatelessWidget {
               onStatusChanged(value);
 
               // refresh orders list
-              Provider.of<AddOrderVM>(context, listen: false).initAllOrders();
               Provider.of<AccountingVM>(context, listen: false).initAccounting();
             }
           },

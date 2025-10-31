@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/order_upgrading/models/orderModel.dart';
 import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
@@ -65,7 +66,7 @@ class OrderCRUD extends StatelessWidget {
                     final orderVM =
                     Provider.of<AddOrderVM>(context, listen: false);
                     final state =
-                    await orderVM.deleteOrderByID(order.orderID);
+                    await orderVM.deleteOrderByID(order.orderId.toString());
                     if (state == "deleted") {
                       orderVM.initAllOrders();
                     }
@@ -78,7 +79,7 @@ class OrderCRUD extends StatelessWidget {
                       borderRadius: Constants.BORDER_RADIUS_50,
                     ),
                     child: !Provider.of<AddOrderVM>(context).isLoading ||
-                        (order.orderID) !=
+                        (order.orderId.toString()) !=
                             Provider.of<AddOrderVM>(context).deletedOrder
                         ? Row(
                       children: [
@@ -110,7 +111,7 @@ class OrderCRUD extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => PDFViewPage(
-                        pdfPath: "${Baseurl.invoiceAPI}/${order.orderID}"),
+                        pdfPath: "${Baseurl.invoiceAPI}/${order.orderId}"),
                   ),
                 );
               },

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_items_model.dart';
+import 'package:warsha_app/order_upgrading/models/orderItemModel.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
 
 class OrderItemWidget extends StatelessWidget {
   final int index;
-  final OrderItemsModel orderItem;
+  final OrderItemModel orderItem;
   const OrderItemWidget(this.index, {super.key, required this.orderItem});
 
   @override
@@ -25,7 +26,7 @@ class OrderItemWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          DefaultText(txt: order.name, center: true),
+          DefaultText(txt: order.productName, center: true),
           
           Row(
             children: [
@@ -44,7 +45,7 @@ class OrderItemWidget extends StatelessWidget {
                   },
                   child: const Icon(Iconsax.minus_square_copy)),
               const SizedBox(width: 15,),
-              DefaultText(txt: "${double.parse(order.unitPrice) * order.quantityToOrder} EGP", center: true),
+              DefaultText(txt: "${order.unitPrice * order.quantityToOrder} EGP", center: true),
             ],
           ),
 

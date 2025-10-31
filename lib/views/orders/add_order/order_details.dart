@@ -49,45 +49,45 @@ class OrderDetailsStep extends StatelessWidget {
                           padding: const EdgeInsets.all(20.0),
                           child: Row(
                             children: [
-                              Expanded(
-                                child: Consumer2<AddOrderVM, PaymentProvider>(
-                                  builder: (context, order, payment,
-                                          child) =>
-                                      DefaultButton(
-                                    onTap: () async {
-                                      if (order.orderModel.customer != null) {
-                                        await order.addOrder(
-                                          customerID:
-                                              order.orderModel.customer!.id,
-                                          orderItems:
-                                              order.orderModel.orderItems,
-                                          delivery: payment.delivery.text,
-                                          downPayment: payment.downPayment.text,
-                                          discount: payment.discount.text,
-                                          paymentMethod:
-                                              payment.paymentMethod.text,
-                                          orderSource:
-                                              payment.platformSource.text,
-                                          notes: payment.notes.text,
-                                        );
-
-                                        Navigator.pop(context);
-                                        Navigator.pop(context);
-                                        payment.clearPaymentDetails();
-                                        order.clearOrder();
-
-                                        order.initAllOrders();
-                                      }
-                                    },
-                                    isValid: !Provider.of<AddOrderVM>(context)
-                                        .isLoading,
-                                    isLoading:
-                                        Provider.of<AddOrderVM>(context).isLoading,
-                                    title: "Place Order",
-                                    margin: EdgeInsets.zero,
-                                  ),
-                                ),
-                              ),
+                              // Expanded(
+                              //   child: Consumer2<AddOrderVM, PaymentProvider>(
+                              //     builder: (context, order, payment,
+                              //             child) =>
+                              //         DefaultButton(
+                              //       onTap: () async {
+                              //         if (order.orderModel.customer != null) {
+                              //           await order.addOrder(
+                              //             customerID:
+                              //                 order.orderModel.customer!.customerId.toString(),
+                              //             orderItems:
+                              //                 order.orderModel.orderItems,
+                              //             delivery: payment.delivery.text,
+                              //             downPayment: payment.downPayment.text,
+                              //             discount: payment.discount.text,
+                              //             paymentMethod:
+                              //                 payment.paymentMethod.text,
+                              //             orderSource:
+                              //                 payment.platformSource.text,
+                              //             notes: payment.notes.text,
+                              //           );
+                              //
+                              //           Navigator.pop(context);
+                              //           Navigator.pop(context);
+                              //           payment.clearPaymentDetails();
+                              //           order.clearOrder();
+                              //
+                              //           order.initAllOrders();
+                              //         }
+                              //       },
+                              //       isValid: !Provider.of<AddOrderVM>(context)
+                              //           .isLoading,
+                              //       isLoading:
+                              //           Provider.of<AddOrderVM>(context).isLoading,
+                              //       title: "Place Order",
+                              //       margin: EdgeInsets.zero,
+                              //     ),
+                              //   ),
+                              // ),
                               const SizedBox(
                                 width: 10,
                               ),

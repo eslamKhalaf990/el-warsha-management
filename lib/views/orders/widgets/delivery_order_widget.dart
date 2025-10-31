@@ -41,10 +41,10 @@ class DeliveryOrderWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
             child:  Row(
               children: [
-                Text(
-                  Provider.of<AddOrderVM>(context).orderModel.customer?.address ??
-                  "Pick your customer!",
-                ),
+                // Text(
+                //   Provider.of<AddOrderVM>(context).orderModel.customer?.address ??
+                //   "Pick your customer!",
+                // ),
               ],
             ),
           ),

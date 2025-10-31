@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/order_upgrading/models/orderModel.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 
@@ -24,7 +25,7 @@ class ItemsList extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 5),
             child: DefaultText(
                 txt:
-                "${index + 1}. ${order.orderItems[index].name} \t\t ${order.orderItems[index].quantity} Piece \t\t ${order.orderItems[index].unitPrice} EGP")),
+                "${index + 1}. ${order.orderItems[index].productName} \t\t ${order.orderItems[index].quantity} Piece \t\t ${order.orderItems[index].unitPrice} EGP")),
       ),
     );
   }

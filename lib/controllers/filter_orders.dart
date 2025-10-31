@@ -39,6 +39,11 @@ class GovernorateProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void searchByCustomer(String query){
+    _selectedQuery = query;
+    notifyListeners();
+  }
+
   void selectPayment(String query) {
     _selectedQuery = query;
     notifyListeners();

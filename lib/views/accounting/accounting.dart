@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/controllers/transaction_provider.dart';
 import 'package:warsha_app/models/transaction_add_model.dart';
 import 'package:warsha_app/models/transaction_cateogry.dart';
 import 'package:warsha_app/utils/const_values.dart';
-import 'package:warsha_app/utils/date.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/accountings_v_m.dart';
 import 'package:warsha_app/utils/price_helper.dart';
+import 'package:warsha_app/views/accounting/transaction_table.dart';
 
 class Accounting extends StatelessWidget {
   const Accounting({super.key});
@@ -179,10 +178,11 @@ class Accounting extends StatelessWidget {
                           ? Center(
                               child: SpinKitChasingDots(
                               color: Theme.of(context).colorScheme.tertiary,
-                            ))
-                          : Expanded(
-                              child: TransactionsTable(
-                                  transactions: value.allTransactions ?? []),),
+                            ),
+                      )
+                          : const Expanded(
+                              child: TransactionsTable(),
+                      ),
                     ],
                   ),
           );
@@ -399,87 +399,6 @@ class Accounting extends StatelessWidget {
     );
   }
 
-  Widget _buildTransactionsTable(BuildContext context, List? transactions) {
-    final theme = Theme.of(context);
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: Scrollbar(
-        thumbVisibility: true,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              border: TableBorder.all(
-                  color: Theme.of(context).colorScheme.onPrimary),
-              dividerThickness: 0,
-              columnSpacing: 100,
-              headingRowColor: WidgetStatePropertyAll(
-                  theme.colorScheme.primary.withAlpha(40)),
-              // dataRowHeight: 52,
-              dataRowMinHeight: 52,
-              dataRowMaxHeight: 52,
-              columns: const [
-                DataColumn(label: Text('Date')),
-                DataColumn(label: Text('Account')),
-                DataColumn(label: Text('Category')),
-                DataColumn(label: Text('Type')),
-                DataColumn(label: Text('Amount')),
-                DataColumn(label: Text('Description')),
-              ],
-              rows: transactions == null
-                  ? []
-                  : transactions.map<DataRow>((t) {
-                      final color = t.transactionType == "Deposit"
-                          ? Colors.green
-                          : Colors.redAccent;
-                      return DataRow(cells: [
-                        DataCell(Text(
-                          DateHelper.formatDate2(t.createdAt.toString()),
-                          style: const TextStyle(color: Colors.black54),
-                        )),
-                        DataCell(Text(t.bankAccount.name)),
-                        DataCell(Text(t.category.categoryName)),
-                        DataCell(Row(
-                          children: [
-                            Icon(
-                              t.transactionType == "Deposit"
-                                  ? Iconsax.arrow_up_2_copy
-                                  : Iconsax.arrow_down_1_copy,
-                              color: color,
-                              size: 18,
-                            ),
-                            const SizedBox(width: 6),
-                            Text(t.transactionType,
-                                style: TextStyle(color: color)),
-                          ],
-                        )),
-                        DataCell(Text(
-                          "${PriceHelper.formatNumber(t.amount)} EGP",
-                          style: TextStyle(
-                            color: color,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )),
-                        DataCell(
-                          SizedBox(
-                            width: 200,
-                            child: Text(
-                              t.description ?? "",
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                      ]);
-                    }).toList(),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildCashCard(
     BuildContext context, {
     required String title,
@@ -571,116 +490,4 @@ class Accounting extends StatelessWidget {
   }
 }
 
-class TransactionsTable extends StatelessWidget {
-  final List transactions;
-  const TransactionsTable({super.key, required this.transactions});
-
-  @override
-  Widget build(BuildContext context) {
-    final provider = context.watch<TransactionsProvider>();
-    final theme = Theme.of(context);
-
-    // Load transactions if provider is empty
-    if (provider.allTransactions.isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        provider.setTransactions(transactions);
-      });
-    }
-
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: Scrollbar(
-        thumbVisibility: true,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              sortColumnIndex: provider.sortColumnIndex,
-              sortAscending: provider.sortAscending,
-              border: TableBorder.all(color: theme.colorScheme.onPrimary),
-              dividerThickness: 0,
-              columnSpacing: 100,
-              headingRowColor: WidgetStatePropertyAll(
-                  theme.colorScheme.primary.withAlpha(40)),
-              dataRowMinHeight: 52,
-              dataRowMaxHeight: 52,
-              columns: [
-                DataColumn(
-                  label: const Text('Date'),
-                  onSort: (i, asc) => provider.sort<String>(
-                        (t) => t.createdAt.toString(),
-                    i,
-                    asc,
-                  ),
-                ),
-                DataColumn(
-                  label: const Text('Account'),
-                  onSort: (i, asc) =>
-                      provider.sort<String>((t) => t.bankAccount.name, i, asc),
-                ),
-                DataColumn(
-                  label: const Text('Category'),
-                  onSort: (i, asc) => provider.sort<String>(
-                          (t) => t.category.categoryName, i, asc),
-                ),
-                DataColumn(
-                  label: const Text('Type'),
-                  onSort: (i, asc) =>
-                      provider.sort<String>((t) => t.transactionType, i, asc),
-                ),
-                DataColumn(
-                  label: const Text('Amount'),
-                  numeric: true,
-                  onSort: (i, asc) => provider.sort<num>((t) => t.amount, i, asc),
-                ),
-                const DataColumn(label: Text('Description')),
-              ],
-              rows: provider.sortedTransactions.map<DataRow>((t) {
-                final color = t.transactionType == "Deposit"
-                    ? Colors.green
-                    : Colors.redAccent;
-                return DataRow(cells: [
-                  DataCell(Text(
-                    DateHelper.formatDate2(t.createdAt.toString()),
-                    style: const TextStyle(color: Colors.black54),
-                  )),
-                  DataCell(Text(t.bankAccount.name)),
-                  DataCell(Text(t.category.categoryName)),
-                  DataCell(Row(
-                    children: [
-                      Icon(
-                        t.transactionType == "Deposit"
-                            ? Iconsax.arrow_up_2_copy
-                            : Iconsax.arrow_down_1_copy,
-                        color: color,
-                        size: 18,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(t.transactionType, style: TextStyle(color: color)),
-                    ],
-                  )),
-                  DataCell(Text(
-                    "${PriceHelper.formatNumber(t.amount)} EGP",
-                    style: TextStyle(
-                      color: color,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )),
-                  DataCell(SizedBox(
-                    width: 200,
-                    child: Text(
-                      t.description ?? "",
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )),
-                ]);
-              }).toList(),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 

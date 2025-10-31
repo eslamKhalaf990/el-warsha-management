@@ -42,19 +42,14 @@ class CustomerOrderWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
             child: Row(
               children: [
-                DefaultText(
-                  txt: Provider.of<AddOrderVM>(context)
-                          .orderModel
-                          .customer
-                          ?.name ??
-                      "Pick your customer",
-                  bold: Provider.of<AddOrderVM>(context)
-                      .orderModel
-                      .customer != null,
-                  size: Provider.of<AddOrderVM>(context)
-                      .orderModel
-                      .customer != null ? 16:14,
-                ),
+                // DefaultText(
+                //   txt: Provider.of<AddOrderVM>(context)
+                //           .orderModel
+                //           .customer
+                //           .fullName ??
+                //       "Pick your customer",
+                //   size: 16,
+                // ),
               ],
             ),
           ),
