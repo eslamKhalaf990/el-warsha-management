@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
-import 'package:warsha_app/models/customer_model.dart';
+// import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/models/order_items_model.dart';
 import 'package:warsha_app/models/order_model.dart';
 import 'package:warsha_app/order_upgrading/models/orderItemModel.dart';
 import 'package:warsha_app/order_upgrading/models/orderModel.dart';
 import 'package:warsha_app/services/orders_service.dart';
 import 'package:warsha_app/view_models/user_v_m.dart';
+
+import '../order_upgrading/models/customerModel.dart' show CustomerModel;
 
 class UpdateOrderVM extends ChangeNotifier {
   final OrdersService _orderService;

@@ -30,11 +30,11 @@ class PaymentProvider extends ChangeNotifier {
 
   void loadPayment(OrderModel existingOrder) {
     downPayment.text = existingOrder.downPayment.toString();
-    paymentMethod.text = existingOrder.paymentMethod;
+    paymentMethod.text = existingOrder.paymentMethod ??"-";
     discount.text ="0.0";
-    platformSource.text = existingOrder.orderSource;
+    platformSource.text = existingOrder.orderSource ?? "-";
     delivery.text = existingOrder.delivery.toString();
-    notes.text = existingOrder.notes;
+    notes.text = existingOrder.notes ?? "-";
 
     // if you want to set base price too, calculate from items
     if (existingOrder.orderItems.isNotEmpty) {

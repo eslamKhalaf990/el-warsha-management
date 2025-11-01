@@ -57,41 +57,41 @@ class OrderDetailsWidget extends StatelessWidget {
             ),
           ),
 
-          //list of order items
-          // Provider.of<AddOrderVM>(context).orderModel.orderItems.isNotEmpty
-          //     ? SliverFixedExtentList(
-          //   itemExtent: 60,
-          //   delegate: SliverChildBuilderDelegate(
-          //         (context, index) {
-          //       return Padding(
-          //         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          //         child: OrderItemWidget(index, orderItem: Provider.of<AddOrderVM>(context).orderModel.orderItems[index]),
-          //       );
-          //     },
-          //     childCount: Provider.of<AddOrderVM>(context)
-          //         .orderModel
-          //         .orderItems
-          //         .length,
-          //   ),
-          // )
-          //     : SliverToBoxAdapter(
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(15.0),
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.center,
-          //       children: [
-          //         Icon(
-          //           Iconsax.shopping_cart,
-          //           color: Colors.red.shade300,
-          //         ),
-          //         const SizedBox(
-          //           width: 15,
-          //         ),
-          //         const DefaultText(txt: "Put items in list first!"),
-          //       ],
-          //     ),
-          //   ),
-          // ),
+          // list of order items
+          Provider.of<AddOrderVM>(context).orderModel.orderItems.isNotEmpty
+              ? SliverFixedExtentList(
+            itemExtent: 60,
+            delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: OrderItemWidget(index, orderItem: Provider.of<AddOrderVM>(context).orderModel.orderItems[index]),
+                );
+              },
+              childCount: Provider.of<AddOrderVM>(context)
+                  .orderModel
+                  .orderItems
+                  .length,
+            ),
+          )
+              : SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Iconsax.shopping_cart,
+                    color: Colors.red.shade300,
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  const DefaultText(txt: "Put items in list first!"),
+                ],
+              ),
+            ),
+          ),
 
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
           SliverToBoxAdapter(

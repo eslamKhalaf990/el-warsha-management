@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/views/customers/update_customer.dart';
+
+import '../../order_upgrading/models/customerModel.dart' show CustomerModel;
 
 class CustomerWidget extends StatelessWidget {
   final CustomerModel customerModel;
@@ -45,7 +46,7 @@ class CustomerWidget extends StatelessWidget {
                     Row(
                       children: [
                         DefaultText(
-                          txt: customerModel.name,
+                          txt: customerModel.fullName,
                           bold: true,
                         ),
                         const SizedBox(

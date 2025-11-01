@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:warsha_app/models/order_model.dart';
+import 'package:warsha_app/order_upgrading/models/create_order_request.dart';
 import 'package:warsha_app/order_upgrading/models/orderModel.dart';
 import 'package:warsha_app/utils/const_values.dart';
 
@@ -32,7 +33,7 @@ class OrdersService {
     return response;
   }
 
-  Future<http.Response> addOrder(OrderModel order, String token) async {
+  Future<http.Response> addOrder(CreateOrderRequest order, String token) async {
     debugPrint("addOrder called ${order.toJson()}");
     http.Response response;
     try {

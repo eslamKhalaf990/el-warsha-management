@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:warsha_app/order_upgrading/models/create_order_request.dart';
 import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
 
@@ -15,7 +16,8 @@ class OrderService {
     final response = await http.get(
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        "Authorization": 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXNzZXIiLCJpYXQiOjE3NjE5MjY5ODMsImV4cCI6MTc2MTk1NTc4M30.t-2xrBctI-8x1hFsxdGrUq4SQI7xUpo1ahfFbNSnHSg',
+        "Authorization":
+            'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXNzZXIiLCJpYXQiOjE3NjE5NTU5ODUsImV4cCI6MTc2MTk4NDc4NX0.kydMEnVFz003LCpHPKHcMnTL0e8cMfcaEHPANI_RJT4',
       },
       Uri.parse(
         Baseurl.getAllOrderAPI,
@@ -25,7 +27,6 @@ class OrderService {
     // Parse the JSON data
     try {
       if (_cachedOrders == null) {
-
         final List<dynamic> jsonList = json.decode(response.body);
         _cachedOrders =
             jsonList.map((json) => OrderModel.fromJson(json)).toList();
@@ -35,6 +36,33 @@ class OrderService {
     } catch (e) {
       // Throw an exception if parsing fails
       throw Exception('Failed to load orders: ${e.toString()}');
+    }
+  }
+
+  Future<void> addOrder(CreateOrderRequest orderRequest) async {
+    final response = await http
+        .post(
+          Uri.parse(Baseurl.addOrderAPI),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            "Authorization":
+                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYXNzZXIiLCJpYXQiOjE3NjE5NTU5ODUsImV4cCI6MTc2MTk4NDc4NX0.kydMEnVFz003LCpHPKHcMnTL0e8cMfcaEHPANI_RJT4',
+          },
+          body: jsonEncode(orderRequest.toJson()),
+        )
+        .timeout(const Duration(seconds: Constants.TIMEOUT));
+
+    print(response.body);
+    print(response.statusCode);
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      // Success! Invalidate the cache.
+      _cachedOrders = null;
+    } else {
+      // If the server didn't create the order, throw an error
+      throw Exception(
+          'Failed to add order: ${response.statusCode} ${response.body}');
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:warsha_app/order_upgrading/models/create_order_request.dart';
 
 import '../models/orderModel.dart';
 import '../service/orderService.dart' show OrderService;
@@ -13,11 +14,13 @@ class GetDeleteOrderVM extends ChangeNotifier {
 
   // --- State ---
   ViewState _state = ViewState.idle;
+  bool _isSaving = false; // --- NEW ---
   List<OrderModel> _orders = [];
   String _errorMessage = '';
 
   // --- Getters ---
   ViewState get state => _state;
+  bool get isSaving => _isSaving; // --- NEW ---
   List<OrderModel> get orders => _orders;
   String get errorMessage => _errorMessage;
 
@@ -36,6 +39,32 @@ class GetDeleteOrderVM extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  Future<bool> addOrder(CreateOrderRequest orderRequest) async {
+    _isSaving = true;
+    _errorMessage = '';
+    _state = ViewState.idle; // Clear any previous errors
+    notifyListeners();
+
+    try {
+      // 1. Call the service
+      await _orderService.addOrder(orderRequest);
+
+      // 2. On success, set saving to false
+      _isSaving = false;
+
+      // 3. Refresh the list from the server (since the cache was invalidated)
+      await fetchOrders();
+      return true; // Success
+    } catch (e) {
+      // 4. On failure, set state and return false
+      _errorMessage = e.toString();
+      _state = ViewState.error;
+      _isSaving = false;
+      notifyListeners();
+      return false; // Failure
+    }
   }
 
   Future<void> deleteOrder(int id) async {

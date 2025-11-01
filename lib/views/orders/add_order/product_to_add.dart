@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/order_items_model.dart';
 import 'package:warsha_app/models/product_model.dart';
+import 'package:warsha_app/order_upgrading/models/orderItemModel.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/views/orders/product_widget.dart';
@@ -41,22 +42,22 @@ class ProductToAdd extends StatelessWidget {
                     final product = filteredProducts[index];
                     final orderVM = Provider.of<AddOrderVM>(context, listen: false);
 
-                    OrderItemsModel orderItemsModel = OrderItemsModel(
-                      productId: product.id,
-                      name: product.name,
-                      quantity: product.quantity,
-                      unitPrice: product.sellingPrice,
+                    OrderItemModel orderItemsModel = OrderItemModel(
+                      productId: int.parse(product.id),
+                      quantity: int.parse(product.quantity) ,
+                      unitPrice: double.parse(product.sellingPrice),
+                      productName: product.name,
                     );
 
                     // Check for duplicates by productId
-                    // bool alreadyExists = orderVM.orderModel.orderItems
-                    //     .any((item) => item.productId == product.id);
+                    bool alreadyExists = orderVM.orderModel.orderItems
+                        .any((item) => product.id == item.productId.toString());
 
-                    // if (!alreadyExists) {
-                    //   orderVM.addToOrderItems = orderItemsModel;
-                    // } else {
-                    //   orderVM.removeFromOrderItems = orderItemsModel.productId;
-                    // }
+                    if (!alreadyExists) {
+                      orderVM.addToOrderItems = orderItemsModel;
+                    } else {
+                      orderVM.removeFromOrderItems = orderItemsModel.productId;
+                    }
                   },
 
                   child: ProductWidget(

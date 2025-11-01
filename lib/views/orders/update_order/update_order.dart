@@ -97,7 +97,7 @@ class UpdateOrder extends StatelessWidget {
                                       payment.clearPaymentDetails();
                                       value.clearCustomer();
                                       // Provider.of<OrdersTableProvider>(context,listen: false).clear();
-                                      Provider.of<AddOrderVM>(context,listen: false).initAllOrders();
+                                      // Provider.of<AddOrderVM>(context,listen: false).initAllOrders();
                                     },
                                     isValid: !orderVM.isLoading,
                                     isLoading: orderVM.isLoading,

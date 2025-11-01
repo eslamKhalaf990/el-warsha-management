@@ -31,11 +31,11 @@ class UpdatePaymentDetails extends ChangeNotifier {
 
   void loadPayment(OrderModel existingOrder) {
     downPayment.text = existingOrder.downPayment.toString();
-    paymentMethod.text = existingOrder.paymentMethod;
+    paymentMethod.text = existingOrder.paymentMethod ?? "-";
     discount.text = existingOrder.discount.toString();
-    platformSource.text = existingOrder.orderSource;
+    platformSource.text = existingOrder.orderSource ?? "-";
     delivery.text = existingOrder.delivery.toString();
-    notes.text = existingOrder.notes;
+    notes.text = existingOrder.notes ?? "-";
 
     notifyListeners();
   }

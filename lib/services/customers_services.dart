@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 
 import 'base_url.dart';
@@ -52,8 +51,9 @@ class CustomerService {
     return response;
   }
 
-  Future<http.Response> addCustomer(CustomerModel customer, String token) async {
-    debugPrint("addCustomer called ${customer.name}");
+  Future<http.Response> addCustomer(String name, String governorate,
+      String phone, String address, String token) async {
+    debugPrint("addCustomer called ${name}");
     http.Response response;
     try {
       response = await http.post(
@@ -66,10 +66,10 @@ class CustomerService {
             Baseurl.addCustomerAPI,
           ),
           body: jsonEncode({
-            "fullName": customer.name,
-            "phone": customer.phone,
-            "governorate": customer.governorate,
-            "address": customer.address,
+            "fullName": name,
+            "phone": phone,
+            "governorate": governorate,
+            "address": address,
           })
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
 
@@ -81,7 +81,8 @@ class CustomerService {
     return response;
   }
 
-  Future<http.Response> updateCustomer(String id, CustomerModel customer, String token) async {
+  Future<http.Response> updateCustomer(String id, String name, String governorate,
+      String phone, String address, String token) async {
     debugPrint("updateCustomer with id: $id");
     http.Response response;
     try {
@@ -93,10 +94,10 @@ class CustomerService {
           "Authorization": 'Bearer $token',
         },
         body: jsonEncode({
-          "fullName": customer.name,
-          "phone": customer.phone,
-          "governorate": customer.governorate,
-          "address": customer.address,
+          "fullName": name,
+          "phone": phone,
+          "governorate": governorate,
+          "address": address,
         }),
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
 

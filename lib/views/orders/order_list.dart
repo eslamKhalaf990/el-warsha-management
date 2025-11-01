@@ -83,12 +83,12 @@ class OrderList extends StatelessWidget {
       cells: [
         DataCell(Text('#${order.orderId}')),
         DataCell(Text(DateHelper.formatDatePicker(order.orderDate.toString()))),
-        DataCell(Text(order.customer.fullName)),
-        DataCell(Text(order.customer.phone)),
-        DataCell(Text(order.status)),
-        DataCell(Text(order.customer.governorate)),
-        DataCell(Text('${order.totalPrice.toStringAsFixed(2)} EGP')),
-        DataCell(Text(order.orderSource.isEmpty ? 'N/A' : order.orderSource)),
+        DataCell(Text(order.customer?.fullName ?? "-")),
+        DataCell(Text(order.customer?.phone ??"-")),
+        DataCell(Text(order.status?.toUpperCase() ?? "-")),
+        DataCell(Text(order.customer?.governorate ?? "-")),
+        DataCell(Text('${order.totalPrice?.toStringAsFixed(2) ?? "-"} EGP')),
+        DataCell(Text(order.orderSource?.toUpperCase() ?? "-")),
         DataCell(_buildActionButtons(
             context, order, Provider.of<AddOrderVM>(context, listen: false))),
       ],
@@ -131,11 +131,8 @@ class OrderList extends StatelessWidget {
           },
         ),
         IconButton(
-          icon: !addOrderVM.isLoading ||
-                  (order.orderId) != int.parse(addOrderVM.deletedOrder)
-              ? const Icon(Iconsax.trash_copy, size: 20, color: Colors.red)
-              : const SpinKitChasingDots(color: Colors.red, size: 20),
-          onPressed: !addOrderVM.isLoading
+          icon: const Icon(Iconsax.trash_copy, size: 20, color: Colors.red),
+          onPressed: !addOrderVM.isSaving
               ? () async => _deleteOrder(context, order, addOrderVM,
                   Provider.of<GetDeleteOrderVM>(context, listen: false))
               : null,
@@ -174,11 +171,11 @@ class OrderList extends StatelessWidget {
 
     if (confirm != true) return; // Cancel pressed
 
-    final state = await orderVM.deleteOrderByID(order.orderId.toString());
+    // final state = await orderVM.deleteOrderByID(order.orderId.toString());
 
-    if (state == "deleted") {
+    // if (state == "deleted") {
       provider.deleteOrder(
-          order.orderId); // This will trigger the FutureBuilder to refetch
+          order.orderId!); // This will trigger the FutureBuilder to refetch
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -188,7 +185,7 @@ class OrderList extends StatelessWidget {
           ),
         );
       }
-    }
+    // }
   }
 
   void _showOrderDetails(BuildContext context, OrderModel order) {
@@ -217,7 +214,7 @@ class OrderList extends StatelessWidget {
                     "Delivery Details",
                     [
                       _buildDetailRow("Address:",
-                          "${order.customer.address} - ${order.customer.governorate}"),
+                          "${order.customer?.address ?? "-"} - ${order.customer?.governorate ?? "-"}"),
                       _buildDetailRow("Delivery:", "${order.delivery} EGP"),
                       _buildDetailRow(
                           "Down payment:", "${order.downPayment} EGP"),
@@ -290,7 +287,7 @@ class OrderList extends StatelessWidget {
                     context,
                     "Additional Notes",
                     [
-                      Text(order.notes),
+                      Text(order.notes ?? "-"),
                     ],
                   ),
                 ],

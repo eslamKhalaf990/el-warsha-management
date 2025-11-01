@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:warsha_app/models/customer_model.dart';
+
+import '../../order_upgrading/models/customerModel.dart';
 
 class UpdateCustomerProvider extends ChangeNotifier {
   // TextEditingControllers
@@ -19,7 +20,7 @@ class UpdateCustomerProvider extends ChangeNotifier {
   }
 
   void loadCustomer (CustomerModel customer){
-    name.text = customer.name;
+    name.text = customer.fullName;
     phone.text = customer.phone;
     governorate.text = customer.governorate;
     address.text = customer.address;

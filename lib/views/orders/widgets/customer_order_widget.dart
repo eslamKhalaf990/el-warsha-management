@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
@@ -42,14 +41,14 @@ class CustomerOrderWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
             child: Row(
               children: [
-                // DefaultText(
-                //   txt: Provider.of<AddOrderVM>(context)
-                //           .orderModel
-                //           .customer
-                //           .fullName ??
-                //       "Pick your customer",
-                //   size: 16,
-                // ),
+                DefaultText(
+                  txt: Provider.of<AddOrderVM>(context)
+                          .orderModel
+                          .customer
+                          ?.fullName ??
+                      "Pick your customer",
+                  size: 16,
+                ),
               ],
             ),
           ),

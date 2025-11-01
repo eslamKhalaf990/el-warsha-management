@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/update_order/update_customer.dart';
-import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
+
+import '../../order_upgrading/models/customerModel.dart' show CustomerModel;
 
 class UpdateCustomer extends StatelessWidget {
   const UpdateCustomer({super.key, required this.customerModel});
@@ -120,9 +121,8 @@ class UpdateCustomer extends StatelessWidget {
                                   flex: 3,
                                   child: DefaultButton(
                                     onTap: () async {
-                                      print(customerModel.id);
                                       String status = await customerVM.updateCustomer(
-                                        customerModel.id,
+                                        customerModel.customerId.toString(),
                                         value.name.text,
                                         value.governorate.text,
                                         value.phone.text,

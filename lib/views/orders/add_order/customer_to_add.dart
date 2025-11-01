@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/models/customer_model.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
+import '../../../order_upgrading/models/customerModel.dart';
 import '../customer_widget.dart';
 
 class CustomerToAdd extends StatelessWidget {
@@ -23,7 +23,7 @@ class CustomerToAdd extends StatelessWidget {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.data!.isNotEmpty) {
           final filteredCustomers = snapshot.data!.where((customer) {
-            final name = customer.name.toLowerCase();
+            final name = customer.fullName.toLowerCase();
             final phone = customer.phone.toLowerCase();
             final query = Provider.of<CustomerVM>(context).searchController.text.toLowerCase();
             return name.contains(query) || phone.contains(query);
@@ -37,14 +37,15 @@ class CustomerToAdd extends StatelessWidget {
                   onTap: (){
                     Provider.of<AddOrderVM>(context, listen: false).addCustomer =
                         filteredCustomers[index];
+                    print(filteredCustomers[index].customerId);
                     },
                   child: CustomerWidget(
                     index: index,
-                    name: filteredCustomers[index].name,
+                    name: filteredCustomers[index].fullName,
                     email: filteredCustomers[index].governorate,
                     address:filteredCustomers[index].address,
                     phone: filteredCustomers[index].phone,
-                    id: filteredCustomers[index].id,
+                    id: filteredCustomers[index].customerId.toString(),
                   ),
                 );
               },

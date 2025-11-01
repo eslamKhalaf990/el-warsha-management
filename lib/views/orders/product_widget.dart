@@ -17,12 +17,12 @@ class ProductWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-        // color: Provider.of<AddOrderVM>(context)
-        //         .orderModel
-        //         .orderItems
-        //         .any((product) => product.productId == productModel.id)
-        //     ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
-        //     : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
+        color: Provider.of<AddOrderVM>(context)
+                .orderModel
+                .orderItems
+                .any((product) => product.productId.toString() == productModel.id)
+            ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
+            : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
         borderRadius: Constants.BORDER_RADIUS_20,
       ),
       child: Column(
