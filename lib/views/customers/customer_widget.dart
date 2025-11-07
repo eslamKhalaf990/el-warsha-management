@@ -4,7 +4,7 @@ import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/views/customers/update_customer.dart';
 
-import '../../order_upgrading/models/customerModel.dart' show CustomerModel;
+import '../../models/customerModel.dart' show CustomerModel;
 
 class CustomerWidget extends StatelessWidget {
   final CustomerModel customerModel;

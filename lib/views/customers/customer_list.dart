@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
-import '../../order_upgrading/models/customerModel.dart' show CustomerModel;
+import '../../models/customerModel.dart' show CustomerModel;
 import 'customer_widget.dart';
 
 class CustomerList extends StatelessWidget {

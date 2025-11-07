@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 class CreateOrderItem {
   final int productId;
   final int quantity;
-  final int quantityToOrder = 1;
   final double unitPrice;
 
   CreateOrderItem({
@@ -15,7 +12,7 @@ class CreateOrderItem {
   Map<String, dynamic> toJson() {
     return {
       'productId': productId.toString(),
-      'quantity': quantityToOrder.toString(),
+      'quantity': quantity.toString(),
       'unitPrice': unitPrice.toString(),
     };
   }
@@ -43,7 +40,6 @@ class CreateOrderRequest {
     required this.items,
   });
 
-  // Helper to convert the full request to a JSON string
   Map<String, dynamic> toJson() {
     return {
       'customerId': customerId,

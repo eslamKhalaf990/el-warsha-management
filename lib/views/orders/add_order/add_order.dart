@@ -19,11 +19,6 @@ class AddOrder extends StatelessWidget {
 
     return Consumer<CustomerProvider>(
       builder: (context, value, child) => Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            title: const DefaultText(txt: "Add New Order"),
-        ),
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -42,8 +37,7 @@ class AddOrder extends StatelessWidget {
                   Expanded(
                     flex: 3,
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 45, bottom: 65, right: 7, left: 15),
+                      padding: const EdgeInsets.only(right: 0, left: 0),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.onPrimary,
@@ -79,41 +73,38 @@ class AddOrder extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(width: 10),
                   Expanded(
                     flex: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 45, bottom: 65, right: 15, left: 7),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          borderRadius: Constants.BORDER_RADIUS_15,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                                child: Row(
-                                  children: [DefaultText(txt: "Customers")],
-                                ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        borderRadius: Constants.BORDER_RADIUS_15,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Row(
+                                children: [DefaultText(txt: "Customers")],
                               ),
-                              const SizedBox(height: 20),
+                            ),
+                            const SizedBox(height: 20),
 
-                              //search for customer
-                              DefaultForm(
-                                title: 'Search For Customer',
-                                controller: Provider.of<CustomerVM>(context, listen: false).searchController,
-                                numberOfLines: 1,
-                              ),
-                              const SizedBox(height: 20),
+                            //search for customer
+                            DefaultForm(
+                              title: 'Search For Customer',
+                              controller: Provider.of<CustomerVM>(context, listen: false).searchController,
+                              numberOfLines: 1,
+                            ),
+                            const SizedBox(height: 20),
 
-                              //list of customers
-                              const CustomerToAdd(),
-                            ],
-                          ),
+                            //list of customers
+                            const CustomerToAdd(),
+                          ],
                         ),
                       ),
                     ),

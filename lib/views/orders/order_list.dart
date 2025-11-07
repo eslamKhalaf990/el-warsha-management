@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/order_upgrading/models/orderModel.dart';
-import 'package:warsha_app/models/order_model.dart' as order_m;
-import 'package:warsha_app/order_upgrading/provider/orderProvider.dart';
+import 'package:warsha_app/models/orderModel.dart';
+import 'package:warsha_app/view_models/order_v_m.dart';
 import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/date.dart';
@@ -18,15 +17,15 @@ class OrderList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<GetDeleteOrderVM>();
+    final provider = context.watch<OrderVM>();
 
     return _buildBody(context, provider);
   }
 
-  Widget _buildBody(BuildContext context, GetDeleteOrderVM provider) {
+  Widget _buildBody(BuildContext context, OrderVM provider) {
     switch (provider.state) {
       case ViewState.loading:
-        return const Center(child: CircularProgressIndicator());
+        return Center(child: SpinKitChasingDots(color: Theme.of(context).colorScheme.tertiary,));
       case ViewState.error:
         return Center(
           child: Text(
@@ -120,21 +119,21 @@ class OrderList extends StatelessWidget {
         IconButton(
           icon: const Icon(Iconsax.edit_2_copy, size: 20, color: Colors.blue),
           onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => UpdateOrder(
-            //       existingOrder: order,
-            //     ),
-            //   ),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UpdateOrder(
+                  existingOrder: order,
+                ),
+              ),
+            );
           },
         ),
         IconButton(
           icon: const Icon(Iconsax.trash_copy, size: 20, color: Colors.red),
-          onPressed: !addOrderVM.isSaving
+          onPressed: !Provider.of<OrderVM>(context).isSaving
               ? () async => _deleteOrder(context, order, addOrderVM,
-                  Provider.of<GetDeleteOrderVM>(context, listen: false))
+                  Provider.of<OrderVM>(context, listen: false))
               : null,
         ),
       ],
@@ -145,7 +144,7 @@ class OrderList extends StatelessWidget {
     BuildContext context,
     OrderModel order,
     AddOrderVM orderVM,
-    GetDeleteOrderVM provider,
+    OrderVM provider,
   ) async {
     final confirm = await showDialog<bool>(
       context: context,
@@ -171,21 +170,8 @@ class OrderList extends StatelessWidget {
 
     if (confirm != true) return; // Cancel pressed
 
-    // final state = await orderVM.deleteOrderByID(order.orderId.toString());
+    await provider.deleteOrder(order.orderId!);
 
-    // if (state == "deleted") {
-      provider.deleteOrder(
-          order.orderId!); // This will trigger the FutureBuilder to refetch
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Order #${order.orderId} deleted successfully.'),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
-    // }
   }
 
   void _showOrderDetails(BuildContext context, OrderModel order) {

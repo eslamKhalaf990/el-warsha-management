@@ -13,6 +13,7 @@ import 'package:warsha_app/services/home_service.dart';
 import 'package:warsha_app/services/orders_service.dart';
 import 'package:warsha_app/services/products_service.dart';
 import 'package:warsha_app/services/user_service.dart';
+import 'package:warsha_app/utils/navigator.dart';
 import 'package:warsha_app/view_models/accountings_v_m.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
@@ -27,8 +28,7 @@ import 'controllers/add_order/add_payment.dart';
 import 'controllers/filter_orders.dart';
 import 'controllers/transaction_provider.dart';
 import 'controllers/update_order/update_product.dart';
-import 'order_upgrading/provider/orderProvider.dart';
-import 'order_upgrading/service/orderService.dart';
+import 'view_models/order_v_m.dart';
 
 void main() {
     runApp(
@@ -56,22 +56,24 @@ void main() {
           Provider<OrdersService>(create: (_) => OrdersService()),
           Provider<CustomerService>(create: (_) => CustomerService()),
 
-          Provider<OrderService>(
-            create: (_) => OrderService(),
+          Provider<OrdersService>(
+            create: (_) => OrdersService(),
           ),
 
-          // 2. Provide the ChangeNotifier (ViewModel)
-          // It depends on OrderService and fetches data immediately.
-          ChangeNotifierProvider<GetDeleteOrderVM>(
-            create: (context) => GetDeleteOrderVM(
-              context.read<OrderService>(),
-            )..fetchOrders(),
-          ),
 
           ChangeNotifierProvider<UserViewModel>(
             create: (context) => UserViewModel(
               context.read<UserService>(),
             ),
+          ),
+
+          // 2. Provide the ChangeNotifier (ViewModel)
+          // It depends on OrderService and fetches data immediately.
+          ChangeNotifierProvider<OrderVM>(
+            create: (context) => OrderVM(
+              context.read<OrdersService>(),
+              context.read<UserViewModel>(),
+            )..fetchOrders(),
           ),
 
           //injecting product with api services
@@ -86,7 +88,6 @@ void main() {
           ChangeNotifierProvider<AddOrderVM>(
             create: (context) => AddOrderVM(
               context.read<OrdersService>(),
-              // OrderModel(),
               context.read<UserViewModel>(),
             ),
           ),
@@ -95,7 +96,6 @@ void main() {
           ChangeNotifierProvider<UpdateOrderVM>(
             create: (context) => UpdateOrderVM(
               context.read<OrdersService>(),
-              // OrderModel(),
               context.read<UserViewModel>(),
             ),
           ),
@@ -160,6 +160,7 @@ class MyApp extends StatelessWidget {
           primary: Colors.grey.shade100,
         ),
       ),
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       home: Login(),
       routes: {

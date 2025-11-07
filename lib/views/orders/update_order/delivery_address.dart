@@ -41,10 +41,10 @@ class DeliveryAddress extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
             child:  Row(
               children: [
-                // Text(
-                //   Provider.of<UpdateOrderVM>(context).orderModel.customer?.address ??
-                //       "Pick your customer!",
-                // ),
+                Text(
+                  Provider.of<UpdateOrderVM>(context).orderModel.customer?.address ??
+                      "Pick your customer!",
+                ),
               ],
             ),
           ),

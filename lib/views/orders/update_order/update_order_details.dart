@@ -57,39 +57,39 @@ class UpdateOrderDetails extends StatelessWidget {
             ),
           ),
 
-          //list of order items
-          // order.orderModel.orderItems.isNotEmpty
-          //     ? SliverFixedExtentList(
-          //         itemExtent: 60,
-          //         delegate: SliverChildBuilderDelegate(
-          //           (context, index) {
-          //             return Padding(
-          //               padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          //               child: UpdateOrderItem(index, orderItem: Provider.of<UpdateOrderVM>(context).
-          //                 orderModel.orderItems[index]),
-          //             );
-          //           },
-          //           childCount: order.orderModel.orderItems.length,
-          //         ),
-          //       )
-          //     : SliverToBoxAdapter(
-          //         child: Padding(
-          //           padding: const EdgeInsets.all(15.0),
-          //           child: Row(
-          //             mainAxisAlignment: MainAxisAlignment.center,
-          //             children: [
-          //               Icon(
-          //                 Iconsax.shopping_cart,
-          //                 color: Colors.red.shade300,
-          //               ),
-          //               const SizedBox(
-          //                 width: 15,
-          //               ),
-          //               const DefaultText(txt: "Put items in list first!"),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
+          // list of order items
+          order.orderModel.orderItems.isNotEmpty
+              ? SliverFixedExtentList(
+                  itemExtent: 60,
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: UpdateOrderItem(index, orderItem: Provider.of<UpdateOrderVM>(context).
+                          orderModel.orderItems[index]),
+                      );
+                    },
+                    childCount: order.orderModel.orderItems.length,
+                  ),
+                )
+              : SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Iconsax.shopping_cart,
+                          color: Colors.red.shade300,
+                        ),
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        const DefaultText(txt: "Put items in list first!"),
+                      ],
+                    ),
+                  ),
+                ),
 
           const SliverToBoxAdapter(child: SizedBox(height: 15)),
           SliverToBoxAdapter(
@@ -268,7 +268,7 @@ class UpdateOrderDetails extends StatelessWidget {
                           prefixIcon: Icon(Iconsax.wallet_1,
                               color: Theme.of(context).colorScheme.tertiary),
                         ),
-                        value: payment.paymentMethod.text.isNotEmpty
+                        initialValue: payment.paymentMethod.text.isNotEmpty
                             ? payment.paymentMethod.text
                             : null, // preselect if controller has value
                         items: const [
@@ -278,6 +278,7 @@ class UpdateOrderDetails extends StatelessWidget {
                           DropdownMenuItem(
                               value: "instapay", child: Text("Instapay")),
                           DropdownMenuItem(value: "cash", child: Text("Cash")),
+                          DropdownMenuItem(value: "-", child: Text("Other")),
                         ],
                         onChanged: (selected) {
                           if (selected != null) {

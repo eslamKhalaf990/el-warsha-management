@@ -4,7 +4,7 @@ import 'package:warsha_app/models/governorate_count.dart';
 import 'package:warsha_app/services/customers_services.dart';
 import 'package:warsha_app/view_models/user_v_m.dart';
 
-import '../order_upgrading/models/customerModel.dart' show CustomerModel;
+import '../models/customerModel.dart' show CustomerModel;
 
 class CustomerVM extends ChangeNotifier {
   final CustomerService _customerService;

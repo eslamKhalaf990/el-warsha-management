@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/models/order_items_model.dart';
 import 'package:warsha_app/models/product_model.dart';
-import 'package:warsha_app/order_upgrading/models/orderItemModel.dart';
+import 'package:warsha_app/models/orderItemModel.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/views/orders/product_widget.dart';

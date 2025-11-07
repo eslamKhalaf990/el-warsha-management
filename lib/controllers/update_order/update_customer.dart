@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../order_upgrading/models/customerModel.dart';
+import '../../models/customerModel.dart';
 
 class UpdateCustomerProvider extends ChangeNotifier {
   // TextEditingControllers

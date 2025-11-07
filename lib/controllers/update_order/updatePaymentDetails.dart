@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:warsha_app/models/order_model.dart';
-import 'package:warsha_app/order_upgrading/models/orderModel.dart';
+import 'package:warsha_app/models/orderModel.dart';
 
 class UpdatePaymentDetails extends ChangeNotifier {
   final TextEditingController downPayment = TextEditingController();

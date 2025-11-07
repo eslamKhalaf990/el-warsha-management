@@ -4,6 +4,8 @@ class OrderItemModel {
   final int quantity;
   final double unitPrice;
   int quantityToOrder = 1;
+  int orderedQuantity = 1;
+
 
   OrderItemModel({
     required this.productId,
@@ -14,12 +16,15 @@ class OrderItemModel {
 
   // Manual fromJson
   factory OrderItemModel.fromJson(Map<String, dynamic> json) {
-    return OrderItemModel(
+    final orderItem = OrderItemModel(
       productId: json['productId'] as int? ?? 0,
       productName: json['productName'] as String? ?? '',
       quantity: json['quantity'] as int? ?? 0,
       unitPrice: (json['unitPrice'] as num? ?? 0).toDouble(),
     );
+
+    orderItem.orderedQuantity = json['quantity'] ?? "1";
+    return orderItem;
   }
 
   Map<String, dynamic> toJson() {
@@ -29,4 +34,14 @@ class OrderItemModel {
       'unitPrice': unitPrice,
     };
   }
+
+  Map<String, dynamic> toUpdateJson() {
+    return {
+      'productId': productId,
+      'quantity': orderedQuantity,
+      'unitPrice': unitPrice,
+    };
+  }
+
+
 }

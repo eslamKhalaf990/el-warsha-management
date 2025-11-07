@@ -3,7 +3,7 @@
 // import 'package:flutter/cupertino.dart';
 // import 'package:warsha_app/models/customer_model.dart';
 // import 'package:warsha_app/models/order_governorate_count.dart';
-// import 'package:warsha_app/models/order_items_model.dart';
+//
 // import 'package:warsha_app/models/order_model.dart';
 // import 'package:warsha_app/order_upgrading/models/orderItemModel.dart';
 // import 'package:warsha_app/order_upgrading/models/orderModel.dart';
@@ -219,14 +219,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:warsha_app/models/order_governorate_count.dart';
 // import 'package:warsha_app/models/customer_model.dart';
-import 'package:warsha_app/models/order_items_model.dart';
-import 'package:warsha_app/order_upgrading/models/create_order_request.dart'; // For sending to the API
-import 'package:warsha_app/order_upgrading/models/orderItemModel.dart';
-import 'package:warsha_app/order_upgrading/models/orderModel.dart';
+
+import 'package:warsha_app/models/create_order_request.dart'; // For sending to the API
+import 'package:warsha_app/models/orderItemModel.dart';
+import 'package:warsha_app/models/orderModel.dart';
 import 'package:warsha_app/services/orders_service.dart';
 import 'package:warsha_app/view_models/user_v_m.dart';
 
-import '../order_upgrading/models/customerModel.dart' show CustomerModel;
+import '../models/customerModel.dart' show CustomerModel;
 
 class AddOrderVM extends ChangeNotifier {
   final OrdersService _orderService;
@@ -238,86 +238,12 @@ class AddOrderVM extends ChangeNotifier {
   Future<List<GovernorateCountPerOrder>>? allCounts;
   final TextEditingController searchController = TextEditingController();
 
-  bool _isSaving = false;
-  String _errorMessage = '';
-
-  bool get isSaving => _isSaving;
-  String get errorMessage => _errorMessage;
-
   AddOrderVM(this._orderService, this._userViewModel) {
     searchController.addListener(() {
       notifyListeners();
     });
-  }
 
-  // --- NEW addOrder METHOD ---
-  /// Takes the data, builds the request, and calls the service.
-  /// Returns true on success, false on failure.
-  Future<bool> addOrder({
-    required double delivery,
-    required double discount,
-    required String notes,
-    required String downPayment,
-    required String orderSourceId, // Note: This is the ID (int), not the text
-    required String paymentMethodId, // Note: This is the ID (int), not the text
-  }) async {
-    _isSaving = true;
-    _errorMessage = '';
-    notifyListeners();
-
-    // 1. Check if customer is selected
-    if (orderModel.customer == null) {
-      _errorMessage = "Please select a customer.";
-      _isSaving = false;
-      notifyListeners();
-      return false;
-    }
-
-    // 2. Check if items are added
-    if (orderModel.orderItems.isEmpty) {
-      _errorMessage = "Please add at least one item to the order.";
-      _isSaving = false;
-      notifyListeners();
-      return false;
-    }
-
-    try {
-      // 3. Convert the "cart" items to "CreateOrderItem"
-      final List<CreateOrderItem> itemsToCreate =
-          orderModel.orderItems.map((item) {
-        return CreateOrderItem(
-          productId: item.productId,
-          quantity: item.quantityToOrder, // Use the quantity from the cart
-          unitPrice: item.unitPrice,
-        );
-      }).toList();
-
-      // 4. Build the final request object
-      final CreateOrderRequest request = CreateOrderRequest(
-        customerId: orderModel.customer?.customerId ?? 0,
-        delivery: delivery,
-        discount: discount,
-        orderSource: orderSourceId,
-        downPayment: downPayment,
-        paymentMethod: paymentMethodId,
-        items: itemsToCreate, notes: notes,
-      );
-
-      // 5. Call the service (assuming it's been updated)
-      // We pass the token from the UserViewModel
-      await _orderService.addOrder(request, _userViewModel.token);
-
-      // 6. Success
-      _isSaving = false;
-      notifyListeners();
-      return true;
-    } catch (e) {
-      // 7. Failure
-      _errorMessage = e.toString();
-      _isSaving = false;
-      notifyListeners();
-      return false;
-    }
+    allCounts = getGovernorateCounts();
   }
 
   Future<List<GovernorateCountPerOrder>> getGovernorateCounts() async {
@@ -344,8 +270,6 @@ class AddOrderVM extends ChangeNotifier {
     }
     return governorateCounts;
   }
-
-  // --- CART & BUILDER METHODS ---
 
   void clearOrder() {
     orderModel = OrderModel(orderItems: []); // Reset to a new, empty model
@@ -402,6 +326,7 @@ class AddOrderVM extends ChangeNotifier {
   @override
   void dispose() {
     // You no longer have a search controller here
+    searchController.dispose();
     super.dispose();
   }
 }

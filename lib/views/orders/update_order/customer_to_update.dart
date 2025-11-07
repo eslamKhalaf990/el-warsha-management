@@ -7,7 +7,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 
-import '../../../order_upgrading/models/customerModel.dart' show CustomerModel;
+import '../../../models/customerModel.dart' show CustomerModel;
 
 class CustomerToUpdate extends StatelessWidget {
   const CustomerToUpdate({super.key});
@@ -93,9 +93,9 @@ class CustomerWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-        // color: Provider.of<UpdateOrderVM>(context).orderModel.customer.customerId.toString() == id
-        //     ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
-        //     : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
+        color: Provider.of<UpdateOrderVM>(context).orderModel.customer?.customerId.toString() == id
+            ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
+            : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
         borderRadius: Constants.BORDER_RADIUS_20,
       ),
       child: Column(

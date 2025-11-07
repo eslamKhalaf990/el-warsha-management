@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/add_order/add_payment.dart';
-import 'package:warsha_app/order_upgrading/models/create_order_request.dart';
-import 'package:warsha_app/order_upgrading/provider/orderProvider.dart';
+import 'package:warsha_app/models/create_order_request.dart';
+import 'package:warsha_app/view_models/order_v_m.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
+import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/views/orders/add_order/widgets/order_details_widget.dart';
 import 'package:warsha_app/utils/default_button.dart';
 
@@ -55,7 +56,7 @@ class OrderDetailsStep extends StatelessWidget {
                                     // Get the GetDeleteOrderVM so we can call its methods
                                     // We use 'watch' so the button's loading state updates
                                     final listVM =
-                                        context.watch<GetDeleteOrderVM>();
+                                        context.watch<OrderVM>();
                                     final isSaving = listVM.isSaving;
 
                                     return DefaultButton(
@@ -82,7 +83,7 @@ class OrderDetailsStep extends StatelessWidget {
                                                   .map((item) {
                                             return CreateOrderItem(
                                               productId: item.productId,
-                                              quantity: item.quantity,
+                                              quantity: item.quantityToOrder,
                                               unitPrice: item.unitPrice,
                                             );
                                           }).toList();
@@ -97,9 +98,6 @@ class OrderDetailsStep extends StatelessWidget {
                                                       payment.discount.text) ??
                                                   0.0;
 
-                                          // FIXME: This is the critical part you must fix
-                                          // You need to convert "tiktok" or "facebook" to its ID (e.g., 10)
-                                          // This code *assumes* the text is already a number ID.
                                           final orderSourceId =
                                               payment.platformSource.text;
                                           final paymentMethodId =
@@ -122,17 +120,17 @@ class OrderDetailsStep extends StatelessWidget {
                                           // 5. Call the addOrder method (from GetDeleteOrderVM)
                                           // We use context.read inside a callback
                                           final bool success = await context
-                                              .read<GetDeleteOrderVM>()
+                                              .read<OrderVM>()
                                               .addOrder(request);
 
                                           if (success) {
                                             // Run your success logic
                                             if (context.mounted) {
+                                              Provider.of<ProductVM>(context, listen: false).initAllProducts();
                                               Navigator.pop(context);
                                               Navigator.pop(context);
                                               payment.clearPaymentDetails();
-                                              addOrderVM
-                                                  .clearOrder(); // Call clear on the correct provider
+                                              addOrderVM.clearOrder(); // Call clear on the correct provider
                                             }
                                           } else {
                                             // Show the error from the provider

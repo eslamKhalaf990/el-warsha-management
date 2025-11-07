@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
-import '../../../order_upgrading/models/customerModel.dart';
+import '../../../models/customerModel.dart';
 import '../customer_widget.dart';
 
 class CustomerToAdd extends StatelessWidget {
@@ -37,7 +37,6 @@ class CustomerToAdd extends StatelessWidget {
                   onTap: (){
                     Provider.of<AddOrderVM>(context, listen: false).addCustomer =
                         filteredCustomers[index];
-                    print(filteredCustomers[index].customerId);
                     },
                   child: CustomerWidget(
                     index: index,

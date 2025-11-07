@@ -7,7 +7,7 @@ import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
 
-import '../../order_upgrading/models/customerModel.dart' show CustomerModel;
+import '../../models/customerModel.dart' show CustomerModel;
 
 class UpdateCustomer extends StatelessWidget {
   const UpdateCustomer({super.key, required this.customerModel});

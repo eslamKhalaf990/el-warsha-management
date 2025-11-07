@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/models/order_items_model.dart';
+
 import 'package:warsha_app/models/product_model.dart';
+import 'package:warsha_app/models/orderItemModel.dart';
 import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
@@ -42,24 +43,24 @@ class ProductToUpdate extends StatelessWidget {
                   onTap: () {
                     final product = filteredProducts[index];
 
-                    OrderItemsModel orderItemsModel = OrderItemsModel(
-                      productId: product.id,
-                      name: product.name,
-                      quantity: product.quantity,
-                      unitPrice: product.sellingPrice,
+                    OrderItemModel orderItemModel = OrderItemModel(
+                      productId: int.parse(product.id),
+                      productName: product.name,
+                      quantity: int.parse(product.quantity),
+                      unitPrice: double.parse(product.sellingPrice),
                     );
 
                     final orderVM = Provider.of<UpdateOrderVM>(context, listen: false);
 
                     // Check for duplicates by productId
-                    // bool alreadyExists = orderVM.orderModel.orderItems
-                    //     .any((item) => item.productId == product.id);
+                    bool alreadyExists = orderVM.orderModel.orderItems
+                        .any((item) => item.productId.toString() == product.id);
                     //
-                    // if (!alreadyExists) {
-                    //   orderVM.addToOrderItems = orderItemsModel;
-                    // } else {
-                    //   orderVM.removeFromOrderItems = orderItemsModel.productId;
-                    // }
+                    if (!alreadyExists) {
+                      orderVM.addToOrderItems = orderItemModel;
+                    } else {
+                      orderVM.removeFromOrderItems = orderItemModel.productId;
+                    }
                   },
 
                   child: ProductWidget(
@@ -92,12 +93,12 @@ class ProductWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-        // color: Provider.of<UpdateOrderVM>(context)
-        //     .orderModel
-        //     .orderItems
-        //     .any((product) => product.productId == productModel.id)
-        //     ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
-        //     : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
+        color: Provider.of<UpdateOrderVM>(context)
+            .orderModel
+            .orderItems
+            .any((product) => product.productId.toString() == productModel.id)
+            ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
+            : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
         borderRadius: Constants.BORDER_RADIUS_20,
       ),
       child: Column(

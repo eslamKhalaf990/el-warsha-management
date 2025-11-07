@@ -4,6 +4,7 @@ import 'orderItemModel.dart';
 class OrderModel {
   final int? orderId; // CHANGED: Now nullable
   final String? status; // CHANGED: Now nullable
+  final String? customerId;
   final double discount;
   final double delivery;
   final String? notes; // CHANGED: Now nullable
@@ -17,6 +18,7 @@ class OrderModel {
 
   // CHANGED: Constructor now uses default values and doesn't require all fields
   OrderModel({
+    this.customerId,
     this.orderId,
     this.status,
     this.discount = 0.0,
@@ -64,9 +66,8 @@ class OrderModel {
   // Your fromJson is already excellent and safe! No changes needed.
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     var itemsList = json['orderItems'] as List? ?? [];
-    List<OrderItemModel> items = itemsList
-        .map((itemJson) => OrderItemModel.fromJson(itemJson))
-        .toList();
+    List<OrderItemModel> items =
+        itemsList.map((itemJson) => OrderItemModel.fromJson(itemJson)).toList();
 
     return OrderModel(
       orderId: json['orderId'] as int?, // Now nullable
@@ -78,7 +79,8 @@ class OrderModel {
       downPayment: (json['downPayment'] as num?)?.toDouble(), // Now nullable
       orderSource: json['orderSource'] as String?, // Now nullable
       paymentMethod: json['paymentMethod'] as String?, // Now nullable
-      orderDate: DateTime.tryParse(json['orderDate'] as String? ?? ''), // Now nullable
+      orderDate:
+          DateTime.tryParse(json['orderDate'] as String? ?? ''), // Now nullable
       customer: json['customer'] == null
           ? null // Now nullable
           : CustomerModel.fromJson(json['customer'] as Map<String, dynamic>),
@@ -97,6 +99,19 @@ class OrderModel {
       'paymentMethod': paymentMethod,
       'discount': discount,
       'items': orderItems.map((item) => item.toJson()).toList(),
+    };
+  }
+
+  Map<String, dynamic> toUpdateJson() {
+    return {
+      'customerId': customerId,
+      'downPayment': downPayment,
+      'notes': notes,
+      'delivery': delivery,
+      'orderSource': orderSource,
+      'paymentMethod': paymentMethod,
+      'discount': discount,
+      'items': orderItems.map((item) => item.toUpdateJson()).toList(),
     };
   }
 }
