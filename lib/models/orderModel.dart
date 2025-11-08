@@ -3,7 +3,7 @@ import 'orderItemModel.dart';
 
 class OrderModel {
   final int? orderId; // CHANGED: Now nullable
-  final String? status; // CHANGED: Now nullable
+  String? status; // CHANGED: Now nullable
   final String? customerId;
   final double discount;
   final double delivery;

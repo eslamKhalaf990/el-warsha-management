@@ -12,27 +12,48 @@ class OrderVM extends ChangeNotifier {
   final OrdersService _orderService;
   final UserViewModel _userViewModel;
 
+  TextEditingController customer = TextEditingController();
+  TextEditingController status = TextEditingController();
+  TextEditingController phone = TextEditingController();
+  TextEditingController governorate = TextEditingController();
+  TextEditingController total = TextEditingController();
+  TextEditingController source = TextEditingController();
+
   OrderVM(this._orderService, this._userViewModel);
 
   // State
   ViewState _state = ViewState.idle;
   bool _isSaving = false;
-  List<OrderModel> _orders = [];
   String _errorMessage = '';
+
+  // Orders
+  List<OrderModel> _orders = [];
+  List<OrderModel> _filteredOrders = [];
+
+  // Sorting
+  int? sortColumnIndex;
+  bool sortAscending = true;
+
+  // Filtering
+  final Map<String, String> _filters = {};
 
   // Getters
   ViewState get state => _state;
   bool get isSaving => _isSaving;
-  List<OrderModel> get orders => _orders;
   String get errorMessage => _errorMessage;
+  List<OrderModel> get orders =>
+      _filteredOrders.isEmpty && _filters.isEmpty ? _orders : _filteredOrders;
 
-  //get all orders
+  // ────────────────────────────
+  // FETCH ORDERS
+  // ────────────────────────────
   Future<void> fetchOrders() async {
     _state = ViewState.loading;
     notifyListeners();
 
     try {
       _orders = await _orderService.fetchOrders(_userViewModel.token);
+      _filteredOrders = List.from(_orders);
       _state = ViewState.idle;
     } catch (e) {
       _errorMessage = e.toString();
@@ -42,19 +63,17 @@ class OrderVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  //add order
+  // ────────────────────────────
+  // ADD ORDER
+  // ────────────────────────────
   Future<bool> addOrder(CreateOrderRequest orderRequest) async {
-    print(orderRequest.toJson());
     _isSaving = true;
     _errorMessage = '';
-    _state = ViewState.idle; // Clear any previous errors
+    _state = ViewState.idle;
     notifyListeners();
 
     try {
-      // 1. Call the service
       await _orderService.addOrder(orderRequest, _userViewModel.token);
-
-      // 3. Refresh the list from the server (since the cache was invalidated)
       await fetchOrders();
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
         const SnackBar(
@@ -63,9 +82,8 @@ class OrderVM extends ChangeNotifier {
           duration: Duration(seconds: 2),
         ),
       );
-      return true; // Success
+      return true;
     } catch (e) {
-      // 4. On failure, set state and return false
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
         const SnackBar(
           content: Text("Couldn't add order successfully"),
@@ -75,12 +93,24 @@ class OrderVM extends ChangeNotifier {
       );
       _isSaving = false;
       notifyListeners();
-      return false; // Failure
+      return false;
     }
   }
 
-  //update order
-  Future<String> updateOrder({required String customerID, required String orderID, required String delivery, required String notes, required String discount, required String orderSource, required String paymentMethod, required String downPayment, required List<OrderItemModel> orderItems,}) async {
+  // ────────────────────────────
+  // UPDATE ORDER
+  // ────────────────────────────
+  Future<String> updateOrder({
+    required String customerID,
+    required String orderID,
+    required String delivery,
+    required String notes,
+    required String discount,
+    required String orderSource,
+    required String paymentMethod,
+    required String downPayment,
+    required List<OrderItemModel> orderItems,
+  }) async {
     String status = "";
     _isSaving = true;
     notifyListeners();
@@ -100,7 +130,7 @@ class OrderVM extends ChangeNotifier {
 
       final state = await _orderService.updateOrder(orderModel, _userViewModel.token);
 
-      if(state.statusCode == 200) {
+      if (state.statusCode == 200) {
         await fetchOrders();
         status = "order_updated";
         ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
@@ -110,7 +140,6 @@ class OrderVM extends ChangeNotifier {
             duration: const Duration(seconds: 2),
           ),
         );
-
       } else {
         status = "order_not_updated";
         ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
@@ -121,7 +150,6 @@ class OrderVM extends ChangeNotifier {
           ),
         );
       }
-
     } catch (e) {
       debugPrint("Update order error: $e");
       status = "order_not_updated";
@@ -133,17 +161,56 @@ class OrderVM extends ChangeNotifier {
     return status;
   }
 
-  //delete order
+  // ────────────────────────────
+  // UPDATE STATUS
+  // ────────────────────────────
+  Future<String> updateOrderStatus({
+    required String orderID,
+    required String statusValue,
+  }) async {
+    String status = "";
+    try {
+      _isSaving = true;
+      notifyListeners();
+
+      final response = await _orderService.updateOrderStatus(
+        orderID,
+        statusValue,
+        _userViewModel.token,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        status = "status_updated";
+        debugPrint("Order status updated: ${response.body}");
+      } else {
+        status = "status_not_updated";
+        debugPrint("Update failed: ${response.statusCode} - ${response.body}");
+      }
+    } catch (e) {
+      status = "status_not_updated";
+      debugPrint("Error updating order status: $e");
+    } finally {
+      _isSaving = false;
+      notifyListeners();
+    }
+
+    return status;
+  }
+
+  // ────────────────────────────
+  // DELETE ORDER
+  // ────────────────────────────
   Future<String> deleteOrder(int id) async {
     String state = "";
     _isSaving = true;
     _errorMessage = '';
-    _state = ViewState.idle; // Clear any previous errors
     notifyListeners();
     try {
-      final response =  await _orderService.deleteOrder(id, _userViewModel.token);
+      final response = await _orderService.deleteOrder(id, _userViewModel.token);
       if (response.statusCode == 204) {
         state = "deleted";
+        _orders.removeWhere((order) => order.orderId == id);
+        _filteredOrders.removeWhere((order) => order.orderId == id);
 
         ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
           SnackBar(
@@ -152,14 +219,11 @@ class OrderVM extends ChangeNotifier {
             duration: const Duration(seconds: 2),
           ),
         );
-
-        _orders.removeWhere((order) => order.orderId == id);
       } else {
         state = "not_deleted";
-        debugPrint("Failed to delete your order: ${response.statusCode}");
+        debugPrint("Failed to delete order: ${response.statusCode}");
       }
     } catch (e) {
-      // In a real app, you'd show a SnackBar with this error
       _errorMessage = e.toString();
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
         SnackBar(
@@ -168,7 +232,7 @@ class OrderVM extends ChangeNotifier {
           duration: const Duration(seconds: 2),
         ),
       );
-      _state = ViewState.error; // You might not want to set a global error here
+      _state = ViewState.error;
     } finally {
       _isSaving = false;
       notifyListeners();
@@ -177,4 +241,78 @@ class OrderVM extends ChangeNotifier {
     return state;
   }
 
+  // ────────────────────────────
+  // SORTING
+  // ────────────────────────────
+  void sort<T>(
+      Comparable<T> Function(OrderModel order) getField,
+      int columnIndex,
+      bool ascending,
+      ) {
+    _filteredOrders.sort((a, b) {
+      final aValue = getField(a);
+      final bValue = getField(b);
+      return ascending
+          ? Comparable.compare(aValue, bValue)
+          : Comparable.compare(bValue, aValue);
+    });
+
+    sortColumnIndex = columnIndex;
+    sortAscending = ascending;
+    notifyListeners();
+  }
+
+  // ────────────────────────────
+  // FILTERING
+  // ────────────────────────────
+  void applyFilter(String key, String value) {
+    if (value.trim().isEmpty) {
+      _filters.remove(key);
+    } else {
+      _filters[key] = value.toLowerCase();
+    }
+    _filterOrders();
+  }
+
+  void clearAllFilters() {
+    _filters.clear();
+    _filteredOrders = List.from(_orders);
+    notifyListeners();
+  }
+
+  void _filterOrders() {
+    _filteredOrders = _orders.where((order) {
+      for (var entry in _filters.entries) {
+        final key = entry.key;
+        final query = entry.value;
+
+        String target = '';
+        switch (key) {
+          case 'status':
+            target = order.status?.toLowerCase() ?? '';
+            break;
+          case 'customer':
+            target = order.customer?.fullName.toLowerCase() ?? '';
+            break;
+          case 'phone':
+            target = order.customer?.phone.toLowerCase() ?? '';
+            break;
+          case 'governorate':
+            target = order.customer?.governorate.toLowerCase() ?? '';
+            break;
+          case 'source':
+            target = order.orderSource?.toLowerCase() ?? '';
+            break;
+          case 'total':
+            target = (order.totalPrice ?? 0).toString();
+            break;
+        }
+
+        if (!target.contains(query)) return false;
+      }
+      return true;
+    }).toList();
+
+    notifyListeners();
+  }
 }

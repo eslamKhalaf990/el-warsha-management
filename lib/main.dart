@@ -4,6 +4,7 @@ import 'package:warsha_app/controllers/add_order/add_customer.dart';
 import 'package:warsha_app/controllers/add_order/add_product.dart';
 import 'package:warsha_app/controllers/drag_drop_controller.dart';
 import 'package:warsha_app/controllers/navigation.dart';
+import 'package:warsha_app/controllers/new_order_provider.dart';
 import 'package:warsha_app/controllers/update_drag_drop.dart';
 import 'package:warsha_app/controllers/update_order/updatePaymentDetails.dart';
 import 'package:warsha_app/controllers/update_order/update_customer.dart';
@@ -35,7 +36,7 @@ void main() {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_)=> DragDropController()),
-          // ChangeNotifierProvider(create: (_)=> OrdersTableProvider()),
+          ChangeNotifierProvider(create: (_)=> OrdersTableProvider()),
           ChangeNotifierProvider(create: (_)=> UpdateDragDropController()),
           ChangeNotifierProvider(create: (_)=> ProductProvider()),
           ChangeNotifierProvider(create: (_)=> Navigation()),
@@ -47,7 +48,6 @@ void main() {
           ChangeNotifierProvider(create: (_)=> GovernorateProvider()),
           ChangeNotifierProvider(create: (_) => TransactionsProvider()),
 
-
           //providers used for dependency injection
           Provider<ProductService>(create: (_) => ProductService()),
           Provider<AccountingService>(create: (_) => AccountingService()),
@@ -57,7 +57,7 @@ void main() {
           Provider<CustomerService>(create: (_) => CustomerService()),
 
           Provider<OrdersService>(
-            create: (_) => OrdersService(),
+            create: (_) => OrdersService()
           ),
 
 
@@ -148,8 +148,8 @@ class MyApp extends StatelessWidget {
         fontFamily: 'cairo',
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: Colors.blue.shade400,
-          selectionColor: Colors.blue.shade400.withAlpha(50),        // highlight color
-          selectionHandleColor: Colors.blue.shade400.withAlpha(50),    // handle dots color
+          selectionColor: Colors.blue.shade400.withAlpha(50),
+          selectionHandleColor: Colors.blue.shade400.withAlpha(50),
         ),
         colorScheme: ColorScheme.light(
           onPrimary: Colors.white.withAlpha(200),

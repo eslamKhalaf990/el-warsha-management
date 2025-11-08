@@ -25,6 +25,7 @@ class Customers extends StatelessWidget {
               child: CRUDCustomer(),
             ),
             GovernorateCountList(),
+            SizedBox(height: 20),
             CustomerList()
           ],
         ),

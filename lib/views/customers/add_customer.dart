@@ -62,24 +62,36 @@ class AddCustomer extends StatelessWidget {
                               child: DefaultCustomerForm(
                                 title: "Name",
                                 controller: value.name,
-                                icon: Iconsax.bag,
+                                icon: Iconsax.profile_circle_copy,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Expanded(
+                            child: Padding(
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: DefaultCustomerForm(
+                                title: "Primary Phone",
+                                controller: value.phone,
+                                icon: Iconsax.call_copy,
                               ),
                             ),
                           ),
                           const SizedBox(height: 20),
 
-                          // Expanded(
-                          //   child: Padding(
-                          //     padding:
-                          //     const EdgeInsets.symmetric(horizontal: 15.0),
-                          //     child: DefaultCustomerForm(
-                          //       title: "Governorate",
-                          //       controller: value.governorate,
-                          //       icon: Iconsax.building,
-                          //     ),
-                          //   ),
-                          // ),
-
+                          Expanded(
+                            child: Padding(
+                              padding:
+                              const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: DefaultCustomerForm(
+                                title: "Secondary Phone",
+                                controller: value.phone,
+                                icon: Iconsax.call_copy,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -104,7 +116,7 @@ class AddCustomer extends StatelessWidget {
                                   prefixIcon: Padding(
                                     padding: const EdgeInsets.only(left: 30.0, right: 30),
                                     child: Icon(
-                                      Iconsax.message,
+                                      Iconsax.building_3_copy,
                                       color: Theme.of(context).colorScheme.tertiary,
                                     ),
                                   ),
@@ -150,16 +162,16 @@ class AddCustomer extends StatelessWidget {
                               ),
                             ),
                           ),
-
                           const SizedBox(height: 20),
+
                           Expanded(
                             child: Padding(
                               padding:
                               const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DefaultCustomerForm(
-                                title: "Customer Phone",
-                                controller: value.phone,
-                                icon: Iconsax.call,
+                                title: "Delivery Address",
+                                controller: value.address,
+                                icon: Iconsax.location_copy,
                               ),
                             ),
                           ),
@@ -169,9 +181,9 @@ class AddCustomer extends StatelessWidget {
                               padding:
                               const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DefaultCustomerForm(
-                                title: "Delivery Address",
+                                title: "City",
                                 controller: value.address,
-                                icon: Iconsax.location,
+                                icon: Iconsax.buildings_copy,
                               ),
                             ),
                           ),

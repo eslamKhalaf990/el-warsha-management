@@ -40,9 +40,8 @@ class TransactionsTable extends StatelessWidget {
             child: DataTable(
               sortColumnIndex: provider.sortColumnIndex,
               sortAscending: provider.sortAscending,
-              border: TableBorder.all(color: theme.colorScheme.onPrimary),
-              dividerThickness: 0,
-              columnSpacing: 100,
+              dividerThickness: 0.05,
+              columnSpacing: 80,
               headingRowColor: WidgetStatePropertyAll(
                 theme.colorScheme.primary.withAlpha(40),
               ),
@@ -74,7 +73,6 @@ class TransactionsTable extends StatelessWidget {
                 ),
                 DataColumn(
                   label: const Text('Amount'),
-                  numeric: true,
                   onSort: (i, asc) =>
                       provider.sort<num>((t) => t.amount, i, asc),
                 ),
@@ -114,7 +112,7 @@ class TransactionsTable extends StatelessWidget {
                     ),
                   ),
                   DataCell(SizedBox(
-                    width: 200,
+                    width: 280,
                     child: Text(
                       t.description ?? "",
                       overflow: TextOverflow.ellipsis,

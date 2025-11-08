@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/filter_orders.dart';
+import 'package:warsha_app/controllers/new_order_provider.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_text.dart';
@@ -24,11 +25,14 @@ class CRUDOrder extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         child: Row(
           children: [
-            Expanded(
-              child: DefaultForm(
-                title: 'Search By Order ID',
-                controller: Provider.of<AddOrderVM>(context).searchController,
-                numberOfLines: 1,
+            Consumer<OrdersTableProvider>(
+              builder: (context, value, child)=> Expanded(
+                child: DefaultForm(
+                  title: 'Search By Order Id or customer name or phone',
+                  controller: Provider.of<AddOrderVM>(context).searchController,
+                  onChanged: value.setSearch,
+                  numberOfLines: 1,
+                ),
               ),
             ),
             const SizedBox(width: 10),

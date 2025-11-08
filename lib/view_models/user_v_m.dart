@@ -22,7 +22,7 @@ class UserViewModel extends ChangeNotifier {
         debugPrint("Logged in successfully");
       } else {
         status = "failed_login";
-        debugPrint("Failed to add customer: ${response.statusCode}");
+        debugPrint("Failed to login: ${response.statusCode}");
       }
     } catch (e) {
       status = "failed_login";
