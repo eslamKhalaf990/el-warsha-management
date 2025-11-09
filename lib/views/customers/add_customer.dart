@@ -86,7 +86,7 @@ class AddCustomer extends StatelessWidget {
                               const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DefaultCustomerForm(
                                 title: "Secondary Phone",
-                                controller: value.phone,
+                                controller: value.secondaryPhone,
                                 icon: Iconsax.call_copy,
                               ),
                             ),
@@ -182,7 +182,7 @@ class AddCustomer extends StatelessWidget {
                               const EdgeInsets.symmetric(horizontal: 15.0),
                               child: DefaultCustomerForm(
                                 title: "City",
-                                controller: value.address,
+                                controller: value.city,
                                 icon: Iconsax.buildings_copy,
                               ),
                             ),
@@ -200,6 +200,8 @@ class AddCustomer extends StatelessWidget {
                                         value.governorate.text,
                                         value.phone.text,
                                         value.address.text,
+                                        value.secondaryPhone.text,
+                                        value.city.text,
                                       );
                                       if (status == "customer_added") {
                                         Navigator.pop(context);

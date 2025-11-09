@@ -52,8 +52,8 @@ class CustomerService {
   }
 
   Future<http.Response> addCustomer(String name, String governorate,
-      String phone, String address, String token) async {
-    debugPrint("addCustomer called ${name}");
+      String phone, String address, String secondaryPhone, String city,String token) async {
+    debugPrint("addCustomer called $name");
     http.Response response;
     try {
       response = await http.post(
@@ -70,6 +70,8 @@ class CustomerService {
             "phone": phone,
             "governorate": governorate,
             "address": address,
+            "secondaryPhone": secondaryPhone,
+            "city": city,
           })
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
 

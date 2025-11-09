@@ -5,6 +5,8 @@ class CustomerProvider extends ChangeNotifier {
   final TextEditingController name = TextEditingController();
   final TextEditingController phone = TextEditingController();
   final TextEditingController governorate = TextEditingController();
+  final TextEditingController secondaryPhone = TextEditingController();
+  final TextEditingController city = TextEditingController();
   final TextEditingController address = TextEditingController();
 
   // Dispose controllers
@@ -13,6 +15,8 @@ class CustomerProvider extends ChangeNotifier {
     name.dispose();
     phone.dispose();
     governorate.dispose();
+    secondaryPhone.dispose();
+    city.dispose();
     address.dispose();
     super.dispose();
   }
@@ -21,6 +25,8 @@ class CustomerProvider extends ChangeNotifier {
     name.clear();
     phone.clear();
     governorate.clear();
+    city.clear();
+    secondaryPhone.clear();
     address.clear();
   }
 }

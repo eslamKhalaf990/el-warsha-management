@@ -74,12 +74,12 @@ class CustomerVM extends ChangeNotifier {
   }
 
   Future<String> addCustomer(String name, String governorate,
-      String phone, String address) async {
+      String phone, String address, String secondaryPhone, String city) async {
     String status = "";
     try {
       isLoading = true;
       notifyListeners();
-      final response = await _customerService.addCustomer(name, governorate, phone, address, _userViewModel.token);
+      final response = await _customerService.addCustomer(name, governorate, phone, address,secondaryPhone,city, _userViewModel.token);
       if (response.statusCode == 201) {
         status = "customer_added";
         debugPrint("customer added successfully");

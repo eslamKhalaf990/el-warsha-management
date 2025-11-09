@@ -27,16 +27,6 @@ class CustomerWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceTint,
-                    borderRadius: Constants.BORDER_RADIUS_20,
-                  ),
-                  child: const Icon(
-                    Iconsax.profile_circle,
-                    size: 50,
-                  )),
               const SizedBox(width: 20),
               Expanded(
                 child: Column(
@@ -65,6 +55,20 @@ class CustomerWidget extends StatelessWidget {
                           txt: customerModel.governorate,
                           bold: true,
                         ),
+                        const SizedBox(width: 10),
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          width: 5,
+                          height: 5,
+                        ),
+                        const SizedBox(width: 10),
+                        DefaultText(
+                          txt: customerModel.city,
+                          bold: true,
+                        ),
                       ],
                     ),
                     const SizedBox(height: 6),
@@ -83,11 +87,36 @@ class CustomerWidget extends StatelessWidget {
                           child: Row(
                             children: [
                               const DefaultText(
-                                  txt: "Phone Number  ",
+                                  txt: "Primary Phone Number  ",
                                   size: 14,
                                   color: Colors.white),
                               DefaultText(
                                   txt: customerModel.phone,
+                                  size: 14,
+                                  color: Colors.white),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    // Time
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.blue.shade300,
+                              borderRadius: Constants.BORDER_RADIUS_20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 2),
+                          child: Row(
+                            children: [
+                              const DefaultText(
+                                  txt: "Secondary Phone Number  ",
+                                  size: 14,
+                                  color: Colors.white),
+                              DefaultText(
+                                  txt: customerModel.secondaryPhone,
                                   size: 14,
                                   color: Colors.white),
                             ],
@@ -117,26 +146,27 @@ class CustomerWidget extends StatelessWidget {
                       );
                     },
                     icon: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.surfaceTint,
-                          borderRadius: Constants.BORDER_RADIUS_50,
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Iconsax.edit,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            DefaultText(
-                              txt: "Update Customer",
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ],
-                        )),
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceTint,
+                        borderRadius: Constants.BORDER_RADIUS_50,
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Iconsax.edit,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          DefaultText(
+                            txt: "Update Customer",
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   IconButton(
                     onPressed: () {},
