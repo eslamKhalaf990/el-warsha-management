@@ -167,6 +167,7 @@ class OrderVM extends ChangeNotifier {
   Future<String> updateOrderStatus({
     required String orderID,
     required String statusValue,
+    required String bankAccountId,
   }) async {
     String status = "";
     try {
@@ -177,6 +178,7 @@ class OrderVM extends ChangeNotifier {
         orderID,
         statusValue,
         _userViewModel.token,
+        bankAccountId
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

@@ -36,7 +36,7 @@ class OrdersService {
     return response;
   }
 
-  Future<http.Response> updateOrderStatus(String orderID, String status, String token) async {
+  Future<http.Response> updateOrderStatus(String orderID, String status, String token, String bankAccountId) async {
     debugPrint("updateOrderStatus called $status");
     http.Response response;
     try {
@@ -50,7 +50,8 @@ class OrdersService {
             "${Baseurl.addOrderAPI}/status/$orderID",
           ),
           body: jsonEncode({
-            "status": status
+            "status": status,
+            "bankAccountId": bankAccountId,
           })
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
 
@@ -113,14 +114,14 @@ class OrdersService {
   }
 
   Future<void> addOrder(CreateOrderRequest orderRequest, String token) async {
+    print("addOrder ${orderRequest.toJson()}");
     final response = await http
         .post(
       Uri.parse(Baseurl.addOrderAPI),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        "Authorization":
-        'Bearer $token',
+        "Authorization": 'Bearer $token',
       },
       body: jsonEncode(orderRequest.toJson()),
     )

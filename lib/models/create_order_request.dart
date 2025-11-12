@@ -24,6 +24,7 @@ class CreateOrderRequest {
   final double delivery;
   final double discount;
   final String downPayment;
+  final String bankAccountId;
   final String orderSource;
   final String notes;
   final String paymentMethod;
@@ -34,6 +35,7 @@ class CreateOrderRequest {
     required this.delivery,
     required this.discount,
     required this.downPayment,
+    required this.bankAccountId,
     required this.notes,
     required this.orderSource,
     required this.paymentMethod,
@@ -44,6 +46,7 @@ class CreateOrderRequest {
     return {
       'customerId': customerId,
       'downPayment' : downPayment,
+      'bankAccountId' : bankAccountId,
       'delivery' : delivery,
       'notes' : notes,
       'orderSource' : orderSource,

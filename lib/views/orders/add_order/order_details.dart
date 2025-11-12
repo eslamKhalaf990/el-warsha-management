@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/add_order/add_payment.dart';
 import 'package:warsha_app/models/create_order_request.dart';
+import 'package:warsha_app/view_models/accountings_v_m.dart';
 import 'package:warsha_app/view_models/order_v_m.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
@@ -9,6 +10,7 @@ import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/views/orders/add_order/widgets/order_details_widget.dart';
 import 'package:warsha_app/utils/default_button.dart';
+import 'package:warsha_app/views/orders/order_table.dart';
 
 class OrderDetailsStep extends StatelessWidget {
   const OrderDetailsStep({super.key});
@@ -49,6 +51,7 @@ class OrderDetailsStep extends StatelessWidget {
                           padding: const EdgeInsets.all(20.0),
                           child: Row(
                             children: [
+                              //todo: needs refactor
                               Expanded(
                                 child: Consumer2<AddOrderVM, PaymentProvider>(
                                   builder:
@@ -103,49 +106,64 @@ class OrderDetailsStep extends StatelessWidget {
                                           final paymentMethodId =
                                               payment.paymentMethod.text;
 
-                                          // 4. Build the Request Object
-                                          final CreateOrderRequest request =
-                                              CreateOrderRequest(
-                                            customerId: addOrderVM.orderModel
-                                                .customer!.customerId,
-                                            delivery: deliveryCost,
-                                            discount: discountAmount,
-                                            downPayment: payment.downPayment.text,
-                                            notes: payment.notes.text,
-                                            orderSource: orderSourceId,
-                                            paymentMethod: paymentMethodId,
-                                            items: itemsToCreate,
-                                          );
+                                          final bankAccountId = await showTransferDialog(context, double.parse(payment.downPayment.text));
+                                          if(bankAccountId != null){
+                                            // 4. Build the Request Object
+                                            final CreateOrderRequest request =
+                                            CreateOrderRequest(
+                                              customerId: addOrderVM.orderModel
+                                                  .customer!.customerId,
+                                              delivery: deliveryCost,
+                                              discount: discountAmount,
+                                              downPayment: payment.downPayment.text,
+                                              notes: payment.notes.text,
+                                              orderSource: orderSourceId,
+                                              paymentMethod: paymentMethodId,
+                                              items: itemsToCreate, bankAccountId: bankAccountId.id.toString(),
+                                            );
 
-                                          // 5. Call the addOrder method (from GetDeleteOrderVM)
-                                          // We use context.read inside a callback
-                                          final bool success = await context
-                                              .read<OrderVM>()
-                                              .addOrder(request);
+                                            // 5. Call the addOrder method (from GetDeleteOrderVM)
+                                            // We use context.read inside a callback
+                                            final bool success = await context
+                                                .read<OrderVM>()
+                                                .addOrder(request);
 
-                                          if (success) {
-                                            // Run your success logic
-                                            if (context.mounted) {
-                                              Provider.of<ProductVM>(context, listen: false).initAllProducts();
-                                              Navigator.pop(context);
-                                              Navigator.pop(context);
-                                              payment.clearPaymentDetails();
-                                              addOrderVM.clearOrder(); // Call clear on the correct provider
-                                            }
-                                          } else {
-                                            // Show the error from the provider
-                                            if (context.mounted) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                SnackBar(
-                                                  // Read the error message from the correct provider
-                                                  content: Text(
-                                                      'Failed to add order: ${listVM.errorMessage}'),
-                                                  backgroundColor: Colors.red,
-                                                ),
-                                              );
+                                            if (success) {
+                                              // Run your success logic
+                                              if (context.mounted) {
+                                                Provider.of<ProductVM>(context, listen: false).initAllProducts();
+                                                Provider.of<AccountingVM>(context, listen: false).initAccounting();
+                                                Navigator.pop(context);
+                                                Navigator.pop(context);
+                                                payment.clearPaymentDetails();
+                                                addOrderVM.clearOrder(); // Call clear on the correct provider
+                                              }
+                                            } else {
+                                              // Show the error from the provider
+                                              if (context.mounted) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    // Read the error message from the correct provider
+                                                    content: Text(
+                                                        'Failed to add order: ${listVM.errorMessage}'),
+                                                    backgroundColor: Colors.red,
+                                                  ),
+                                                );
+                                              }
                                             }
                                           }
+                                          else{
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    'Pick bank account'),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          }
+
                                         } catch (e) {
                                           // Catch any local parsing errors
                                           ScaffoldMessenger.of(context)

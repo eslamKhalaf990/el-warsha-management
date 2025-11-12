@@ -15,39 +15,37 @@ class UpdateOrderVM extends ChangeNotifier {
 
   UpdateOrderVM(this._orderService, this._userViewModel);
 
-  Future<String> updateOrderStatus({
-    required String orderID,
-    required String statusValue,
-  }) async {
-    String status = "";
-    try {
-      isLoading = true;
-      notifyListeners();
-
-      final response = await _orderService.updateOrderStatus(
-        orderID,
-        statusValue,
-          _userViewModel.token
-      );
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        status = "status_updated";
-        debugPrint("Order status updated: ${response.body}");
-      } else {
-        status = "status_not_updated";
-        debugPrint(
-            "Update failed: ${response.statusCode} - ${response.body}");
-      }
-    } catch (e) {
-      status = "status_not_updated";
-      debugPrint("Error updating order status: $e");
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
-
-    return status;
-  }
+  // Future<String> updateOrderStatus({required String orderID, required String statusValue, required String bankAccountId,}) async {
+  //   String status = "";
+  //   try {
+  //     isLoading = true;
+  //     notifyListeners();
+  //
+  //     final response = await _orderService.updateOrderStatus(
+  //       orderID,
+  //       statusValue,
+  //         _userViewModel.token,
+  //         bankAccountId
+  //     );
+  //
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       status = "status_updated";
+  //       debugPrint("Order status updated: ${response.body}");
+  //     } else {
+  //       status = "status_not_updated";
+  //       debugPrint(
+  //           "Update failed: ${response.statusCode} - ${response.body}");
+  //     }
+  //   } catch (e) {
+  //     status = "status_not_updated";
+  //     debugPrint("Error updating order status: $e");
+  //   } finally {
+  //     isLoading = false;
+  //     notifyListeners();
+  //   }
+  //
+  //   return status;
+  // }
   
   void loadOrder(OrderModel existingOrder) {
 

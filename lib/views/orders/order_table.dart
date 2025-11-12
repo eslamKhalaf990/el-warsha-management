@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:warsha_app/models/account_balance.dart';
 import 'package:warsha_app/models/orderModel.dart';
 import 'package:warsha_app/view_models/accountings_v_m.dart';
 import 'package:warsha_app/view_models/order_v_m.dart';
@@ -585,76 +586,31 @@ class OrderStatusDropdown extends StatelessWidget {
           }).toList(),
           onChanged: (value) async {
             if (value == null) return;
-
             if (value == "Completed") {
-              final confirm = await showDialog<bool>(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Confirm Completion'),
-                  content: RichText(
-                    text: TextSpan(
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.black87,
-                        height: 1.5,
-                      ),
-                      children: [
-                        const TextSpan(text: 'Once the order is Completed, the payment '),
-                        TextSpan(
-                          text: '${order.totalPrice} EGP',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const TextSpan(text: ' will be transferred\nto Egypt Post, and a fee of '),
-                        const TextSpan(
-                          text: '5 EGP',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const TextSpan(text: ' will be deducted.\nDo you want to continue?'),
-                      ],
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, false),
-                      style: ButtonStyle(
-                        foregroundColor: WidgetStateProperty.all<Color>(
-                          Colors.white,
-                        ),
-                        backgroundColor: WidgetStateProperty.all<Color>(
-                          Colors.grey.shade500,
-                        ),
-                      ),
-                      child: const Text('Cancel'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => Navigator.pop(context, true),
-                      style: ButtonStyle(
-                        foregroundColor: WidgetStateProperty.all<Color>(
-                          Colors.white,
-                        ),
-                        backgroundColor: WidgetStateProperty.all<Color>(
-                          Colors.green.shade300,
-                        ),
-                      ),
-                      child: const Text('Confirm'),
-                    ),
-                  ],
-                ),
+              final bankAccount = await showTransferDialog(context, order.totalPrice ?? 0);
+              if(bankAccount != null){
+                final state = await Provider.of<OrderVM>(context, listen: false)
+                    .updateOrderStatus(
+                    orderID: order.orderId.toString(),
+                    statusValue: value,
+                    bankAccountId: bankAccount.id.toString()
+                );
+                if (state == "status_updated") {
+                  onStatusChanged(value);
+                  Provider.of<AccountingVM>(context, listen: false).initAccounting();
+                }
+              }
+            } else {
+              final state = await Provider.of<OrderVM>(context, listen: false)
+                  .updateOrderStatus(
+                  orderID: order.orderId.toString(),
+                  statusValue: value,
+                  bankAccountId: "0"
               );
-
-              // If user cancels, just return
-              if (confirm != true) return;
-            }
-
-            // Proceed with backend update
-            final state = await Provider.of<OrderVM>(context, listen: false)
-                .updateOrderStatus(
-              orderID: order.orderId.toString(),
-              statusValue: value,
-            );
-
-            if (state == "status_updated") {
-              onStatusChanged(value);
-              Provider.of<AccountingVM>(context, listen: false).initAccounting();
+              if (state == "status_updated") {
+                onStatusChanged(value);
+                Provider.of<AccountingVM>(context, listen: false).initAccounting();
+              }
             }
           },
         ),
@@ -662,3 +618,108 @@ class OrderStatusDropdown extends StatelessWidget {
     );
   }
 }
+
+Future<BankAccount?> showTransferDialog(BuildContext context, double totalPrice) async {
+  BankAccount? selectedAccount;
+
+  final bool? result = await showDialog<bool>(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) => AlertDialog(
+        title: const Text('Confirm Completion'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RichText(
+              text: TextSpan(
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.black87,
+                  height: 1.5,
+                ),
+                children: [
+                  const TextSpan(text: 'Once the order is completed, the payment ', style: TextStyle(fontSize: 16)),
+                  TextSpan(
+                    text: '$totalPrice EGP',
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                  const TextSpan(
+                      text:
+                      ' will be transferred.\n\n',  style: TextStyle(fontSize: 16)),
+                  const TextSpan(text: 'Select the account to transfer your money to:'),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Consumer<AccountingVM>(
+              builder: (context, accounting, child) => accounting.accountsBalance == null ? Container() : DropdownButtonFormField<BankAccount>(
+                initialValue: selectedAccount,
+                hint: const Text('Choose account'),
+                items:
+                  accounting.accountsBalance!
+                      .map((account) => DropdownMenuItem<BankAccount>(
+                    value: account,
+                    child: Text(account.name),
+                  ))
+                      .toList(),
+                onChanged: (value) => setState(() => selectedAccount = value),
+                borderRadius: Constants.BORDER_RADIUS_20,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor:
+                  Colors.grey.shade100,
+                  labelStyle:
+                  const TextStyle(color: Colors.grey, fontSize: 14),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Colors.transparent,
+                      ),
+                      borderRadius: Constants.BORDER_RADIUS_15),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Icon(
+                      Iconsax.bank_copy,
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            style: ButtonStyle(
+              foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+              backgroundColor:
+              WidgetStateProperty.all<Color>(Colors.grey.shade500),
+            ),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: selectedAccount == null
+                ? null
+                : () => Navigator.pop(context, true),
+            style: ButtonStyle(
+              foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+              backgroundColor:
+              WidgetStateProperty.all<Color>(Colors.green.shade400),
+            ),
+            child: const Text('Confirm'),
+          ),
+        ],
+      ),
+    ),
+  );
+
+  if (result == true && selectedAccount != null) {
+
+    return selectedAccount;
+  }
+  return null;
+}
+

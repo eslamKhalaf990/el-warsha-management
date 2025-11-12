@@ -139,7 +139,7 @@ class OrderDetailsWidget extends StatelessWidget {
                         color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ),
-                    value: value.platformSource.text.isNotEmpty
+                    initialValue: value.platformSource.text.isNotEmpty
                         ? value.platformSource.text
                         : null, // bind to controller if already set
                     items: const [
