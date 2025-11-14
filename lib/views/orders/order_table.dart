@@ -58,7 +58,7 @@ class OrderList extends StatelessWidget {
         sortAscending: orderVM.sortAscending,
         dividerThickness: 0.05,
         columnSpacing: 40,
-        headingRowHeight: 70, // taller to fit filters under headers
+        headingRowHeight: 70,
         columns: [
           DataColumn(
             label: const DefaultText(txt: '#', bold: true),
@@ -68,7 +68,45 @@ class OrderList extends StatelessWidget {
             },
           ),
           DataColumn(
-            label: const DefaultText(txt: 'Order Date', bold: true),
+            label: Row(
+              children: [
+                const DefaultText(txt: 'Order Date', bold: true),
+                IconButton(
+                  icon: const Icon(Iconsax.sort_copy, size: 20),
+                  onPressed: () async {
+                    final DateTimeRange? newDateRange = await showDateRangePicker(
+                      context: context,
+                      initialDateRange: (orderVM.startDate != null && orderVM.endDate != null)
+                          ? DateTimeRange(start: orderVM.startDate!, end: orderVM.endDate!)
+                          : null,
+                      firstDate: DateTime(2025),
+                      initialEntryMode: DatePickerEntryMode.inputOnly,
+                      lastDate: DateTime.now(),
+                      builder: (BuildContext context, Widget? child) {
+                        return Theme(
+                          data: Theme.of(context).copyWith(
+
+                            colorScheme: Theme.of(context).colorScheme.copyWith(
+                              primary: Theme.of(context).colorScheme.tertiary,
+                            ),
+                            textButtonTheme: TextButtonThemeData(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Theme.of(context).colorScheme.tertiary, // "Save" and "Cancel" text color
+                              ),
+                            ),
+                            dialogTheme: DialogThemeData(backgroundColor: Colors.grey[850]),
+                          ),
+                          child: child!,
+                        );
+                      },
+                    );
+
+                    // Update the ViewModel with the new range
+                    orderVM.setDateRange(newDateRange);
+                  },
+                )
+              ],
+            ),
             onSort: (columnIndex, ascending) {
               orderVM.sort<DateTime>(
                 (order) => order.orderDate ?? DateTime.now(),
@@ -246,6 +284,34 @@ class OrderList extends StatelessWidget {
             },
           ),
 
+          // Source
+          DataColumn(
+            label: SizedBox(
+              height: 22,
+              width: 120,
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Payment Method',
+                  hintStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                ),
+                controller: orderVM.paymentMethod,
+                onChanged: (val) => orderVM.applyFilter('paymentMethod', val),
+              ),
+            ),
+            onSort: (columnIndex, ascending) {
+              orderVM.sort<String>(
+                (order) => order.paymentMethod ?? '',
+                columnIndex,
+                ascending,
+              );
+            },
+          ),
+
           // Actions
           const DataColumn(
             label: DefaultText(txt: 'Actions', bold: true),
@@ -282,6 +348,7 @@ class OrderList extends StatelessWidget {
         DataCell(Text(order.customer?.governorate ?? "-")),
         DataCell(Text('${order.totalPrice?.toStringAsFixed(2) ?? "-"} EGP')),
         DataCell(Text(order.orderSource?.toUpperCase() ?? "-")),
+        DataCell(Text(order.paymentMethod?.toUpperCase() ?? "-")),
         DataCell(_buildActionButtons(
             context, order, Provider.of<AddOrderVM>(context, listen: false))),
       ],

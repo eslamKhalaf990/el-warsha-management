@@ -117,10 +117,10 @@ packages:
     dependency: transitive
     description:
       name: dart_pubspec_licenses
-      sha256: "23ddb78ff9204d08e3109ced67cd3c6c6a066f581b0edf5ee092fc3e1127f4ea"
+      sha256: fafb90d50c182dd3d4f441c6aea75baff1e5311aab2f6430d3f40f6e3a1f5885
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.4"
+    version: "3.0.12"
   desktop_drop:
     dependency: "direct main"
     description:
@@ -129,6 +129,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.1"
+  dio:
+    dependency: transitive
+    description:
+      name: dio
+      sha256: d90ee57923d1828ac14e492ca49440f65477f4bb1263575900be731a3dac66a9
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.0"
+  dio_web_adapter:
+    dependency: transitive
+    description:
+      name: dio_web_adapter
+      sha256: "7586e476d70caecaf1686d21eee7247ea43ef5c345eab9e0cc3583ff13378d78"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   fake_async:
     dependency: transitive
     description:
@@ -141,10 +157,10 @@ packages:
     dependency: transitive
     description:
       name: ffi
-      sha256: "16ed7b077ef01ad6170a3d0c57caa4a112a38d7a2ed5602e0aca9ca6f3d98da6"
+      sha256: "289279317b4b16eb2bb7e271abccd4bf84ec9bdcbe999e278a94b804f5630418"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.3"
+    version: "2.1.4"
   file_picker:
     dependency: "direct main"
     description:
@@ -153,6 +169,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.3.2"
+  file_saver:
+    dependency: "direct main"
+    description:
+      name: file_saver
+      sha256: "9d93db09bd4da9e43238f9dd485360fc51a5c138eea5ef5f407ec56e58079ac0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -236,10 +260,10 @@ packages:
     dependency: "direct main"
     description:
       name: http
-      sha256: "2c11f3f94c687ee9bad77c171151672986360b2b001d109814ee7140b2cf261b"
+      sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.0"
+    version: "1.6.0"
   http_parser:
     dependency: transitive
     description:
@@ -272,6 +296,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.20.2"
+  jiffy:
+    dependency: transitive
+    description:
+      name: jiffy
+      sha256: "9bafbfe6d97587048bf449165e050029e716a12438f54a3d39e7e3a256decdac"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.4.3"
   json_annotation:
     dependency: transitive
     description:
@@ -336,6 +368,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.16.0"
+  mime:
+    dependency: transitive
+    description:
+      name: mime
+      sha256: "41a20518f0cb1256669420fdba0cd90d21561e560ac240f26ef8322e45bb7ed6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   nested:
     dependency: transitive
     description:
@@ -424,22 +464,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  pdfium_dart:
+    dependency: transitive
+    description:
+      name: pdfium_dart
+      sha256: bf44cf85da2e828d9b59742315468484293d4b0ae5bbe253686ae507dcb53403
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
+  pdfium_flutter:
+    dependency: transitive
+    description:
+      name: pdfium_flutter
+      sha256: c8864ad4eb37362d6d00183278df6e2d84aaab47afd986f181c3776f546c993b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.6"
   pdfrx:
     dependency: "direct main"
     description:
       name: pdfrx
-      sha256: a88e7797623d3b89d4a863f583c973c681f39aa48eadceb4aa61c0c99cc7fa19
+      sha256: aff4b53b463c2a6417325d47198fdf11e91f18298fe42681ced203bb2cd611c3
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.3"
+    version: "2.2.12"
   pdfrx_engine:
     dependency: transitive
     description:
       name: pdfrx_engine
-      sha256: "69a2448ca87d0536fe4eb78fbe753fb2fb2f8ae3a1b73e2fd1937585e717c2b1"
+      sha256: "46f9b2da314cb4b8fd3d5eace24977b91da0920110fea6f531892c10847dc256"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.12"
+    version: "0.3.3"
   petitparser:
     dependency: transitive
     description:
@@ -496,6 +552,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  quiver:
+    dependency: transitive
+    description:
+      name: quiver
+      sha256: ea0b925899e64ecdfbf9c7becb60d5b50e706ade44a85b2363be2a22d88117d2
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.2"
   rxdart:
     dependency: transitive
     description:
@@ -561,10 +625,26 @@ packages:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
-      sha256: "3135dc6b427686cdda1546bdeab3a4a45372f5bb3d95369e007776b605f863ac"
+      sha256: "8118f13264d1401a7085d12a0aaeac1ebd5cd939046b8c565d195879646daad6"
       url: "https://pub.dev"
     source: hosted
-    version: "31.1.23"
+    version: "31.2.10"
+  syncfusion_flutter_xlsio:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_xlsio
+      sha256: "50b4d01489f756f753cbc0d1de9064eb6ab6842002efc5e16197756a0e7f72f3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "31.2.10"
+  syncfusion_officecore:
+    dependency: transitive
+    description:
+      name: syncfusion_officecore
+      sha256: a0f9e934e6e23db938772c81f62bfff964dc968d1183474d6f204872ed47e8fa
+      url: "https://pub.dev"
+    source: hosted
+    version: "31.2.10"
   synchronized:
     dependency: transitive
     description:
@@ -734,5 +814,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.8.1 <4.0.0"
+  dart: ">=3.9.0 <4.0.0"
   flutter: ">=3.35.1"

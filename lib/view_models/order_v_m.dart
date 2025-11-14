@@ -18,6 +18,7 @@ class OrderVM extends ChangeNotifier {
   TextEditingController governorate = TextEditingController();
   TextEditingController total = TextEditingController();
   TextEditingController source = TextEditingController();
+  TextEditingController paymentMethod = TextEditingController();
 
   OrderVM(this._orderService, this._userViewModel);
 
@@ -36,13 +37,26 @@ class OrderVM extends ChangeNotifier {
 
   // Filtering
   final Map<String, String> _filters = {};
+  DateTime? _startDate; // ✨ ADDED
+  DateTime? _endDate; // ✨ ADDED
 
   // Getters
   ViewState get state => _state;
   bool get isSaving => _isSaving;
   String get errorMessage => _errorMessage;
+
+  // ✨ MODIFIED getter to check all filter types
   List<OrderModel> get orders =>
-      _filteredOrders.isEmpty && _filters.isEmpty ? _orders : _filteredOrders;
+      _filteredOrders.isEmpty &&
+          _filters.isEmpty &&
+          _startDate == null &&
+          _endDate == null
+          ? _orders
+          : _filteredOrders;
+
+  // ✨ ADDED getters for date range
+  DateTime? get startDate => _startDate;
+  DateTime? get endDate => _endDate;
 
   // ────────────────────────────
   // FETCH ORDERS
@@ -128,7 +142,8 @@ class OrderVM extends ChangeNotifier {
         notes: notes,
       );
 
-      final state = await _orderService.updateOrder(orderModel, _userViewModel.token);
+      final state =
+      await _orderService.updateOrder(orderModel, _userViewModel.token);
 
       if (state.statusCode == 200) {
         await fetchOrders();
@@ -175,11 +190,7 @@ class OrderVM extends ChangeNotifier {
       notifyListeners();
 
       final response = await _orderService.updateOrderStatus(
-        orderID,
-        statusValue,
-        _userViewModel.token,
-        bankAccountId
-      );
+          orderID, statusValue, _userViewModel.token, bankAccountId);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         status = "status_updated";
@@ -267,6 +278,19 @@ class OrderVM extends ChangeNotifier {
   // ────────────────────────────
   // FILTERING
   // ────────────────────────────
+
+  /// ✨ ADDED: Call this from your UI to set the date range
+  void setDateRange(DateTimeRange? range) {
+    if (range != null) {
+      _startDate = range.start;
+      _endDate = range.end;
+    } else {
+      _startDate = null;
+      _endDate = null;
+    }
+    _filterOrders(); // Re-apply all filters
+  }
+
   void applyFilter(String key, String value) {
     if (value.trim().isEmpty) {
       _filters.remove(key);
@@ -276,43 +300,93 @@ class OrderVM extends ChangeNotifier {
     _filterOrders();
   }
 
+  /// ✨ MODIFIED: Now clears date filters as well
   void clearAllFilters() {
     _filters.clear();
+    _startDate = null;
+    _endDate = null;
     _filteredOrders = List.from(_orders);
     notifyListeners();
   }
 
+  /// ✨ MODIFIED: Now applies both text and date filters
   void _filterOrders() {
     _filteredOrders = _orders.where((order) {
-      for (var entry in _filters.entries) {
-        final key = entry.key;
-        final query = entry.value;
 
-        String target = '';
-        switch (key) {
-          case 'status':
-            target = order.status?.toLowerCase() ?? '';
-            break;
-          case 'customer':
-            target = order.customer?.fullName.toLowerCase() ?? '';
-            break;
-          case 'phone':
-            target = order.customer?.phone.toLowerCase() ?? '';
-            break;
-          case 'governorate':
-            target = order.customer?.governorate.toLowerCase() ?? '';
-            break;
-          case 'source':
-            target = order.orderSource?.toLowerCase() ?? '';
-            break;
-          case 'total':
-            target = (order.totalPrice ?? 0).toString();
-            break;
+      // --- 1. Text Filters (Existing Logic) ---
+      bool passesTextFilter = true;
+      if (_filters.isNotEmpty) {
+        for (var entry in _filters.entries) {
+          final key = entry.key;
+          final query = entry.value;
+
+          String target = '';
+          switch (key) {
+            case 'status':
+              target = order.status?.toLowerCase() ?? '';
+              break;
+            case 'customer':
+              target = order.customer?.fullName.toLowerCase() ?? '';
+              break;
+            case 'phone':
+              target = order.customer?.phone.toLowerCase() ?? '';
+              break;
+            case 'paymentMethod':
+              target = order.paymentMethod?.toLowerCase() ?? '';
+              break;
+            case 'governorate':
+              target = order.customer?.governorate.toLowerCase() ?? '';
+              break;
+            case 'source':
+              target = order.orderSource?.toLowerCase() ?? '';
+              break;
+            case 'total':
+              target = (order.totalPrice ?? 0).toString();
+              break;
+          }
+
+          if (!target.contains(query)) {
+            passesTextFilter = false;
+            break; // Stop checking filters if one fails
+          }
+        }
+      }
+
+      if (!passesTextFilter) return false; // Failed text filter
+
+      // --- 2. Date Filters (New Logic) ---
+      bool passesDateFilter = true;
+      final orderDate = order.orderDate; // Assuming OrderModel has DateTime? orderDate
+
+      if (orderDate != null) {
+        // Check Start Date
+        if (_startDate != null) {
+          // Normalize start date to 00:00:00 to be inclusive
+          final normalizedStartDate = DateTime(_startDate!.year, _startDate!.month, _startDate!.day);
+          if (orderDate.isBefore(normalizedStartDate)) {
+            passesDateFilter = false;
+          }
         }
 
-        if (!target.contains(query)) return false;
+        // Check End Date (if start date check passed)
+        if (passesDateFilter && _endDate != null) {
+          // Normalize end date to be the *start* of the *next* day
+          // This makes the check inclusive for the entire selected end day
+          final normalizedEndDate = DateTime(_endDate!.year, _endDate!.month, _endDate!.day + 1);
+          if (!orderDate.isBefore(normalizedEndDate)) {
+            passesDateFilter = false;
+          }
+        }
+      } else if (_startDate != null || _endDate != null) {
+        // If a date filter is set, but the order has no date, exclude it.
+        passesDateFilter = false;
       }
+
+      if (!passesDateFilter) return false; // Failed date filter
+
+      // If we get here, it passed both text and date filters
       return true;
+
     }).toList();
 
     notifyListeners();
