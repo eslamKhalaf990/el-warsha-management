@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 class DateHelper {
   static String formatDate1 (String date){
 
-    return DateFormat('d MMM yy').format(
-        DateFormat('yyyy-MM-dd').parse(date)
+    return DateFormat('MMMM').format(
+        DateFormat('yyyy-MM-dd HH:mm:ss.SSS').parse(date)
     );
   }
 
@@ -28,7 +28,7 @@ class DateHelper {
 
   static String formatDateMY (String date){
 
-    return DateFormat('MMMM yyyy').format(DateFormat('M/yyyy').parse(date));
+    return DateFormat('yyyy-MM-dd').format(DateFormat('yyyy-MM-dd HH:mm:ss.SSS').parse(date));
   }
 
   static String formatTime1 (String time){

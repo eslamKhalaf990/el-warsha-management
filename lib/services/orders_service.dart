@@ -24,7 +24,7 @@ class OrdersService {
           "Authorization": 'Bearer $token',
         },
         Uri.parse(
-          Baseurl.getAllOrderAPI,
+          "${Baseurl.getAllOrderAPI}/by-month?",
         ),
       ).timeout(const Duration(seconds: Constants.TIMEOUT));
 
@@ -33,6 +33,43 @@ class OrdersService {
     } catch (e) {
       throw Exception('Failed to get your orders: $e');
     }
+    return response;
+  }
+
+  // Update the signature to accept filter and pagination data
+  Future<http.Response> getOrdersByMonth(
+      String token, {
+        required int year,
+        required int month,
+        int page = 0,
+        int size = 20,
+      }) async {
+    debugPrint("getOrdersByMonth called: $month/$year (Page: $page)");
+
+    http.Response response;
+
+    try {
+      final uri = Uri.parse("${Baseurl.getAllOrderAPI}/by-month").replace(queryParameters: {
+        'year': year.toString(),
+        'month': month.toString(),
+        'page': page.toString(),
+        'size': size.toString(),
+      });
+
+      response = await http.get(
+        uri,
+        headers: {
+          'Content-Type': 'application/json', // GET usually expects JSON or no content-type
+          "Authorization": 'Bearer $token',
+        },
+      ).timeout(const Duration(seconds: Constants.TIMEOUT));
+
+    } on TimeoutException {
+      throw Exception('The request timed out. Please try again later.');
+    } catch (e) {
+      throw Exception('Failed to get your orders: $e');
+    }
+
     return response;
   }
 
@@ -183,7 +220,29 @@ class OrdersService {
     } on TimeoutException {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {
-      throw Exception('Failed to add your new order: $e');
+      throw Exception('Failed to delete your order: $e');
+    }
+    return response;
+  }
+
+  Future<http.Response> cancelOrder(String order, String token) async {
+    debugPrint("cancelOrder called $order");
+    http.Response response;
+    try {
+      response = await http.put(
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          "Authorization": 'Bearer $token',
+        },
+        Uri.parse(
+          "${Baseurl.cancelOrderAPI}/$order",
+        ),
+      ).timeout(const Duration(seconds: Constants.TIMEOUT));
+
+    } on TimeoutException {
+      throw Exception('The request timed out. Please try again later.');
+    } catch (e) {
+      throw Exception('Failed to cancel your order: $e');
     }
     return response;
   }

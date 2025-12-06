@@ -53,6 +53,31 @@ class AccountingVM extends ChangeNotifier {
     return status;
   }
 
+  Future<String> deleteAllTransactions() async {
+    String status = "";
+    try {
+      final response = await _accountingService.deleteAllTransactions(_userViewModel.token);
+
+      if (response.statusCode == 200) {
+
+        status = "transactions_deleted";
+
+        debugPrint("transactions deleted successfully");
+      } else {
+
+        status = "transactions_not_deleted";
+        debugPrint("Failed to delete transactions: ${response.statusCode}");
+      }
+
+    } catch (e) {
+      status = "transactions_not_deleted";
+      debugPrint("Error deleting transactions: $e");
+    } finally {
+      notifyListeners();
+    }
+    return status;
+  }
+
   Future<String> getTransactions() async {
     String status = "";
     try {
@@ -105,7 +130,6 @@ class AccountingVM extends ChangeNotifier {
     }
     return status;
   }
-
 
   Future<String> getTransactionCategories() async {
     String status = "";

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:warsha_app/models/daily_cash.dart';
+import 'package:warsha_app/models/top_products.dart';
+import 'package:warsha_app/utils/date.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/home_v_m.dart';
 import 'package:warsha_app/utils/price_helper.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomeCashFlow extends StatelessWidget {
   const HomeCashFlow({super.key});
@@ -17,7 +16,7 @@ class HomeCashFlow extends StatelessWidget {
       child: Consumer<HomeVM>(
         builder: (context, value, child) {
           final revenue = value.revenueSummary;
-          final dailyCashFlow = value.dailyCashFlow;
+          final topProducts = value.topProducts;
 
           return Container(
             padding: const EdgeInsets.all(16),
@@ -35,43 +34,49 @@ class HomeCashFlow extends StatelessWidget {
             child: revenue == null
                 ? const Center(child: CircularProgressIndicator())
                 : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                DefaultText(
-                  txt: "Cash Flow Overview",
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(height: 16),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildCashCard(
-                      context,
-                      title: "Actual Cash Received",
-                      value: PriceHelper.formatNumber(revenue.actualCashReceived),
-                      icon: Iconsax.money_copy,
-                      color: Colors.green,
-                    ),
-                    _buildCashCard(
-                      context,
-                      title: "Expected Cash",
-                      value: PriceHelper.formatNumber(revenue.expectedCash),
-                      icon: Iconsax.money_time_copy,
-                      color: Colors.orange,
-                    ),
-                    _buildCashCard(
-                      context,
-                      title: "Potential Revenue",
-                      value: PriceHelper.formatNumber(revenue.potentialRevenue),
-                      icon: Iconsax.trend_up_copy,
-                      color: Colors.blue,
-                    ),
-                  ],
-                ),
-                DailyCashFlowChart(data: dailyCashFlow,)
-              ],
-            ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      DefaultText(
+                        txt: "Cash Flow Overview",
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _buildCashCard(
+                            context,
+                            title: "Actual Cash Received",
+                            value: PriceHelper.formatNumber(
+                                revenue.actualCashReceived),
+                            icon: Iconsax.money_copy,
+                            color: Colors.green,
+                          ),
+                          _buildCashCard(
+                            context,
+                            title: "Expected Cash",
+                            value:
+                                PriceHelper.formatNumber(revenue.expectedCash),
+                            icon: Iconsax.money_time_copy,
+                            color: Colors.orange,
+                          ),
+                          _buildCashCard(
+                            context,
+                            title: "Potential Revenue",
+                            value: PriceHelper.formatNumber(
+                                revenue.potentialRevenue),
+                            icon: Iconsax.trend_up_copy,
+                            color: Colors.blue,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Expanded(
+                          child: TopSellingProductsList(
+                        products: topProducts,
+                      ))
+                    ],
+                  ),
           );
         },
       ),
@@ -79,12 +84,12 @@ class HomeCashFlow extends StatelessWidget {
   }
 
   Widget _buildCashCard(
-      BuildContext context, {
-        required String title,
-        required String value,
-        required IconData icon,
-        required Color color,
-      }) {
+    BuildContext context, {
+    required String title,
+    required String value,
+    required IconData icon,
+    required Color color,
+  }) {
     return Expanded(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -129,79 +134,205 @@ class HomeCashFlow extends StatelessWidget {
   }
 }
 
-class DailyCashFlowChart extends StatelessWidget {
-  final List<DailyCashFlowModel>? data;
+class TopSellingProductsList extends StatelessWidget {
+  final List<TopProduct>? products;
 
-  const DailyCashFlowChart({super.key, required this.data});
+  const TopSellingProductsList({super.key, required this.products});
 
   @override
   Widget build(BuildContext context) {
-    if (data == null) {
-      return const Center(
-        child: Text(
-          "No cash flow data available",
-          style: TextStyle(fontSize: 16, color: Colors.grey),
-        ),
-      );
-    }
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onPrimary,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(10),
+            blurRadius: 4,
+            offset: const Offset(0, 0),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // --- Header ---
+          Row(
+            children: [
+              Icon(Iconsax.award_copy,
+                  color: Theme.of(context).colorScheme.tertiary),
+              const SizedBox(width: 8),
+              DefaultText(
+                txt:
+                    "Top Selling Products in ${DateHelper.formatDate1(DateTime.now().toString())}",
+                size: 18,
+                bold: true,
+              ),
+            ],
+          ),
+          const SizedBox(height: 32),
+          const Row(
+            children: [
+              // Empty space for Rank
+              SizedBox(width: 15),
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SfCartesianChart(
-        title: const ChartTitle(
-          text: 'Daily Cash Flow Overview',
-          textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        legend: const Legend(
-          isVisible: true,
-          position: LegendPosition.bottom,
-          overflowMode: LegendItemOverflowMode.wrap,
-        ),
-        tooltipBehavior: TooltipBehavior(enable: true),
-        primaryXAxis: const CategoryAxis(
-          title: AxisTitle(text: 'Day'),
-          labelRotation: 45,
-          majorGridLines: MajorGridLines(width: 0),
-        ),
-        primaryYAxis: NumericAxis(
-          title: const AxisTitle(text: 'Amount (EGP)'),
-          numberFormat: NumberFormat.compactCurrency(symbol: 'EGP ', decimalDigits: 0),
-        ),
-        series: <CartesianSeries<DailyCashFlowModel, String>>[
-          // 🟢 Cash Received
-          ColumnSeries<DailyCashFlowModel, String>(
-            name: 'Cash Received',
-            color: Colors.green,
-            dataSource: data,
-            xValueMapper: (DailyCashFlowModel d, _) =>
-                DateFormat('MM/dd').format(DateTime.parse(d.day)),
-            yValueMapper: (DailyCashFlowModel d, _) => d.dailyCashReceived,
-            dataLabelSettings: const DataLabelSettings(isVisible: true),
+              // Product Name
+              Expanded(
+                flex: 4, // Gives more space to the name
+                child: Text("Product",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),),
+              ),
+
+              // Sold
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  "Sold",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+
+              // Profit
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text("Profit",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),),
+              ),
+              // Stock
+              // Text("Stock", textAlign: TextAlign.center),
+            ],
           ),
-          // 🟠 Shipped Value
-          ColumnSeries<DailyCashFlowModel, String>(
-            name: 'Shipped Value',
-            color: Colors.orange,
-            dataSource: data,
-            xValueMapper: (DailyCashFlowModel d, _) =>
-                DateFormat('MM/dd').format(DateTime.parse(d.day)),
-            yValueMapper: (DailyCashFlowModel d, _) => d.dailyShippedValue,
-            dataLabelSettings: const DataLabelSettings(isVisible: true),
-          ),
-          // 🔴 Delivery Charges
-          ColumnSeries<DailyCashFlowModel, String>(
-            name: 'Delivery Charges',
-            color: Colors.red,
-            dataSource: data,
-            xValueMapper: (DailyCashFlowModel d, _) =>
-                DateFormat('MM/dd').format(DateTime.parse(d.day)),
-            yValueMapper: (DailyCashFlowModel d, _) => d.dailyDeliveryCharges,
-            dataLabelSettings: const DataLabelSettings(isVisible: true),
-          ),
+
+          const SizedBox(height: 16),
+
+          // --- List ---
+          if (products == null || products!.isEmpty)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Text("No sales data yet"),
+              ),
+            )
+          else
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: products!.length,
+              separatorBuilder: (c, i) => Divider(
+                height: 20,
+                thickness: 0.5,
+                color: Theme.of(context).colorScheme.tertiary.withAlpha(50),
+              ),
+              itemBuilder: (context, index) {
+                final item = products![index];
+                return _buildProductRow(context, index + 1, item);
+              },
+            ),
         ],
       ),
     );
   }
+
+  Widget _buildProductRow(BuildContext context, int rank, TopProduct product) {
+    // Determine Medal/Rank Color
+    Color rankColor;
+    if (rank == 1) {
+      rankColor = const Color(0xFFFFD700); // Gold
+    } else if (rank == 2) {
+      rankColor = const Color(0xFFC0C0C0); // Silver
+    } else if (rank == 3) {
+      rankColor = const Color(0xFFCD7F32); // Bronze
+    } else {
+      rankColor = Colors.grey.shade300;
+    }
+
+    return Row(
+      children: [
+        // Rank Circle
+        Container(
+          width: 30,
+          height: 30,
+          decoration: BoxDecoration(
+            color: rankColor.withOpacity(0.2),
+            shape: BoxShape.circle,
+            border: Border.all(color: rankColor, width: 1.5),
+          ),
+          child: Center(
+            child: Text(
+              "$rank",
+              style: TextStyle(
+                color: rank <= 3 ? Colors.black87 : Colors.grey,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+
+        // Product Name
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                product.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                "ID: #${product.productId}",
+                style: const TextStyle(fontSize: 12),
+              ),
+            ],
+          ),
+        ),
+
+        // Total Sold Count
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: DefaultText(
+            txt: "${product.totalSold} Sold",
+            color: Theme.of(context).colorScheme.tertiary,
+            size: 14,
+            bold: true,
+          ),
+        ),
+
+        // Total Sold Count
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: DefaultText(
+            txt: "${product.totalProfit} EGP",
+            color: Colors.green.shade300,
+            size: 14,
+            bold: true,
+          ),
+        ),
+      ],
+    );
+  }
 }
-
-

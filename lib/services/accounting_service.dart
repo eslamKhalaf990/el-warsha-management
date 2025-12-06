@@ -31,6 +31,27 @@ class AccountingService {
     return response;
   }
 
+  Future<http.Response> deleteAllTransactions(String token) async {
+    debugPrint("deleteAllTransactions called");
+    http.Response response;
+    try {
+      response = await http.delete(
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          "Authorization": 'Bearer $token',
+        },
+        Uri.parse(
+          Baseurl.deleteAllTransactionsAPI,
+        ),
+      ).timeout(const Duration(seconds: Constants.TIMEOUT));
+    } on TimeoutException {
+      throw Exception('The request timed out. Please try again later.');
+    } catch (e) {
+      throw Exception('Failed to delete your transactions: $e');
+    }
+    return response;
+  }
+
   Future<http.Response> getTransactions(String token) async {
     debugPrint("getTransactions called");
     http.Response response;

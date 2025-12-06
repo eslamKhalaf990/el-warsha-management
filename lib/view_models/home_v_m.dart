@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:warsha_app/models/daily_cash.dart';
 import 'package:warsha_app/models/revenue_summary.dart';
+import 'package:warsha_app/models/top_products.dart';
 import 'package:warsha_app/services/home_service.dart';
 import 'package:warsha_app/view_models/user_v_m.dart';
 
@@ -11,11 +12,17 @@ class HomeVM extends ChangeNotifier {
 
   RevenueSummary? revenueSummary;
   List<DailyCashFlowModel>? dailyCashFlow;
+  List<TopProduct>? topProducts;
 
 
   HomeVM(this._homeService, this._userViewModel){
-    getRevenueSummary();
-    getDailyCashFlow();
+    initHome();
+  }
+
+  Future<void> initHome () async {
+    await getRevenueSummary();
+    await getDailyCashFlow();
+    await getTotalSoldProducts();
   }
 
   Future<String> getRevenueSummary() async {
@@ -39,6 +46,33 @@ class HomeVM extends ChangeNotifier {
     } catch (e) {
       status = "summary_not_fetched";
       debugPrint("Error fetching summary: $e");
+    } finally {
+      notifyListeners();
+    }
+    return status;
+  }
+
+  Future<String> getTotalSoldProducts() async {
+    String status = "";
+    try {
+      final response = await _homeService.getTotalSoldProducts(_userViewModel.token);
+
+      if (response.statusCode == 200) {
+
+        status = "top_products_fetched";
+
+        final data = jsonDecode(response.body) as List;
+        topProducts = data.map((item) => TopProduct.fromJson(item)).toList();
+        debugPrint("Summary fetched successfully");
+      } else {
+
+        status = "top_products_not_fetched";
+        debugPrint("Failed to fetch summary: ${response.statusCode}");
+      }
+
+    } catch (e) {
+      status = "top_products_not_fetched";
+      debugPrint("Error fetching top products: $e");
     } finally {
       notifyListeners();
     }

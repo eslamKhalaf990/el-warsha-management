@@ -76,7 +76,6 @@ class OrderVM extends ChangeNotifier {
 
     notifyListeners();
   }
-
   // ────────────────────────────
   // ADD ORDER
   // ────────────────────────────
@@ -89,6 +88,7 @@ class OrderVM extends ChangeNotifier {
     try {
       await _orderService.addOrder(orderRequest, _userViewModel.token);
       await fetchOrders();
+      _isSaving = false;
       ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
         const SnackBar(
           content: Text("Order added successfully"),
@@ -189,16 +189,41 @@ class OrderVM extends ChangeNotifier {
       _isSaving = true;
       notifyListeners();
 
-      final response = await _orderService.updateOrderStatus(
-          orderID, statusValue, _userViewModel.token, bankAccountId);
+      if (statusValue == "Cancelled") {
+        final response = await _orderService.cancelOrder(
+            orderID, _userViewModel.token);
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        status = "status_updated";
-        debugPrint("Order status updated: ${response.body}");
+        if (response.statusCode == 204) {
+
+          status = "order_cancelled";
+
+          ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+            SnackBar(
+              content: Text("Order #$orderID cancelled successfully"),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 2),
+            ),
+          );
+          debugPrint("Order cancelled: ${response.body}");
+        } else {
+
+          status = "status_not_canceled";
+          debugPrint("Already canceled: ${response.statusCode}");
+        }
+
       } else {
-        status = "status_not_updated";
-        debugPrint("Update failed: ${response.statusCode} - ${response.body}");
+        final response = await _orderService.updateOrderStatus(
+            orderID, statusValue, _userViewModel.token, bankAccountId);
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          status = "status_updated";
+          debugPrint("Order status updated");
+        } else {
+          status = "status_not_updated";
+          debugPrint("Update failed: ${response.statusCode} - ${response.body}");
+        }
       }
+
     } catch (e) {
       status = "status_not_updated";
       debugPrint("Error updating order status: $e");
@@ -279,7 +304,7 @@ class OrderVM extends ChangeNotifier {
   // FILTERING
   // ────────────────────────────
 
-  /// ✨ ADDED: Call this from your UI to set the date range
+  /// ADDED: Call this from your UI to set the date range
   void setDateRange(DateTimeRange? range) {
     if (range != null) {
       _startDate = range.start;
@@ -309,7 +334,7 @@ class OrderVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// ✨ MODIFIED: Now applies both text and date filters
+  // applies both text and date filters
   void _filterOrders() {
     _filteredOrders = _orders.where((order) {
 

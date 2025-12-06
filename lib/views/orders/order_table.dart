@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:warsha_app/models/account_balance.dart';
 import 'package:warsha_app/models/orderModel.dart';
 import 'package:warsha_app/view_models/accountings_v_m.dart';
+import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/view_models/order_v_m.dart';
 import 'package:warsha_app/services/base_url.dart';
 import 'package:warsha_app/utils/const_values.dart';
@@ -86,231 +87,231 @@ class OrderList extends StatelessWidget {
                         return Theme(
                           data: Theme.of(context).copyWith(
 
-                            colorScheme: Theme.of(context).colorScheme.copyWith(
-                              primary: Theme.of(context).colorScheme.tertiary,
-                            ),
-                            textButtonTheme: TextButtonThemeData(
-                              style: TextButton.styleFrom(
-                                foregroundColor: Theme.of(context).colorScheme.tertiary, // "Save" and "Cancel" text color
-                              ),
-                            ),
-                            dialogTheme: DialogThemeData(backgroundColor: Colors.grey[850]),
-                          ),
-                          child: child!,
-                        );
-                      },
+                                  colorScheme: Theme.of(context).colorScheme.copyWith(
+                                    primary: Theme.of(context).colorScheme.tertiary,
+                                  ),
+                                  textButtonTheme: TextButtonThemeData(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: Theme.of(context).colorScheme.tertiary, // "Save" and "Cancel" text color
+                                    ),
+                                  ),
+                                  dialogTheme: DialogThemeData(backgroundColor: Colors.grey[850]),
+                                ),
+                                child: child!,
+                              );
+                            },
+                          );
+
+                          // Update the ViewModel with the new range
+                          orderVM.setDateRange(newDateRange);
+                        },
+                      )
+                    ],
+                  ),
+                  onSort: (columnIndex, ascending) {
+                    orderVM.sort<DateTime>(
+                      (order) => order.orderDate ?? DateTime.now(),
+                      columnIndex,
+                      ascending,
                     );
-
-                    // Update the ViewModel with the new range
-                    orderVM.setDateRange(newDateRange);
                   },
-                )
-              ],
-            ),
-            onSort: (columnIndex, ascending) {
-              orderVM.sort<DateTime>(
-                (order) => order.orderDate ?? DateTime.now(),
-                columnIndex,
-                ascending,
-              );
-            },
-          ),
-
-          // Customer
-          DataColumn(
-            label: SizedBox(
-              height: 22,
-              width: 120,
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Customer',
-                  hintStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  border: InputBorder.none,
-                  isDense: true,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
                 ),
-                controller: orderVM.customer,
-                onChanged: (val) => orderVM.applyFilter('customer', val),
-              ),
-            ),
-            onSort: (columnIndex, ascending) {
-              orderVM.sort<String>(
-                (order) => order.customer?.fullName ?? '',
-                columnIndex,
-                ascending,
-              );
-            },
-          ),
 
-          // Phone
-          DataColumn(
-            label: SizedBox(
-              height: 22,
-              width: 120,
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Phone',
-                  hintStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  border: InputBorder.none,
-                  isDense: true,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                // Customer
+                DataColumn(
+                  label: SizedBox(
+                    height: 22,
+                    width: 120,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Customer',
+                        hintStyle:
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                      ),
+                      controller: orderVM.customer,
+                      onChanged: (val) => orderVM.applyFilter('customer', val),
+                    ),
+                  ),
+                  onSort: (columnIndex, ascending) {
+                    orderVM.sort<String>(
+                      (order) => order.customer?.fullName ?? '',
+                      columnIndex,
+                      ascending,
+                    );
+                  },
                 ),
-                controller: orderVM.phone,
-                onChanged: (val) => orderVM.applyFilter('phone', val),
-              ),
-            ),
-            onSort: (columnIndex, ascending) {
-              orderVM.sort<String>(
-                (order) => order.customer?.phone ?? '',
-                columnIndex,
-                ascending,
-              );
-            },
-          ),
 
-          // Status
-          DataColumn(
-            label: SizedBox(
-              height: 22,
-              width: 120,
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Status',
-                  hintStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  border: InputBorder.none,
-                  isDense: true,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                // Phone
+                DataColumn(
+                  label: SizedBox(
+                    height: 22,
+                    width: 120,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Phone',
+                        hintStyle:
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                      ),
+                      controller: orderVM.phone,
+                      onChanged: (val) => orderVM.applyFilter('phone', val),
+                    ),
+                  ),
+                  onSort: (columnIndex, ascending) {
+                    orderVM.sort<String>(
+                      (order) => order.customer?.phone ?? '',
+                      columnIndex,
+                      ascending,
+                    );
+                  },
                 ),
-                controller: orderVM.status,
-                onChanged: (val) => orderVM.applyFilter('status', val),
-              ),
-            ),
-            onSort: (columnIndex, ascending) {
-              orderVM.sort<String>(
-                (order) => order.status ?? '',
-                columnIndex,
-                ascending,
-              );
-            },
-          ),
 
-          // Governorate
-          DataColumn(
-            label: SizedBox(
-              height: 22,
-              width: 120,
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Governorate',
-                  hintStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  border: InputBorder.none,
-                  isDense: true,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                // Status
+                DataColumn(
+                  label: SizedBox(
+                    height: 22,
+                    width: 120,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Status',
+                        hintStyle:
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                      ),
+                      controller: orderVM.status,
+                      onChanged: (val) => orderVM.applyFilter('status', val),
+                    ),
+                  ),
+                  onSort: (columnIndex, ascending) {
+                    orderVM.sort<String>(
+                      (order) => order.status ?? '',
+                      columnIndex,
+                      ascending,
+                    );
+                  },
                 ),
-                controller: orderVM.governorate,
-                onChanged: (val) => orderVM.applyFilter('governorate', val),
-              ),
-            ),
-            onSort: (columnIndex, ascending) {
-              orderVM.sort<String>(
-                (order) => order.customer?.governorate ?? '',
-                columnIndex,
-                ascending,
-              );
-            },
-          ),
 
-          // Total
-          DataColumn(
-            label: SizedBox(
-              height: 22,
-              width: 120,
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Total',
-                  hintStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  border: InputBorder.none,
-                  isDense: true,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                // Governorate
+                DataColumn(
+                  label: SizedBox(
+                    height: 22,
+                    width: 120,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Governorate',
+                        hintStyle:
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                      ),
+                      controller: orderVM.governorate,
+                      onChanged: (val) => orderVM.applyFilter('governorate', val),
+                    ),
+                  ),
+                  onSort: (columnIndex, ascending) {
+                    orderVM.sort<String>(
+                      (order) => order.customer?.governorate ?? '',
+                      columnIndex,
+                      ascending,
+                    );
+                  },
                 ),
-                controller: orderVM.total,
-                onChanged: (val) => orderVM.applyFilter('total', val),
-              ),
-            ),
-            onSort: (columnIndex, ascending) {
-              orderVM.sort<num>(
-                (order) => order.totalPrice ?? 0,
-                columnIndex,
-                ascending,
-              );
-            },
-          ),
 
-          // Source
-          DataColumn(
-            label: SizedBox(
-              height: 22,
-              width: 120,
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Source',
-                  hintStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  border: InputBorder.none,
-                  isDense: true,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                // Total
+                DataColumn(
+                  label: SizedBox(
+                    height: 22,
+                    width: 120,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Total',
+                        hintStyle:
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                      ),
+                      controller: orderVM.total,
+                      onChanged: (val) => orderVM.applyFilter('total', val),
+                    ),
+                  ),
+                  onSort: (columnIndex, ascending) {
+                    orderVM.sort<num>(
+                      (order) => order.totalPrice ?? 0,
+                      columnIndex,
+                      ascending,
+                    );
+                  },
                 ),
-                controller: orderVM.source,
-                onChanged: (val) => orderVM.applyFilter('source', val),
-              ),
-            ),
-            onSort: (columnIndex, ascending) {
-              orderVM.sort<String>(
-                (order) => order.orderSource ?? '',
-                columnIndex,
-                ascending,
-              );
-            },
-          ),
 
-          // Source
-          DataColumn(
-            label: SizedBox(
-              height: 22,
-              width: 120,
-              child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Payment Method',
-                  hintStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  border: InputBorder.none,
-                  isDense: true,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                // Source
+                DataColumn(
+                  label: SizedBox(
+                    height: 22,
+                    width: 120,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Source',
+                        hintStyle:
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                      ),
+                      controller: orderVM.source,
+                      onChanged: (val) => orderVM.applyFilter('source', val),
+                    ),
+                  ),
+                  onSort: (columnIndex, ascending) {
+                    orderVM.sort<String>(
+                      (order) => order.orderSource ?? '',
+                      columnIndex,
+                      ascending,
+                    );
+                  },
                 ),
-                controller: orderVM.paymentMethod,
-                onChanged: (val) => orderVM.applyFilter('paymentMethod', val),
-              ),
-            ),
-            onSort: (columnIndex, ascending) {
-              orderVM.sort<String>(
-                (order) => order.paymentMethod ?? '',
-                columnIndex,
-                ascending,
-              );
-            },
-          ),
+
+                // Source
+                DataColumn(
+                  label: SizedBox(
+                    height: 22,
+                    width: 120,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Payment Method',
+                        hintStyle:
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                      ),
+                      controller: orderVM.paymentMethod,
+                      onChanged: (val) => orderVM.applyFilter('paymentMethod', val),
+                    ),
+                  ),
+                  onSort: (columnIndex, ascending) {
+                    orderVM.sort<String>(
+                      (order) => order.paymentMethod ?? '',
+                      columnIndex,
+                      ascending,
+                    );
+                  },
+                ),
 
           // Actions
           const DataColumn(
@@ -603,7 +604,7 @@ class OrderStatusDropdown extends StatelessWidget {
     "Completed",
     "Processing",
     "Shipped",
-    "Canceled",
+    "Cancelled",
   ];
 
   @override
@@ -616,7 +617,7 @@ class OrderStatusDropdown extends StatelessWidget {
                 ? Colors.green.shade300
                 : currentStatus == "Processing"
                     ? Colors.blue.shade300
-                    : currentStatus == "Canceled"
+                    : currentStatus == "Cancelled"
                         ? Colors.red.shade300
                         : Colors.brown.shade300,
         borderRadius: Constants.BORDER_RADIUS_20,
@@ -652,32 +653,60 @@ class OrderStatusDropdown extends StatelessWidget {
             );
           }).toList(),
           onChanged: (value) async {
+            // --- 1. Guard Clauses ---
+            // Always check for null or no-op conditions first.
             if (value == null) return;
+            if (order.status == "Cancelled" || order.status == "Completed") {
+              // Don't allow changes on an already-cancelled or completed orders
+              return;
+            }
+
+            if (order.status == value) {
+              // Optional: Don't do anything if the status isn't actually changing
+              return;
+            }
+
+            // --- 2. Setup ---
+            // Get providers once at the top.
+            // We also add a 'mounted' check for safety in async functions.
+            if (!context.mounted) return;
+            final orderVM = Provider.of<OrderVM>(context, listen: false);
+            final accountingVM = Provider.of<AccountingVM>(context, listen: false);
+            final productVM = Provider.of<ProductVM>(context, listen: false);
+
+            String bankAccountId = "0"; // Default bank account ID
+            String? state;
+
+            // --- 3. Handle Status-Specific Logic ---
+
             if (value == "Completed") {
               final bankAccount = await showTransferDialog(context, order.totalPrice ?? 0);
-              if(bankAccount != null){
-                final state = await Provider.of<OrderVM>(context, listen: false)
-                    .updateOrderStatus(
-                    orderID: order.orderId.toString(),
-                    statusValue: value,
-                    bankAccountId: bankAccount.id.toString()
-                );
-                if (state == "status_updated") {
-                  onStatusChanged(value);
-                  Provider.of<AccountingVM>(context, listen: false).initAccounting();
-                }
-              }
-            } else {
-              final state = await Provider.of<OrderVM>(context, listen: false)
-                  .updateOrderStatus(
-                  orderID: order.orderId.toString(),
-                  statusValue: value,
-                  bankAccountId: "0"
-              );
-              if (state == "status_updated") {
-                onStatusChanged(value);
-                Provider.of<AccountingVM>(context, listen: false).initAccounting();
-              }
+              // User cancelled the dialog
+              if (bankAccount == null) return;
+
+              bankAccountId = bankAccount.id.toString();
+
+            } else if (value == "Cancelled") {
+              final confirm = await showCancelDialog(context);
+              // User cancelled the confirmation
+              if (confirm == false) return;
+            }
+
+            // --- 4. Call the API ---
+            // This block now runs for "Completed", "Cancelled", or any other status
+            // because the specific logic (dialogs) has already been handled.
+            state = await orderVM.updateOrderStatus(
+              orderID: order.orderId.toString(),
+              statusValue: value,
+              bankAccountId: bankAccountId, // Will be "0" or the selected ID
+            );
+
+            // --- 5. Handle Success ---
+            // Check for the possible success states from your VM
+            if (state == "status_updated" || state == "order_cancelled") {
+              onStatusChanged(value);
+              accountingVM.initAccounting();
+              productVM.initAllProducts();
             }
           },
         ),
@@ -788,5 +817,71 @@ Future<BankAccount?> showTransferDialog(BuildContext context, double totalPrice)
     return selectedAccount;
   }
   return null;
+}
+
+Future<bool> showCancelDialog(BuildContext context) async {
+
+  final bool? result = await showDialog<bool>(
+    context: context,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) => AlertDialog(
+        // 1. Add a warning icon to the title for immediate visual feedback
+        title: Row(
+          children: [
+            Icon(Icons.warning_amber_rounded, color: Colors.amber.shade800),
+            const SizedBox(width: 10),
+            const Text('Confirm Cancellation'),
+          ],
+        ),
+        content: RichText(
+          text: TextSpan(
+            // Use the default body style from the theme
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              height: 1.5, // Line spacing
+            ),
+            children: const [
+              TextSpan(
+                text: 'Are you sure you want to cancel this order?\n\n',
+              ),
+              // 2. Make the most important consequence bold and clear
+              TextSpan(
+                text: 'This action cannot be undone.\n\n',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: 'The order status will be permanently set to "Cancelled" '
+                    'and all items will be returned to inventory.',
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          // 3. The "safe" action (Cancel) should be a simple TextButton
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Back'), // "Back" is clearer than "Cancel" here
+          ),
+          // 4. The "destructive" action (Confirm) should be red
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ButtonStyle(
+              foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+              backgroundColor: WidgetStateProperty.all<Color>(Colors.red.shade700),
+            ),
+            child: const Text('Yes, Cancel Order'),
+          ),
+        ],
+      ),
+    ),
+  );
+
+  if (result == true) {
+
+    return true;
+  }
+
+  return false;
 }
 

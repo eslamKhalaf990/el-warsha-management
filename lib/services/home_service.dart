@@ -2,12 +2,13 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:warsha_app/utils/const_values.dart';
+import 'package:warsha_app/utils/date.dart';
 
 import 'base_url.dart';
 
 class HomeService {
 
-  // This class will handle the logic for attendance management.
+  // This class will handle the logic for .
   Future<http.Response> getRevenueSummary(String token) async {
     debugPrint("getRevenueSummary called");
     http.Response response;
@@ -25,6 +26,28 @@ class HomeService {
       throw Exception('The request timed out. Please try again later.');
     } catch (e) {
       throw Exception('Failed to get your summary: $e');
+    }
+    return response;
+  }
+
+  Future<http.Response> getTotalSoldProducts(String token) async {
+    debugPrint("getTotalSoldProducts called");
+    http.Response response;
+    try {
+      response = await http.get(
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          "Authorization": 'Bearer $token',
+        },
+
+        Uri.parse(
+          "${Baseurl.getTotalSoldProductsAPI}?date=${DateHelper.formatDateMY(DateTime.now().toString())}",
+        ),
+      ).timeout(const Duration(seconds: Constants.TIMEOUT));
+    } on TimeoutException {
+      throw Exception('The request timed out. Please try again later.');
+    } catch (e) {
+      throw Exception('Failed to get your total sold products: $e');
     }
     return response;
   }

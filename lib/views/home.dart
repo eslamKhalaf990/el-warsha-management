@@ -4,230 +4,267 @@ import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/navigation.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import '../utils/default_text.dart';
-// ignore: unused_import
-import '../utils/app_bar_widget.dart';
+
+// A breakpoint to decide when to switch from mobile to desktop layout
+const double kTabletBreakpoint = 720.0;
 
 class Home extends StatelessWidget {
   const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.white,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.blue.shade50,
-              Colors.yellow.shade200
-            ], // Replace with your colors
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Padding(
-          padding:
-              const EdgeInsets.only(left: 15, top: 15, right: 15, bottom: 15),
-          child: Column(
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    Container(
-                      width: 200,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 15),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Consumer<Navigation>(
-                        builder: ( context, value,child) => Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: Row(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: Constants.BORDER_RADIUS_100,
-                                    child: Image.asset("assets/images/logo.jpg", width: 40,),
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  const DefaultText(
-                                    txt: "ELWARSHA",
-                                    bold: true,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                value.updatePage(0);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: value.page == 0 ? Theme.of(context)
-                                        .colorScheme
-                                        .secondary
-                                        .withAlpha(50) : null,
-                                    borderRadius: Constants.BORDER_RADIUS_20),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 15),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Iconsax.home,
-                                      color:
-                                      Theme.of(context).colorScheme.secondary,
-                                    ),
-                                    const SizedBox(width: 15),
-                                    const DefaultText(
-                                      txt: "Home",
-                                      bold: true,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                value.updatePage(1);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: value.page == 1 ? Theme.of(context)
-                                        .colorScheme
-                                        .secondary
-                                        .withAlpha(50) : null,
-                                    borderRadius: Constants.BORDER_RADIUS_20),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 15),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Iconsax.category,
-                                      color:
-                                          Theme.of(context).colorScheme.secondary,
-                                    ),
-                                    const SizedBox(width: 15),
-                                    const DefaultText(
-                                      txt: "Products",
-                                      bold: true,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                value.updatePage(2);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: value.page == 2 ? Theme.of(context)
-                                        .colorScheme
-                                        .secondary
-                                        .withAlpha(50) : null,
-                                    borderRadius: Constants.BORDER_RADIUS_20),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 15),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Iconsax.receipt_item,
-                                      color:
-                                          Theme.of(context).colorScheme.secondary,
-                                    ),
-                                    const SizedBox(
-                                      width: 15,
-                                    ),
-                                    const DefaultText(
-                                      txt: "Orders",
-                                      bold: true,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                value.updatePage(3);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: value.page == 3 ? Theme.of(context)
-                                        .colorScheme
-                                        .secondary
-                                        .withAlpha(50) : null,
-                                    borderRadius: Constants.BORDER_RADIUS_20),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 15),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Iconsax.profile_2user,
-                                      color:
-                                          Theme.of(context).colorScheme.secondary,
-                                    ),
-                                    const SizedBox(width: 15),
-                                    const DefaultText(
-                                      txt: "Customers",
-                                      bold: true,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: (){
-                                value.updatePage(4);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: value.page == 4 ? Theme.of(context)
-                                        .colorScheme
-                                        .secondary
-                                        .withAlpha(50) : null,
-                                    borderRadius: Constants.BORDER_RADIUS_20),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 15),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Iconsax.empty_wallet,
-                                      color:
-                                          Theme.of(context).colorScheme.secondary,
-                                    ),
-                                    const SizedBox(width: 15),
-                                    const DefaultText(
-                                      txt: "Accounting",
-                                      bold: true,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 15),
+    // LayoutBuilder gives us the constraints of the parent widget
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Check if the screen is wide enough for a side nav
+        if (constraints.maxWidth > kTabletBreakpoint) {
+          return _buildDesktopLayout(context);
+        } else {
+          return _buildMobileLayout(context);
+        }
+      },
+    );
+  }
 
-                    Provider.of<Navigation>(context, listen: false).pages[
-                      Provider.of<Navigation>(context).page],
-                  ],
-                ),
+  /// Builds the layout for wide screens (Tablet/Desktop)
+  Widget _buildDesktopLayout(BuildContext context) {
+    // Get the navigation state.
+    // context.watch() rebuilds this widget when 'page' changes.
+    final nav = context.watch<Navigation>();
+
+    return Scaffold(
+      // A cleaner background color for the main app body
+      backgroundColor: Colors.grey.shade100,
+      body: Padding(
+        // Use the same padding as the original
+        padding: const EdgeInsets.all(15),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 1. The Side Navigation Rail
+            const _SideNavRail(),
+            const SizedBox(width: 15),
+
+            // 2. The Main Content Area
+            Expanded(
+              // Dynamically show the correct page based on the provider's state
+              child: nav.pages[nav.page],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Builds the layout for narrow screens (Mobile)
+  Widget _buildMobileLayout(BuildContext context) {
+    // Get the navigation state
+    final nav = context.watch<Navigation>();
+    // Get the navigation controller to call updatePage
+    // context.read() does NOT rebuild, safe to use in callbacks.
+    final navNotifier = context.read<Navigation>();
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      // We can add an AppBar for mobile
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
+        shadowColor: Colors.black.withOpacity(0.1),
+        title: const DefaultText(
+          txt: "ELWARSHA", // You can update this based on the page
+          bold: true,
+        ),
+      ),
+      // The body is just the selected page
+      body: nav.pages[nav.page],
+
+      // Use a BottomNavigationBar for mobile navigation
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: nav.page,
+        onTap: (index) => navNotifier.updatePage(index),
+        selectedLabelStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
+
+        // These settings make it look good with 5 items
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Theme.of(context).colorScheme.tertiary,
+        unselectedItemColor: Colors.grey.shade600,
+        selectedFontSize: 12,
+
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Iconsax.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Iconsax.category),
+            label: 'Products',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Iconsax.receipt_item),
+            label: 'Orders',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Iconsax.profile_2user),
+            label: 'Customers',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Iconsax.empty_wallet),
+            label: 'Accounting',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// A dedicated widget for the Side Navigation Rail
+class _SideNavRail extends StatelessWidget {
+  const _SideNavRail();
+
+  @override
+  Widget build(BuildContext context) {
+    final nav = context.watch<Navigation>();
+    final navNotifier = context.read<Navigation>();
+
+    return Container(
+      width: 200,
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onPrimary, // e.g., white
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // 1. Logo
+          const _Logo(),
+          const SizedBox(height: 20),
+
+          // 2. Navigation Items
+          // Using a Column instead of MainAxisAlignment.spaceEvenly
+          // for a cleaner, top-aligned look.
+          Column(
+            children: [
+              _NavigationItem(
+                title: 'Home',
+                icon: Iconsax.home,
+                isSelected: nav.page == 0,
+                onTap: () => navNotifier.updatePage(0),
+              ),
+              _NavigationItem(
+                title: 'Products',
+                icon: Iconsax.category,
+                isSelected: nav.page == 1,
+                onTap: () => navNotifier.updatePage(1),
+              ),
+              _NavigationItem(
+                title: 'Orders',
+                icon: Iconsax.receipt_item,
+                isSelected: nav.page == 2,
+                onTap: () => navNotifier.updatePage(2),
+              ),
+              _NavigationItem(
+                title: 'Customers',
+                icon: Iconsax.profile_2user,
+                isSelected: nav.page == 3,
+                onTap: () => navNotifier.updatePage(3),
+              ),
+              _NavigationItem(
+                title: 'Accounting',
+                icon: Iconsax.empty_wallet,
+                isSelected: nav.page == 4,
+                onTap: () => navNotifier.updatePage(4),
               ),
             ],
           ),
-        ),
+          // You can add a Spacer() here to push items to the bottom
+          // const Spacer(),
+          // _NavigationItem(
+          //   title: 'Logout',
+          //   icon: Iconsax.logout,
+          //   isSelected: false,
+          //   onTap: () { /* Handle logout */ },
+          // ),
+        ],
       ),
+    );
+  }
+}
+
+/// A dedicated widget for the Logo section
+class _Logo extends StatelessWidget {
+  const _Logo();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: Constants.BORDER_RADIUS_100,
+            child: Image.asset("assets/images/logo.jpg", width: 40),
+          ),
+          const SizedBox(width: 10),
+          const DefaultText(
+            txt: "ELWARSHA",
+            bold: true,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+/// A reusable widget for a single navigation item (replaces the InkWell)
+class _NavigationItem extends StatelessWidget {
+  const _NavigationItem({
+    required this.title,
+    required this.icon,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String title;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    // Using ListTile for semantic correctness and cleaner code
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: isSelected
+            ? theme.colorScheme.secondary
+            : theme.colorScheme.onSurface.withOpacity(0.7),
+      ),
+      title: DefaultText(
+        txt: title,
+        bold: true,
+        // Optionally change text color when selected
+        color: isSelected
+            ? theme.colorScheme.secondary
+            : theme.colorScheme.onSurface,
+      ),
+      onTap: onTap,
+
+      // Use built-in ListTile properties for selection
+      selected: isSelected,
+      selectedTileColor: theme.colorScheme.secondary.withAlpha(50),
+
+      // Apply the border radius
+      shape: RoundedRectangleBorder(
+        borderRadius: Constants.BORDER_RADIUS_20,
+      ),
+      // Adjust padding as needed
+      contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      dense: true,
     );
   }
 }

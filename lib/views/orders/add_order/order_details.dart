@@ -58,8 +58,7 @@ class OrderDetailsStep extends StatelessWidget {
                                       (context, addOrderVM, payment, child) {
                                     // Get the GetDeleteOrderVM so we can call its methods
                                     // We use 'watch' so the button's loading state updates
-                                    final listVM =
-                                        context.watch<OrderVM>();
+                                    final listVM = context.watch<OrderVM>();
                                     final isSaving = listVM.isSaving;
 
                                     return DefaultButton(
@@ -106,20 +105,27 @@ class OrderDetailsStep extends StatelessWidget {
                                           final paymentMethodId =
                                               payment.paymentMethod.text;
 
-                                          final bankAccountId = await showTransferDialog(context, double.parse(payment.downPayment.text));
-                                          if(bankAccountId != null){
+                                          final bankAccountId =
+                                              await showTransferDialog(
+                                                  context,
+                                                  double.parse(payment
+                                                      .downPayment.text));
+                                          if (bankAccountId != null) {
                                             // 4. Build the Request Object
                                             final CreateOrderRequest request =
-                                            CreateOrderRequest(
+                                                CreateOrderRequest(
                                               customerId: addOrderVM.orderModel
                                                   .customer!.customerId,
                                               delivery: deliveryCost,
                                               discount: discountAmount,
-                                              downPayment: payment.downPayment.text,
+                                              downPayment:
+                                                  payment.downPayment.text,
                                               notes: payment.notes.text,
                                               orderSource: orderSourceId,
                                               paymentMethod: paymentMethodId,
-                                              items: itemsToCreate, bankAccountId: bankAccountId.id.toString(),
+                                              items: itemsToCreate,
+                                              bankAccountId:
+                                                  bankAccountId.id.toString(),
                                             );
 
                                             // 5. Call the addOrder method (from GetDeleteOrderVM)
@@ -131,12 +137,18 @@ class OrderDetailsStep extends StatelessWidget {
                                             if (success) {
                                               // Run your success logic
                                               if (context.mounted) {
-                                                Provider.of<ProductVM>(context, listen: false).initAllProducts();
-                                                Provider.of<AccountingVM>(context, listen: false).initAccounting();
+                                                Provider.of<ProductVM>(context,
+                                                        listen: false)
+                                                    .initAllProducts();
+                                                Provider.of<AccountingVM>(
+                                                        context,
+                                                        listen: false)
+                                                    .initAccounting();
                                                 Navigator.pop(context);
                                                 Navigator.pop(context);
                                                 payment.clearPaymentDetails();
-                                                addOrderVM.clearOrder(); // Call clear on the correct provider
+                                                addOrderVM
+                                                    .clearOrder(); // Call clear on the correct provider
                                               }
                                             } else {
                                               // Show the error from the provider
@@ -152,18 +164,16 @@ class OrderDetailsStep extends StatelessWidget {
                                                 );
                                               }
                                             }
-                                          }
-                                          else{
+                                          } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
-                                                content: Text(
-                                                    'Pick bank account'),
+                                                content:
+                                                    Text('Pick bank account'),
                                                 backgroundColor: Colors.red,
                                               ),
                                             );
                                           }
-
                                         } catch (e) {
                                           // Catch any local parsing errors
                                           ScaffoldMessenger.of(context)
@@ -184,9 +194,7 @@ class OrderDetailsStep extends StatelessWidget {
                                   },
                                 ),
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
+                              const SizedBox(width: 10),
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 5.0, horizontal: 30),

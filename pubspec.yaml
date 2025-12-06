@@ -38,6 +38,7 @@ dependencies:
   syncfusion_flutter_xlsio: ^31.2.10
   file_saver: ^0.3.1
   intl: ^0.20.2
+  cached_network_image: ^3.4.1
   flutter_dropzone: ^4.2.1
   pdfrx: ^2.2.12
   cupertino_icons: ^1.0.8
@@ -51,6 +52,7 @@ dependencies:
   file_picker: ^8.3.2
   printing: ^5.14.2
   syncfusion_flutter_charts: ^31.1.23
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

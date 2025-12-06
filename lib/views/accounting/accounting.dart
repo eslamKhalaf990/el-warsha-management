@@ -33,13 +33,128 @@ class Accounting extends StatelessWidget {
               ],
             ),
             child: accountBalance == null
-                ? Center(child: SpinKitChasingDots(color: Theme.of(context).colorScheme.tertiary,))
+                ? Center(
+                    child: SpinKitChasingDots(
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ))
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       DefaultText(
                         txt: "Cash Flow Overview",
                         color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(height: 16),
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text(
+                                      "Are you sure you want to reset all transactions?",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        // Cancel Button
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.red,
+                                            foregroundColor:
+                                                Colors.white, // Text color
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Cancel"),
+                                        ),
+
+                                        // Reset Button
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.green,
+                                            foregroundColor:
+                                                Colors.white, // Text color
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                          ),
+                                          onPressed: () async {
+                                            final accountingVM =
+                                                Provider.of<AccountingVM>(
+                                                    context,
+                                                    listen: false);
+
+                                            // Call the API
+                                            final state = await accountingVM
+                                                .deleteAllTransactions();
+
+                                            // Check if widget is still in the tree before using context
+                                            if (!context.mounted) return;
+
+                                            Navigator.pop(
+                                                context); // Close Dialog
+                                            if (state ==
+                                                "transactions_deleted") {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                      "Transactions reset successfully"),
+                                                  backgroundColor: Colors.red,
+                                                ),
+                                              );
+                                              accountingVM.initAccounting();
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                      "Failed to reset transactions"),
+                                                  backgroundColor: Colors.red,
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          child: const Text("Reset"),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Icon(
+                              Iconsax.money_remove_copy,
+                              color: Colors.red,
+                            ),
+                            SizedBox(width: 10),
+                            DefaultText(
+                              txt: "Reset All Transactions",
+                              color: Colors.red,
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 16),
                       Row(
@@ -177,12 +292,12 @@ class Accounting extends StatelessWidget {
                       value.allTransactions == null
                           ? Center(
                               child: SpinKitChasingDots(
-                              color: Theme.of(context).colorScheme.tertiary,
-                            ),
-                      )
+                                color: Theme.of(context).colorScheme.tertiary,
+                              ),
+                            )
                           : const Expanded(
                               child: TransactionsTable(),
-                      ),
+                            ),
                     ],
                   ),
           );
@@ -489,5 +604,3 @@ class Accounting extends StatelessWidget {
     );
   }
 }
-
-

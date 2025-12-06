@@ -20,6 +20,7 @@ class Baseurl {
   static String addOrderAPI = '${baseURL}orders';
   static String updateOrderAPI = '${baseURL}orders';
   static String deleteOrderAPI = '${baseURL}orders';
+  static String cancelOrderAPI = '${baseURL}orders/cancel';
   static String countGovernoratePerOrderAPI = '${baseURL}orders/countGovernorates';
   static String invoiceAPI = '${baseURL}invoice/pdf';
   /// ===============   Orders APIs    ============== ///
@@ -35,6 +36,7 @@ class Baseurl {
   /// ===============   Cash Flow APIs    ============== ///
   static String getRevenueSummaryAPI = '${baseURL}cashFlow/revenueSummary';
   static String getDailyCashFlowAPI = '${baseURL}cashFlow/daily';
+  static String getTotalSoldProductsAPI = '${baseURL}cashFlow/topSoldProducts';
   /// ===============   Products APIs    ============== ///
 
   /// ===============   Accounting APIs    ============== ///
@@ -42,5 +44,6 @@ class Baseurl {
   static String addTransactionAPI = '${baseURL}api/bank/transaction';
   static String getTransactionsAPI = '${baseURL}api/bank/transactions';
   static String getTransactionCategoriesAPI = '${baseURL}api/bank/transactionCategories';
+  static String deleteAllTransactionsAPI = '${baseURL}api/bank/resetTransactions';
   /// ===============   Products APIs    ============== ///
 }
