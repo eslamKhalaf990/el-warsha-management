@@ -5,6 +5,7 @@ import 'package:warsha_app/controllers/add_order/add_customer.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/utils/navigator.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
 
 class AddCustomer extends StatelessWidget {
@@ -12,8 +13,8 @@ class AddCustomer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CustomerProvider>(
-      builder: (context, value, child) => Scaffold(
+    return Consumer2<CustomerProvider, CustomerVM>(
+      builder: (context, value, customerVM, child) => Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
             backgroundColor: Colors.transparent,
@@ -148,6 +149,7 @@ class AddCustomer extends StatelessWidget {
                                   "مطروح",
                                   "شمال سيناء",
                                   "جنوب سيناء",
+                                  "دمياط",
                                 ].map((gov) {
                                   return DropdownMenuItem(
                                     value: gov,
@@ -190,41 +192,38 @@ class AddCustomer extends StatelessWidget {
                           const SizedBox(height: 20),
                           Row(
                             children: [
-                              Consumer<CustomerVM>(
-                                builder: (context, customerVM, child) => Expanded(
-                                  flex: 3,
-                                  child: DefaultButton(
-                                    onTap: () async {
-                                      String status = await customerVM.addCustomer(
-                                        value.name.text,
-                                        value.governorate.text,
-                                        value.phone.text,
-                                        value.address.text,
-                                        value.secondaryPhone.text,
-                                        value.city.text,
+                              Expanded(
+                                flex: 3,
+                                child: DefaultButton(
+                                  onTap: () async {
+                                    String status = await customerVM.addCustomer(
+                                      value.name.text,
+                                      value.governorate.text,
+                                      value.phone.text,
+                                      value.address.text,
+                                      value.secondaryPhone.text,
+                                      value.city.text,
+                                    );
+                                    if (status == "customer_added") {
+
+                                      Navigator.pop(navigatorKey.currentContext!);
+                                      value.clearCustomer();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              "Customer added successfully"),
+                                        ),
                                       );
-                                      if (status == "customer_added") {
-                                        Navigator.pop(context);
-                                        customerVM.initAllCustomers();
-                                        customerVM.getAllCustomers();
-                                        value.clearCustomer();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                "Customer added successfully"),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    isValid: !Provider.of<CustomerVM>(context)
-                                        .isLoading,
-                                    isLoading: Provider.of<CustomerVM>(context)
-                                        .isLoading,
-                                    title: "Add new Customer",
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 15),
-                                  ),
+                                    }
+                                  },
+                                  isValid: !Provider.of<CustomerVM>(context)
+                                      .isLoading,
+                                  isLoading: Provider.of<CustomerVM>(context)
+                                      .isLoading,
+                                  title: "Add new Customer",
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 15),
                                 ),
                               ),
                             ],

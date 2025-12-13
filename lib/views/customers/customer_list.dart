@@ -12,7 +12,7 @@ class CustomerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customerVM = Provider.of<CustomerVM>(context, listen: false);
+    final customerVM = Provider.of<CustomerVM>(context);
 
     return FutureBuilder<List<CustomerModel>>(
       future: customerVM.allCustomers,

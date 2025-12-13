@@ -66,7 +66,7 @@ class OrderVM extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _orders = await _orderService.fetchOrders(_userViewModel.token);
+      _orders = await _orderService.fetchOrders(_userViewModel.token, startDate: DateTime.now().subtract(const Duration(days: 45)), endDate: DateTime.now());
       _filteredOrders = List.from(_orders);
       _state = ViewState.idle;
     } catch (e) {

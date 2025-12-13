@@ -83,6 +83,8 @@ class CustomerVM extends ChangeNotifier {
       if (response.statusCode == 201) {
         status = "customer_added";
         debugPrint("customer added successfully");
+        initAllCustomers();
+        await Future.delayed(const Duration(seconds: 2));
       } else {
         status = "customer_not_added";
         debugPrint("Failed to add customer: ${response.statusCode}");

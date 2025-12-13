@@ -122,8 +122,17 @@ class OrdersService {
     return response;
   }
 
-  Future<List<OrderModel>> fetchOrders(String token) async {
-    // Simulate network delay
+  Future<List<OrderModel>> fetchOrders(String token, {DateTime? startDate, DateTime? endDate}) async {
+    Map<String, String> queryParams = {};
+
+    if (startDate != null) {
+      queryParams['startDate'] = startDate.toIso8601String().split('T').first;
+    }
+
+    if (endDate != null) {
+      queryParams['endDate'] = endDate.toIso8601String().split('T').first;
+    }
+
     final response = await http.get(
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -132,7 +141,7 @@ class OrdersService {
       },
       Uri.parse(
         Baseurl.getAllOrderAPI,
-      ),
+      ).replace(queryParameters: queryParams.isNotEmpty ? queryParams : null),
     ).timeout(const Duration(seconds: Constants.TIMEOUT));
 
     // Parse the JSON data
