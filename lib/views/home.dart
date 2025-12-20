@@ -46,10 +46,7 @@ class Home extends StatelessWidget {
             const SizedBox(width: 15),
 
             // 2. The Main Content Area
-            Expanded(
-              // Dynamically show the correct page based on the provider's state
-              child: nav.pages[nav.page],
-            ),
+            nav.pages[nav.page],
           ],
         ),
       ),
@@ -178,14 +175,6 @@ class _SideNavRail extends StatelessWidget {
               ),
             ],
           ),
-          // You can add a Spacer() here to push items to the bottom
-          // const Spacer(),
-          // _NavigationItem(
-          //   title: 'Logout',
-          //   icon: Iconsax.logout,
-          //   isSelected: false,
-          //   onTap: () { /* Handle logout */ },
-          // ),
         ],
       ),
     );

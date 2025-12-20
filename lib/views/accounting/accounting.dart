@@ -41,8 +41,8 @@ class Accounting extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       DefaultText(
-                        txt: "Cash Flow Overview",
-                        color: Theme.of(context).colorScheme.primary,
+                        txt: "Accounting",
+                        color: Theme.of(context).colorScheme.tertiary,
                       ),
                       const SizedBox(height: 16),
                       InkWell(
@@ -142,18 +142,21 @@ class Accounting extends StatelessWidget {
                             },
                           );
                         },
-                        child: Row(
-                          children: [
-                            Icon(
-                              Iconsax.money_remove_copy,
-                              color: Colors.red,
-                            ),
-                            SizedBox(width: 10),
-                            DefaultText(
-                              txt: "Reset All Transactions",
-                              color: Colors.red,
-                            ),
-                          ],
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Iconsax.money_remove_copy,
+                                color: Colors.red,
+                              ),
+                              SizedBox(width: 10),
+                              DefaultText(
+                                txt: "Reset",
+                                color: Colors.red,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),

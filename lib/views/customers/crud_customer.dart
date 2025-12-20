@@ -48,7 +48,7 @@ class CRUDCustomer extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(
-                      Iconsax.add,
+                      Iconsax.profile_add_copy,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     const SizedBox(width: 5,),
