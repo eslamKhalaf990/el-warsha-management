@@ -105,9 +105,13 @@ class Login extends StatelessWidget {
                       builder: (context, userVM, child) => DefaultButton(
                         onTap: () async {
                           final status = await userVM.login(username.text, password.text);
-                          print(status);
                           if(status == "logged_in") {
                             Navigator.pushNamed(context, "/home");
+                          } else {
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Failed to login")),
+                            );
                           }
                         },
                         height: 45,

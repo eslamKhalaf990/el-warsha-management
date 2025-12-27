@@ -15,16 +15,16 @@ class Orders extends StatelessWidget {
           color: Theme.of(context).colorScheme.onPrimary,
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Column(
+        child: const Column(
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
               child: CRUDOrder(),
             ),
 
-            const GovernorateCountList(),
+            GovernorateCountList(),
 
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
 
             Expanded(
               child: OrderList(),
