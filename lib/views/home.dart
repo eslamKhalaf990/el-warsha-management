@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/navigation.dart';
+import 'package:warsha_app/utils/app_bar_widget.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import '../utils/default_text.dart';
 
@@ -62,15 +63,9 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      // We can add an AppBar for mobile
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
-        shadowColor: Colors.black.withOpacity(0.1),
-        title: const DefaultText(
-          txt: "ELWARSHA", // You can update this based on the page
-          bold: true,
-        ),
+
+      appBar: DefaultAppBar(
+
       ),
       // The body is just the selected page
       body: nav.pages[nav.page],
@@ -229,8 +224,8 @@ class _NavigationItem extends StatelessWidget {
       leading: Icon(
         icon,
         color: isSelected
-            ? theme.colorScheme.secondary
-            : theme.colorScheme.onSurface.withOpacity(0.7),
+            ? theme.colorScheme.tertiary
+            : theme.colorScheme.tertiary.withOpacity(0.5),
       ),
       title: DefaultText(
         txt: title,
@@ -244,7 +239,7 @@ class _NavigationItem extends StatelessWidget {
 
       // Use built-in ListTile properties for selection
       selected: isSelected,
-      selectedTileColor: theme.colorScheme.secondary.withAlpha(50),
+      selectedTileColor: theme.colorScheme.onPrimary.withAlpha(100),
 
       // Apply the border radius
       shape: RoundedRectangleBorder(

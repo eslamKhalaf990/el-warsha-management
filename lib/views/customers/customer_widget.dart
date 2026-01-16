@@ -105,7 +105,7 @@ class CustomerWidget extends StatelessWidget {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.blue.shade300,
+                              color: Theme.of(context).colorScheme.tertiary,
                               borderRadius: Constants.BORDER_RADIUS_20),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 2),

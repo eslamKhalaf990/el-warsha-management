@@ -47,7 +47,6 @@ class CustomerWidget extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surfaceTint,
                             borderRadius: Constants.BORDER_RADIUS_20,
                           ),
                           child: const Icon(

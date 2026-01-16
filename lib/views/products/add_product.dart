@@ -140,15 +140,15 @@ class AddProduct extends StatelessWidget {
                           labelText: "Category",
                           labelStyle: TextStyle(color: Colors.grey.shade600, fontSize: 14),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(25),
                             borderSide: BorderSide(color: Colors.grey.shade200),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(25),
                             borderSide: BorderSide(color: Colors.grey.shade200),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(25),
                             borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1.5),
                           ),
                           prefixIcon: Padding(
@@ -213,7 +213,7 @@ class AddProduct extends StatelessWidget {
                                 onPressed: () => Navigator.pop(context),
                                 style: OutlinedButton.styleFrom(
                                   side: BorderSide(color: Colors.grey.shade300),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                                 ),
                                 child: const Text("Cancel", style: TextStyle(color: Colors.grey)),
                               ),
@@ -340,11 +340,11 @@ class _ColorTagInputState extends State<ColorTagInput> {
               // Borders matching your previous form style
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade200),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(25),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1.5),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(25),
               ),
 
               prefixIcon: Padding(
@@ -456,11 +456,11 @@ class _SizeTagInputState extends State<SizeTagInput> {
               // Borders matching your previous form style
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade200),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(25),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1.5),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(25),
               ),
 
               prefixIcon: Padding(
@@ -568,13 +568,13 @@ class DefaultProductForm extends StatelessWidget {
         // Unfocused Border
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey.shade200),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(25),
         ),
 
         // Focused Border (Active)
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1.5),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(25),
         ),
 
         errorStyle: TextStyle(color: Colors.red.shade300),

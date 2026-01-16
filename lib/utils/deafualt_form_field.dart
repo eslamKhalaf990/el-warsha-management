@@ -18,25 +18,6 @@ class DefaultForm extends StatelessWidget {
       cursorColor: Theme.of(context).colorScheme.tertiary.withAlpha(Constants.OPACITY_05),
       keyboardType: TextInputType.multiline,
       decoration: InputDecoration(
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.surfaceTint,
-        enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.transparent,
-            ),
-            borderRadius: Constants.BORDER_RADIUS_50),
-        errorStyle: TextStyle(color: Colors.red.shade300),
-        prefixIcon: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.0),
-          child: Icon(Iconsax.search_normal_copy),
-        ),
-        border: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.transparent), borderRadius: Constants.BORDER_RADIUS_50),
-        focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.transparent,
-            ),
-            borderRadius: Constants.BORDER_RADIUS_50),
         hintText: title,
         hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
       ),

@@ -201,7 +201,7 @@ class Accounting extends StatelessWidget {
                           value: PriceHelper.formatNumber(
                               accountBalance[1].currentBalance),
                           icon: Iconsax.bank_copy,
-                          color: Colors.blue,
+                          color: Theme.of(context).colorScheme.tertiary,
                           onDeposit: () {
                             _showTransactionDialog(
                               value,

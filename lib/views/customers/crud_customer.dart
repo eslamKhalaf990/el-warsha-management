@@ -20,42 +20,81 @@ class CRUDCustomer extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: DefaultForm(
-                title: 'Search For Customer By Name or ID',
-                controller: Provider.of<CustomerVM>(context).searchController,
-                numberOfLines: 1,
-              ),
-            ),
-            const SizedBox(width: 10),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddCustomer(),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Check screen width
+            if (constraints.maxWidth < 700) {
+              // --- MOBILE LAYOUT (Vertical) ---
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  DefaultForm(
+                    title: 'Search For Customer By Name or ID',
+                    controller:
+                    Provider.of<CustomerVM>(context).searchController,
+                    numberOfLines: 1,
                   ),
-                );
-              },
-              icon: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 110),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceTint,
-                  borderRadius: Constants.BORDER_RADIUS_50,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Iconsax.profile_add_copy,
-                      color: Theme.of(context).colorScheme.secondary,
+                  const SizedBox(height: 15),
+                  // Button stretches to full width
+                  _buildAddButton(context, isFullWidth: true),
+                ],
+              );
+            } else {
+              // --- DESKTOP LAYOUT (Horizontal) ---
+              return Row(
+                children: [
+                  Expanded(
+                    child: DefaultForm(
+                      title: 'Search For Customer By Name or ID',
+                      controller:
+                      Provider.of<CustomerVM>(context).searchController,
+                      numberOfLines: 1,
                     ),
-                    const SizedBox(width: 5,),
-                    const DefaultText(txt: "Add Customer"),
-                  ],
-                ),
-              ),
+                  ),
+                  const SizedBox(width: 15),
+                  // Button sized to content
+                  _buildAddButton(context, isFullWidth: false),
+                ],
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddButton(BuildContext context, {required bool isFullWidth}) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AddCustomer(),
+          ),
+        );
+      },
+      borderRadius: Constants.BORDER_RADIUS_50,
+      child: Container(
+        width: isFullWidth ? double.infinity : null,
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 30),
+        decoration: BoxDecoration(
+          borderRadius: Constants.BORDER_RADIUS_50,
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Iconsax.profile_add_copy,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            const SizedBox(width: 8),
+            const DefaultText(
+              txt: "Add Customer",
+              bold: true,
             ),
           ],
         ),

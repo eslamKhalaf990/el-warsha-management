@@ -82,7 +82,7 @@ class HomeCashFlow extends StatelessWidget {
                               title: "Potential",
                               value: PriceHelper.formatNumber(revenue.potentialRevenue),
                               icon: Iconsax.trend_up_copy,
-                              color: Colors.blue,
+                              color: Theme.of(context).colorScheme.tertiary,
                             ),
                           ],
                         )
@@ -116,7 +116,7 @@ class HomeCashFlow extends StatelessWidget {
                                 title: "Potential",
                                 value: PriceHelper.formatNumber(revenue.potentialRevenue),
                                 icon: Iconsax.trend_up_copy,
-                                color: Colors.blue,
+                                color: Theme.of(context).colorScheme.tertiary,
                               ),
                             ),
                           ],

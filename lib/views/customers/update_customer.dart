@@ -30,16 +30,6 @@ class UpdateCustomer extends StatelessWidget {
           title: const DefaultText(txt: "Update Customer"),
         ),
         body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.blue.shade50,
-                Colors.yellow.shade200
-              ], // Replace with your colors
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
           child: Row(
             children: [
               Expanded(

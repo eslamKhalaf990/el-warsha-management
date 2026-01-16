@@ -29,8 +29,8 @@ class DefaultButton extends StatelessWidget {
       margin: margin,
       decoration: BoxDecoration(
         color: isValid ?? true
-            ? Colors.blue.shade500
-            : Colors.blue.shade500.withAlpha(Constants.OPACITY_08),
+            ? Theme.of(context).colorScheme.tertiary
+            : Theme.of(context).colorScheme.tertiary.withAlpha(Constants.OPACITY_08),
         borderRadius: BorderRadius.circular(border ?? 15.0),
       ),
       child: ClipRRect(

@@ -103,11 +103,6 @@ InputDecoration _inputDecoration(String label, IconData icon) {
       borderRadius: BorderRadius.circular(25),
       borderSide: BorderSide(color: Colors.grey.shade300),
     ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(25),
-      borderSide: const BorderSide(
-          color: Colors.blue, width: 2), // Use your primary color
-    ),
   );
 }
 
@@ -129,11 +124,11 @@ class CustomerSelectionSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Iconsax.user_tag, color: Colors.blue),
-              SizedBox(width: 10),
-              DefaultText(txt: "Customer Info", bold: true, size: 18),
+              Icon(Iconsax.user_tag, color: Theme.of(context).colorScheme.tertiary),
+              const SizedBox(width: 10),
+              const DefaultText(txt: "Customer Info", bold: true, size: 18),
             ],
           ),
           const SizedBox(height: 20),
@@ -183,24 +178,24 @@ class CustomerSelectionSection extends StatelessWidget {
               return Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
+                  color: Theme.of(context).colorScheme.tertiary.withAlpha(20),
                   borderRadius: BorderRadius.circular(25),
-                  border: Border.all(color: Colors.blue.shade100),
+                  border: Border.all(color: Theme.of(context).colorScheme.tertiary),
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Iconsax.location, color: Colors.blue),
+                    Icon(Iconsax.location, color: Theme.of(context).colorScheme.tertiary),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Delivery Address",
+                          Text("Delivery Address",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
-                                  color: Colors.blue)),
+                                  color: Theme.of(context).colorScheme.tertiary)),
                           const SizedBox(height: 4),
                           Text(
                             "${vm.orderModel.customer!.address}, ${vm.orderModel.customer!.governorate}",
@@ -246,11 +241,11 @@ class _OrderLineItemsSectionState extends State<OrderLineItemsSection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Iconsax.box, color: Colors.blue),
-              SizedBox(width: 10),
-              DefaultText(txt: "Order Items", bold: true, size: 18),
+              Icon(Iconsax.box, color: Theme.of(context).colorScheme.tertiary),
+              const SizedBox(width: 10),
+              const DefaultText(txt: "Order Items", bold: true, size: 18),
             ],
           ),
           const SizedBox(height: 20),
@@ -305,7 +300,7 @@ class _OrderLineItemsSectionState extends State<OrderLineItemsSection> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25)),
                           backgroundColor:
-                              Colors.black,
+                              Theme.of(context).colorScheme.tertiary,
                           foregroundColor: Colors.white,
                         ),
                         onPressed: () {
@@ -320,6 +315,7 @@ class _OrderLineItemsSectionState extends State<OrderLineItemsSection> {
                                   double.parse(selectedProduct!.sellingPrice),
                               productName: selectedProduct!.name,
                             );
+                            item.quantityToOrder = int.parse(_qtyController.text);
                             vm.addToOrderItems = item;
                             setState(() {
                               selectedProduct = null;
@@ -388,12 +384,12 @@ class _OrderLineItemsSectionState extends State<OrderLineItemsSection> {
                       title: Text(item.productName,
                           style: const TextStyle(fontWeight: FontWeight.bold)),
                       subtitle: Text(
-                          "${item.unitPrice} EGP | ${item.quantity} pieces"),
+                          "${item.unitPrice} EGP | ${item.quantityToOrder} pieces"),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            "${item.unitPrice * item.quantity} EGP",
+                            "${item.unitPrice * item.quantityToOrder} EGP",
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
@@ -442,11 +438,11 @@ class OrderSummaryCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Row(
+           Row(
             children: [
-              Icon(Iconsax.wallet_2, color: Colors.blue),
-              SizedBox(width: 10),
-              DefaultText(txt: "Payment", bold: true, size: 18),
+              Icon(Iconsax.wallet_2, color: Theme.of(context).colorScheme.tertiary),
+              const SizedBox(width: 10),
+              const DefaultText(txt: "Payment", bold: true, size: 18),
             ],
           ),
           const SizedBox(height: 20),
@@ -468,7 +464,7 @@ class OrderSummaryCard extends StatelessWidget {
             ],
             onChanged: (val) => payment.platformSource.text = val ?? "",
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
 
           // 2. Payment Method
           DropdownButtonFormField<String>(
@@ -486,7 +482,7 @@ class OrderSummaryCard extends StatelessWidget {
             ],
             onChanged: (val) => payment.paymentMethod.text = val ?? "",
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
 
           // 3. Financials
           Row(
@@ -546,7 +542,7 @@ class OrderSummaryCard extends StatelessWidget {
             return Container(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               decoration: BoxDecoration(
-                color: Colors.blue.shade50,
+                color: Theme.of(context).colorScheme.tertiary.withAlpha(25),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
@@ -557,10 +553,10 @@ class OrderSummaryCard extends StatelessWidget {
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   Text(
                     "$grandTotal EGP",
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w900,
-                        color: Colors.blue),
+                        color: Theme.of(context).colorScheme.tertiary),
                   ),
                 ],
               ),
@@ -651,7 +647,7 @@ class OrderSummaryCard extends StatelessWidget {
           addOrderVM.orderModel.orderItems.map((item) {
         return CreateOrderItem(
           productId: item.productId,
-          quantity: item.quantity,
+          quantity: item.quantityToOrder,
           unitPrice: item.unitPrice,
         );
       }).toList();

@@ -35,13 +35,6 @@ class AddCustomer extends StatelessWidget {
         body: Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blue.shade50, Colors.yellow.shade100],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
           // 2. Animation: Slide up and Fade in
           child: TweenAnimationBuilder(
             tween: Tween<double>(begin: 0, end: 1),

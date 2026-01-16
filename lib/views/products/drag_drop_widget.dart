@@ -29,7 +29,7 @@ class _DragDropImageUploadState extends State<DragDropImageUpload> {
               borderRadius: Constants.BORDER_RADIUS_20,
               color: _dragging
                   ? Colors.grey.withAlpha(100)
-                  : Theme.of(context).colorScheme.surfaceTint,
+                  : Theme.of(context).colorScheme.tertiary.withAlpha(25),
             ),
             child: drop.droppedBytes == null
                 ? Column(
@@ -62,12 +62,10 @@ class _DragDropImageUploadState extends State<DragDropImageUpload> {
                         },
                         icon: Icon(
                           Iconsax.document_upload,
-                          color: Theme.of(context).colorScheme.secondary,
                           size: 20,
                         ),
                         label: DefaultText(
                           txt: 'Browse Images',
-                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                     ],

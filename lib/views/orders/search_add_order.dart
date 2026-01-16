@@ -9,10 +9,6 @@ import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/order_v_m.dart';
 import 'package:warsha_app/views/orders/add_order/add_order.dart';
 import 'package:warsha_app/views/orders/add_order/add_order_beta.dart';
-import 'package:warsha_app/views/orders/add_order/claude_add_order.dart';
-
-import 'add_order/gemini_add_order.dart';
-import 'add_order/simple_add_order_gemini.dart';
 
 class CRUDOrder extends StatelessWidget {
   const CRUDOrder({super.key});
@@ -27,91 +23,142 @@ class CRUDOrder extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: DefaultForm(
-                title: 'Search By Order Id or customer name or phone',
-                controller: Provider.of<AddOrderVM>(context).searchController,
-                onChanged: (v){},
-                numberOfLines: 1,
-              ),
-            ),
-            const SizedBox(width: 10),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddOrderBeta(),
-                  ),
-                );
-              },
-              icon: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 60),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceTint,
-                  borderRadius: Constants.BORDER_RADIUS_50,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Iconsax.receipt_item,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    const DefaultText(txt: "Add Order (beta)", bold: true,),
-                  ],
-                ),
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddOrder(),
-                  ),
-                );
-              },
-              icon: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 60),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceTint,
-                  borderRadius: Constants.BORDER_RADIUS_50,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Iconsax.receipt_item,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    const DefaultText(txt: "Add Order", bold: true,),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            IconButton(
-              onPressed: () {
-                exportToExcel(Provider.of<OrderVM>(context, listen: false).orders);
-              },
-              icon: const Row(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Check available width
+            if (constraints.maxWidth < 900) {
+              // --- MOBILE / TABLET LAYOUT (Vertical Stack) ---
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Icon(Iconsax.document_download_copy, color: Colors.green),
-                  SizedBox(width: 5),
-                  DefaultText(txt: "Export", bold: true,),
+                  // Search Bar takes full width
+                  DefaultForm(
+                    title: 'Search By Order Id or customer name',
+                    controller: Provider.of<AddOrderVM>(context).searchController,
+                    onChanged: (v) {},
+                    numberOfLines: 1,
+                  ),
+                  const SizedBox(height: 15),
+                  // Buttons wrap to next line if needed
+                  Wrap(
+                    alignment: WrapAlignment.spaceEvenly,
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: _buildActionButtons(context),
+                  ),
                 ],
-              ),
+              );
+            } else {
+              // --- DESKTOP LAYOUT (Horizontal Row) ---
+              return Row(
+                children: [
+                  Expanded(
+                    child: DefaultForm(
+                      title: 'Search By Order Id or customer name or phone',
+                      controller:
+                      Provider.of<AddOrderVM>(context).searchController,
+                      onChanged: (v) {},
+                      numberOfLines: 1,
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  // Spread the buttons in the row
+                  ..._buildActionButtons(context),
+                ],
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  // Helper method to create the list of buttons
+  List<Widget> _buildActionButtons(BuildContext context) {
+    return [
+      _buildCustomButton(
+        context,
+        label: "Add Order (beta)",
+        icon: Iconsax.receipt_item,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddOrderBeta(),
             ),
-            const SizedBox(width: 10),
+          );
+        },
+      ),
+      // On desktop, add spacing between items manually if not using Wrap
+      // But since we return a list, the Row/Wrap handles the layout.
+      // We will add SizedBox in the Row layout dynamically or assume Wrap handles spacing.
+
+      _buildCustomButton(
+        context,
+        label: "Add Order",
+        icon: Iconsax.receipt_item,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddOrder(),
+            ),
+          );
+        },
+      ),
+
+      _buildCustomButton(
+        context,
+        label: "Export",
+        icon: Iconsax.document_download_copy,
+        iconColor: Colors.green,
+        onTap: () {
+          exportToExcel(Provider.of<OrderVM>(context, listen: false).orders);
+        },
+      ),
+    ];
+  }
+
+  Widget _buildCustomButton(
+      BuildContext context, {
+        required String label,
+        required IconData icon,
+        required VoidCallback onTap,
+        Color? iconColor,
+      }) {
+    // Determine if we are on a small screen for button sizing
+    final isSmallScreen = MediaQuery.of(context).size.width < 600;
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: Constants.BORDER_RADIUS_50,
+      child: Container(
+        // Dynamic padding: smaller on mobile, larger on desktop
+        padding: EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: isSmallScreen ? 20 : 30,
+        ),
+        margin: const EdgeInsets.symmetric(horizontal: 4), // Margin for Row spacing
+        decoration: BoxDecoration(
+          borderRadius: Constants.BORDER_RADIUS_50,
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min, // Hug content
+          children: [
+            Icon(
+              icon,
+              color: iconColor ?? Theme.of(context).colorScheme.secondary,
+              size: 20,
+            ),
+            const SizedBox(width: 8),
+            DefaultText(
+              txt: label,
+              bold: true,
+              size: 14,
+            ),
           ],
         ),
       ),

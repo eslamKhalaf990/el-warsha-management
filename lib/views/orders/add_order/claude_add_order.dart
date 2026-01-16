@@ -718,7 +718,7 @@
 //                 children: [
 //                   _priceTag(context, 'Buy', productModel.buyingPrice, Colors.green),
 //                   const SizedBox(width: 8),
-//                   _priceTag(context, 'Sell', productModel.sellingPrice, Colors.blue),
+//                   _priceTag(context, 'Sell', productModel.sellingPrice, Theme.of(context).colorScheme.tertiary),
 //                   const Spacer(),
 //                   Text(
 //                     '${productModel.quantity} in stock',

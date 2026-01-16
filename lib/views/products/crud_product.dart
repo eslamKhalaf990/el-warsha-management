@@ -21,42 +21,83 @@ class CRUDProduct extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: DefaultForm(
-                title: 'Search For Product By Name or ID',
-                controller: Provider.of<ProductVM>(context).searchController,
-                numberOfLines: 1,
-              ),
-            ),
-            const SizedBox(width: 10),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddProduct(),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Check screen width to decide layout
+            if (constraints.maxWidth < 700) {
+              // --- MOBILE LAYOUT (Vertical) ---
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  DefaultForm(
+                    title: 'Search For Product By Name or ID',
+                    controller:
+                    Provider.of<ProductVM>(context).searchController,
+                    numberOfLines: 1,
                   ),
-                );
-              },
-              icon: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 115),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceTint,
-                  borderRadius: Constants.BORDER_RADIUS_50,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Iconsax.add,
-                      color: Theme.of(context).colorScheme.secondary,
+                  const SizedBox(height: 15),
+                  // Full width button on mobile
+                  _buildAddButton(context, isFullWidth: true),
+                ],
+              );
+            } else {
+              // --- DESKTOP LAYOUT (Horizontal) ---
+              return Row(
+                children: [
+                  Expanded(
+                    child: DefaultForm(
+                      title: 'Search For Product By Name or ID',
+                      controller:
+                      Provider.of<ProductVM>(context).searchController,
+                      numberOfLines: 1,
                     ),
-                    const SizedBox(width: 5,),
-                    const DefaultText(txt: "Add Product"),
-                  ],
-                ),
-              ),
+                  ),
+                  const SizedBox(width: 15),
+                  // Standard sized button on desktop
+                  _buildAddButton(context, isFullWidth: false),
+                ],
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddButton(BuildContext context, {required bool isFullWidth}) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AddProduct(),
+          ),
+        );
+      },
+      borderRadius: Constants.BORDER_RADIUS_50,
+      child: Container(
+        // On mobile, this container will take the width provided by parent (stretch)
+        // On desktop, it hugs content + padding.
+        width: isFullWidth ? double.infinity : null,
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 30),
+        decoration: BoxDecoration(
+          borderRadius: Constants.BORDER_RADIUS_50,
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center, // Center text on mobile
+          mainAxisSize: MainAxisSize.min, // Hug content on desktop
+          children: [
+            Icon(
+              Iconsax.add,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            const SizedBox(width: 8),
+            const DefaultText(
+              txt: "Add Product",
+              bold: true,
             ),
           ],
         ),

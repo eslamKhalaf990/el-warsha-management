@@ -134,6 +134,100 @@ void main() {
   );
 }
 
+ThemeData onyxTheme = ThemeData(
+  fontFamily: 'cairo',
+  useMaterial3: true,
+  brightness: Brightness.light,
+
+  // 1. The Core Palette: Black, White, and Grey
+  colorScheme: ColorScheme.light(
+    primary: Colors.black,       // Main Buttons & Active States
+    onPrimary: Colors.white,     // Text on Black buttons
+
+    secondary: Colors.grey.shade800, // Secondary actions
+    onSecondary: Colors.white,
+
+    // Backgrounds: Using a very subtle off-white for depth
+    surface: Colors.white,
+    onSurface: Colors.black87,
+
+    surfaceContainerHighest: Colors.grey.shade100, // For input fills or table headers
+    outline: Colors.grey.shade300, // Subtle borders
+
+    error: const Color(0xFFC52828), // Keep red ONLY for errors
+  ),
+
+  // 2. Background Color (The Canvas)
+  scaffoldBackgroundColor: const Color(0xFFFAFAFA), // Slightly off-white
+
+  // 3. Selection Theme (Matches the Black aesthetic)
+  textSelectionTheme: TextSelectionThemeData(
+    cursorColor: Colors.black,
+    selectionColor: Colors.black.withAlpha(10), // Subtle grey highlight
+    selectionHandleColor: Colors.black,
+  ),
+
+  // 4. Input Fields (Clean, Sharp, Professional)
+  inputDecorationTheme: InputDecorationTheme(
+    // filled: true,
+    fillColor: Colors.white,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+
+    // Default Border
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(50),
+      borderSide: BorderSide(color: Colors.grey.shade300),
+    ),
+
+    // Active Border (Black)
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(50),
+      borderSide: const BorderSide(color: Colors.black, width: 1.5),
+    ),
+
+    // Label Text Style
+    labelStyle: TextStyle(color: Colors.grey.shade600),
+    floatingLabelStyle: const TextStyle(color: Colors.black),
+  ),
+
+  // 5. Buttons (High Contrast)
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.black,
+      foregroundColor: Colors.white,
+      elevation: 0, // Flat design is more modern for ERPs
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+    ),
+  ),
+
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      foregroundColor: Colors.black,
+      side: const BorderSide(color: Colors.black),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+    ),
+  ),
+
+  // 6. Data Tables (The heart of an ERP)
+  dataTableTheme: DataTableThemeData(
+    headingRowColor: WidgetStateProperty.all(Colors.grey.shade50),
+    headingTextStyle: const TextStyle(
+      fontWeight: FontWeight.w600,
+      color: Colors.black,
+      letterSpacing: 0.5,
+    ),
+    dataRowColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return Colors.grey.shade100;
+      }
+      return Colors.white;
+    }),
+    dividerThickness: 1, // Crisp lines
+  ),
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -142,22 +236,24 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'El Warsha ERP',
-      theme: ThemeData(
-        fontFamily: 'cairo',
-        textSelectionTheme: TextSelectionThemeData(
-          cursorColor: Colors.blue.shade400,
-          selectionColor: Colors.blue.shade400.withAlpha(50),
-          selectionHandleColor: Colors.blue.shade400.withAlpha(50),
-        ),
-        colorScheme: ColorScheme.light(
-          onPrimary: Colors.white.withAlpha(200),
-          secondary: Colors.blue.shade400,
-          onSurface: Colors.grey.shade700,
-          onSecondary: Colors.grey.shade400,
-          surface: Colors.grey.shade50,
-          primary: Colors.grey.shade100,
-        ),
-      ),
+      // theme: ThemeData(
+      //   fontFamily: 'cairo',
+      //   textSelectionTheme: TextSelectionThemeData(
+      //     cursorColor: Colors.blue.shade400,
+      //     selectionColor: Colors.blue.shade400.withAlpha(50),
+      //     selectionHandleColor: Colors.blue.shade400.withAlpha(50),
+      //   ),
+      //   colorScheme: ColorScheme.light(
+      //     onPrimary: Colors.white.withAlpha(200),
+      //     secondary: Colors.blue.shade400,
+      //     onSurface: Colors.grey.shade700,
+      //     onSecondary: Colors.grey.shade400,
+      //     surface: Colors.grey.shade50,
+      //     primary: Colors.grey.shade100,
+      //   ),
+      // ),
+
+      theme: onyxTheme,
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       home: Login(),

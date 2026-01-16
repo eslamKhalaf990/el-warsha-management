@@ -34,7 +34,6 @@ class ProductWidget extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceTint,
                   borderRadius: Constants.BORDER_RADIUS_20,
                 ),
                 child: Image.network(
@@ -159,7 +158,7 @@ class ProductWidget extends StatelessWidget {
               Container(
                 width: 200,
                 decoration: BoxDecoration(
-                    color: Colors.blue.shade300,
+                    color: Theme.of(context).colorScheme.tertiary,
                     borderRadius: Constants.BORDER_RADIUS_20),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 4),

@@ -130,8 +130,8 @@ class ProductWidget extends StatelessWidget {
             _buildInfoChip(
               context,
               label: "Sell: ${product.sellingPrice} EGP",
-              color: Colors.blue.shade50,
-              textColor: Colors.blue.shade800,
+              color: Theme.of(context).colorScheme.tertiary.withAlpha(20),
+              textColor: Theme.of(context).colorScheme.tertiary,
             ),
           ],
         ),
@@ -214,7 +214,7 @@ class ProductWidget extends StatelessWidget {
                     "Sell: ${product.sellingPrice}",
                     style: TextStyle(
                         fontSize: 13,
-                        color: Colors.blue.shade700,
+                        color: Theme.of(context).colorScheme.tertiary,
                         fontWeight: FontWeight.w600
                     ),
                   ),
