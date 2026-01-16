@@ -8,6 +8,11 @@ import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/order_v_m.dart';
 import 'package:warsha_app/views/orders/add_order/add_order.dart';
+import 'package:warsha_app/views/orders/add_order/add_order_beta.dart';
+import 'package:warsha_app/views/orders/add_order/claude_add_order.dart';
+
+import 'add_order/gemini_add_order.dart';
+import 'add_order/simple_add_order_gemini.dart';
 
 class CRUDOrder extends StatelessWidget {
   const CRUDOrder({super.key});
@@ -33,6 +38,36 @@ class CRUDOrder extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddOrderBeta(),
+                  ),
+                );
+              },
+              icon: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 60),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceTint,
+                  borderRadius: Constants.BORDER_RADIUS_50,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Iconsax.receipt_item,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    const DefaultText(txt: "Add Order (beta)", bold: true,),
+                  ],
+                ),
+              ),
+            ),
             IconButton(
               onPressed: () {
                 Navigator.push(

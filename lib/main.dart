@@ -154,7 +154,7 @@ class MyApp extends StatelessWidget {
           secondary: Colors.blue.shade400,
           onSurface: Colors.grey.shade700,
           onSecondary: Colors.grey.shade400,
-          surface: Colors.white,
+          surface: Colors.grey.shade50,
           primary: Colors.grey.shade100,
         ),
       ),

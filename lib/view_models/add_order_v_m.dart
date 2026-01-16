@@ -318,7 +318,7 @@ class AddOrderVM extends ChangeNotifier {
     double itemsTotal = 0.0;
     itemsTotal = orderModel.orderItems.fold(0, (sum, item) {
       final unitPrice = item.unitPrice ?? 0;
-      return sum + unitPrice * (item.quantityToOrder);
+      return sum + unitPrice * (item.quantity);
     });
     return itemsTotal;
   }

@@ -18,6 +18,49 @@ class ProductProvider extends ChangeNotifier {
   double get sellingPrice => _sellingPrice;
   double get profit => _sellingPrice - _buyingPrice;
 
+  // Inside ProductVM class
+  List<String> productColors = [];
+
+  void addColor(String color) {
+    if (!productColors.contains(color)) {
+      productColors.add(color);
+      notifyListeners();
+    }
+  }
+
+  void removeColor(String color) {
+    productColors.remove(color);
+    notifyListeners();
+  }
+
+// Don't forget to clear this list when the screen closes or successfully saves!
+  void clearColors() {
+    productColors.clear();
+    notifyListeners();
+  }
+
+  // Inside ProductVM class
+  List<String> productSizes = [];
+
+  void addSize(String color) {
+    if (!productSizes.contains(color)) {
+      productSizes.add(color);
+      notifyListeners();
+    }
+  }
+
+  void removeSize(String color) {
+    productSizes.remove(color);
+    notifyListeners();
+  }
+
+// Don't forget to clear this list when the screen closes or successfully saves!
+  void clearSizes() {
+    productSizes.clear();
+    notifyListeners();
+  }
+
+
   void updateBuyingPrice(String value) {
     _buyingPrice = double.tryParse(value) ?? 0.0;
     notifyListeners();

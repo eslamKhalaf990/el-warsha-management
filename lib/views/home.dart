@@ -34,7 +34,6 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       // A cleaner background color for the main app body
-      backgroundColor: Colors.grey.shade100,
       body: Padding(
         // Use the same padding as the original
         padding: const EdgeInsets.all(15),
@@ -46,7 +45,7 @@ class Home extends StatelessWidget {
             const SizedBox(width: 15),
 
             // 2. The Main Content Area
-            nav.pages[nav.page],
+            Expanded(child: nav.pages[nav.page]),
           ],
         ),
       ),

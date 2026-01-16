@@ -138,7 +138,7 @@ class UpdateOrderDetails extends StatelessWidget {
                       ),
                     ),
                     value: payment.platformSource.text.isNotEmpty
-                        ? payment.platformSource.text
+                        ? payment.platformSource.text.toLowerCase()
                         : null, // bind to controller if already set
                     items: const [
                       DropdownMenuItem(
@@ -148,6 +148,8 @@ class UpdateOrderDetails extends StatelessWidget {
                           value: "instagram", child: Text("Instagram")),
                       DropdownMenuItem(
                           value: "ecommerce", child: Text("E-commerce")),
+                      DropdownMenuItem(
+                          value: "e-commerce", child: Text("E-commerce")),
                     ],
                     onChanged: (selected) {
                       if (selected != null) {
@@ -269,8 +271,8 @@ class UpdateOrderDetails extends StatelessWidget {
                               color: Theme.of(context).colorScheme.tertiary),
                         ),
                         initialValue: payment.paymentMethod.text.isNotEmpty
-                            ? payment.paymentMethod.text
-                            : null, // preselect if controller has value
+                            ? payment.paymentMethod.text.toLowerCase()
+                            : null,
                         items: const [
                           DropdownMenuItem(
                               value: "vodafone cash",

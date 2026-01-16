@@ -15,297 +15,295 @@ class Accounting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Consumer<AccountingVM>(
-        builder: (context, value, child) {
-          final accountBalance = value.accountsBalance;
-          return Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onPrimary,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(10),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: accountBalance == null
-                ? Center(
-                    child: SpinKitChasingDots(
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ))
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DefaultText(
-                        txt: "Accounting",
-                        color: Theme.of(context).colorScheme.tertiary,
-                      ),
-                      const SizedBox(height: 16),
-                      InkWell(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Text(
-                                      "Are you sure you want to reset all transactions?",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        // Cancel Button
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.red,
-                                            foregroundColor:
-                                                Colors.white, // Text color
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
+    return Consumer<AccountingVM>(
+      builder: (context, value, child) {
+        final accountBalance = value.accountsBalance;
+        return Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.onPrimary,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(10),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: accountBalance == null
+              ? Center(
+                  child: SpinKitChasingDots(
+                  color: Theme.of(context).colorScheme.tertiary,
+                ))
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DefaultText(
+                      txt: "Accounting",
+                      color: Theme.of(context).colorScheme.tertiary,
+                    ),
+                    const SizedBox(height: 16),
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text(
+                                    "Are you sure you want to reset all transactions?",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      // Cancel Button
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          foregroundColor:
+                                              Colors.white, // Text color
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text("Cancel"),
                                         ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text("Cancel"),
+                                      ),
 
-                                        // Reset Button
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.green,
-                                            foregroundColor:
-                                                Colors.white, // Text color
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
+                                      // Reset Button
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.green,
+                                          foregroundColor:
+                                              Colors.white, // Text color
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
                                           ),
-                                          onPressed: () async {
-                                            final accountingVM =
-                                                Provider.of<AccountingVM>(
-                                                    context,
-                                                    listen: false);
-
-                                            // Call the API
-                                            final state = await accountingVM
-                                                .deleteAllTransactions();
-
-                                            // Check if widget is still in the tree before using context
-                                            if (!context.mounted) return;
-
-                                            Navigator.pop(
-                                                context); // Close Dialog
-                                            if (state ==
-                                                "transactions_deleted") {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(
-                                                  content: Text(
-                                                      "Transactions reset successfully"),
-                                                  backgroundColor: Colors.red,
-                                                ),
-                                              );
-                                              accountingVM.initAccounting();
-                                            } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(
-                                                const SnackBar(
-                                                  content: Text(
-                                                      "Failed to reset transactions"),
-                                                  backgroundColor: Colors.red,
-                                                ),
-                                              );
-                                            }
-                                          },
-                                          child: const Text("Reset"),
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Iconsax.money_remove_copy,
-                                color: Colors.red,
-                              ),
-                              SizedBox(width: 10),
-                              DefaultText(
-                                txt: "Reset",
-                                color: Colors.red,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // vodafone cash
-                          _buildCashCard(
-                            context,
-                            title: accountBalance[0].name,
-                            value: PriceHelper.formatNumber(
-                                accountBalance[0].currentBalance),
-                            icon: Iconsax.wallet_2_copy,
-                            color: Colors.red,
-                            onDeposit: () {
-                              _showTransactionDialog(
-                                value,
-                                Colors.green,
-                                context,
-                                bankAccountId: accountBalance[0].id,
-                                categoryId: 1,
-                                transactionType: "Deposit",
-                                accountName: accountBalance[0].name,
-                              );
-                            },
-                            onWithdraw: () {
-                              _showTransactionDialog(
-                                value,
-                                Colors.red,
-                                context,
-                                bankAccountId: accountBalance[0].id,
-                                categoryId: 1,
-                                transactionType: "Withdrawal",
-                                accountName: accountBalance[0].name,
-                              );
-                            },
-                          ),
+                                        onPressed: () async {
+                                          final accountingVM =
+                                              Provider.of<AccountingVM>(
+                                                  context,
+                                                  listen: false);
 
-                          //CIB
-                          _buildCashCard(
-                            context,
-                            title: accountBalance[1].name,
-                            value: PriceHelper.formatNumber(
-                                accountBalance[1].currentBalance),
-                            icon: Iconsax.bank_copy,
-                            color: Colors.blue,
-                            onDeposit: () {
-                              _showTransactionDialog(
-                                value,
-                                Colors.green,
-                                context,
-                                bankAccountId: accountBalance[1].id,
-                                categoryId: 1,
-                                transactionType: "Deposit",
-                                accountName: accountBalance[1].name,
-                              );
-                            },
-                            onWithdraw: () {
-                              _showTransactionDialog(
-                                value,
-                                Colors.red,
-                                context,
-                                bankAccountId: accountBalance[1].id,
-                                categoryId: 1,
-                                transactionType: "Withdrawal",
-                                accountName: accountBalance[1].name,
-                              );
-                            },
-                          ),
+                                          // Call the API
+                                          final state = await accountingVM
+                                              .deleteAllTransactions();
 
-                          //Egypt Post
-                          _buildCashCard(context,
-                              title: accountBalance[2].name,
-                              value: PriceHelper.formatNumber(
-                                  accountBalance[2].currentBalance),
-                              icon: Iconsax.buildings_copy,
-                              color: Colors.green, onDeposit: () {
-                            _showTransactionDialog(
-                              value,
-                              Colors.green,
-                              context,
-                              bankAccountId: accountBalance[2].id,
-                              categoryId: 1,
-                              transactionType: "Deposit",
-                              accountName: accountBalance[2].name,
-                            );
-                          }, onWithdraw: () {
-                            _showTransactionDialog(
-                              value,
-                              Colors.red,
-                              context,
-                              bankAccountId: accountBalance[2].id,
-                              categoryId: 1,
-                              transactionType: "Withdrawal",
-                              accountName: accountBalance[2].name,
-                            );
-                          }),
+                                          // Check if widget is still in the tree before using context
+                                          if (!context.mounted) return;
 
-                          //Egypt Post
-                          _buildCashCard(context,
-                              title: accountBalance[3].name,
-                              value: PriceHelper.formatNumber(
-                                  accountBalance[3].currentBalance),
-                              icon: Iconsax.moneys_copy,
-                              color: Colors.yellow.shade800, onDeposit: () {
-                            _showTransactionDialog(
-                              value,
-                              Colors.green,
-                              context,
-                              bankAccountId: accountBalance[3].id,
-                              categoryId: 1,
-                              transactionType: "Deposit",
-                              accountName: accountBalance[3].name,
-                            );
-                          }, onWithdraw: () {
-                            _showTransactionDialog(
-                              value,
-                              Colors.red,
-                              context,
-                              bankAccountId: accountBalance[3].id,
-                              categoryId: 1,
-                              transactionType: "Withdrawal",
-                              accountName: accountBalance[3].name,
-                            );
-                          }),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
-                        child: DefaultText(
-                          txt: "All Transactions",
-                          bold: true,
-                        ),
-                      ),
-                      value.allTransactions == null
-                          ? Center(
-                              child: SpinKitChasingDots(
-                                color: Theme.of(context).colorScheme.tertiary,
+                                          Navigator.pop(
+                                              context); // Close Dialog
+                                          if (state ==
+                                              "transactions_deleted") {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    "Transactions reset successfully"),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                            accountingVM.initAccounting();
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    "Failed to reset transactions"),
+                                                backgroundColor: Colors.red,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        child: const Text("Reset"),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            )
-                          : const Expanded(
-                              child: TransactionsTable(),
+                            );
+                          },
+                        );
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Iconsax.money_remove_copy,
+                              color: Colors.red,
                             ),
-                    ],
-                  ),
-          );
-        },
-      ),
+                            SizedBox(width: 10),
+                            DefaultText(
+                              txt: "Reset",
+                              color: Colors.red,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // vodafone cash
+                        _buildCashCard(
+                          context,
+                          title: accountBalance[0].name,
+                          value: PriceHelper.formatNumber(
+                              accountBalance[0].currentBalance),
+                          icon: Iconsax.wallet_2_copy,
+                          color: Colors.red,
+                          onDeposit: () {
+                            _showTransactionDialog(
+                              value,
+                              Colors.green,
+                              context,
+                              bankAccountId: accountBalance[0].id,
+                              categoryId: 1,
+                              transactionType: "Deposit",
+                              accountName: accountBalance[0].name,
+                            );
+                          },
+                          onWithdraw: () {
+                            _showTransactionDialog(
+                              value,
+                              Colors.red,
+                              context,
+                              bankAccountId: accountBalance[0].id,
+                              categoryId: 1,
+                              transactionType: "Withdrawal",
+                              accountName: accountBalance[0].name,
+                            );
+                          },
+                        ),
+
+                        //CIB
+                        _buildCashCard(
+                          context,
+                          title: accountBalance[1].name,
+                          value: PriceHelper.formatNumber(
+                              accountBalance[1].currentBalance),
+                          icon: Iconsax.bank_copy,
+                          color: Colors.blue,
+                          onDeposit: () {
+                            _showTransactionDialog(
+                              value,
+                              Colors.green,
+                              context,
+                              bankAccountId: accountBalance[1].id,
+                              categoryId: 1,
+                              transactionType: "Deposit",
+                              accountName: accountBalance[1].name,
+                            );
+                          },
+                          onWithdraw: () {
+                            _showTransactionDialog(
+                              value,
+                              Colors.red,
+                              context,
+                              bankAccountId: accountBalance[1].id,
+                              categoryId: 1,
+                              transactionType: "Withdrawal",
+                              accountName: accountBalance[1].name,
+                            );
+                          },
+                        ),
+
+                        //Egypt Post
+                        _buildCashCard(context,
+                            title: accountBalance[2].name,
+                            value: PriceHelper.formatNumber(
+                                accountBalance[2].currentBalance),
+                            icon: Iconsax.buildings_copy,
+                            color: Colors.green, onDeposit: () {
+                          _showTransactionDialog(
+                            value,
+                            Colors.green,
+                            context,
+                            bankAccountId: accountBalance[2].id,
+                            categoryId: 1,
+                            transactionType: "Deposit",
+                            accountName: accountBalance[2].name,
+                          );
+                        }, onWithdraw: () {
+                          _showTransactionDialog(
+                            value,
+                            Colors.red,
+                            context,
+                            bankAccountId: accountBalance[2].id,
+                            categoryId: 1,
+                            transactionType: "Withdrawal",
+                            accountName: accountBalance[2].name,
+                          );
+                        }),
+
+                        //Egypt Post
+                        _buildCashCard(context,
+                            title: accountBalance[3].name,
+                            value: PriceHelper.formatNumber(
+                                accountBalance[3].currentBalance),
+                            icon: Iconsax.moneys_copy,
+                            color: Colors.yellow.shade800, onDeposit: () {
+                          _showTransactionDialog(
+                            value,
+                            Colors.green,
+                            context,
+                            bankAccountId: accountBalance[3].id,
+                            categoryId: 1,
+                            transactionType: "Deposit",
+                            accountName: accountBalance[3].name,
+                          );
+                        }, onWithdraw: () {
+                          _showTransactionDialog(
+                            value,
+                            Colors.red,
+                            context,
+                            bankAccountId: accountBalance[3].id,
+                            categoryId: 1,
+                            transactionType: "Withdrawal",
+                            accountName: accountBalance[3].name,
+                          );
+                        }),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: DefaultText(
+                        txt: "All Transactions",
+                        bold: true,
+                      ),
+                    ),
+                    value.allTransactions == null
+                        ? Center(
+                            child: SpinKitChasingDots(
+                              color: Theme.of(context).colorScheme.tertiary,
+                            ),
+                          )
+                        : const Expanded(
+                            child: TransactionsTable(),
+                          ),
+                  ],
+                ),
+        );
+      },
     );
   }
 

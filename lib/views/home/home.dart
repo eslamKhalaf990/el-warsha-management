@@ -15,129 +15,126 @@ class HomeCashFlow extends StatelessWidget {
     // 1. Remove the outer Expanded if this widget is inside a SingleChildScrollView
     // or keep it if it is inside a Column with fixed height.
     // Assuming Dashboard usage, Flexible/Expanded is usually safer.
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Consumer<HomeVM>(
-          builder: (context, value, child) {
-            final revenue = value.revenueSummary;
-            final topProducts = value.topProducts;
+    return SingleChildScrollView(
+      child: Consumer<HomeVM>(
+        builder: (context, value, child) {
+          final revenue = value.revenueSummary;
+          final topProducts = value.topProducts;
 
-            return FadeInAnimation(
-              delay: 100,
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withAlpha(10),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: revenue == null
-                    ? const SizedBox(
-                    height: 200,
-                    child: Center(child: CircularProgressIndicator())
-                )
-                    : LayoutBuilder(
-                  builder: (context, constraints) {
-                    // 2. Responsive Breakpoint
-                    final isMobile = constraints.maxWidth < 800;
+          return FadeInAnimation(
+            delay: 100,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onPrimary,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(10),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: revenue == null
+                  ? const SizedBox(
+                  height: 200,
+                  child: Center(child: CircularProgressIndicator())
+              )
+                  : LayoutBuilder(
+                builder: (context, constraints) {
+                  // 2. Responsive Breakpoint
+                  final isMobile = constraints.maxWidth < 800;
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        DefaultText(
-                          txt: "Cash Flow Overview",
-                          color: Theme.of(context).colorScheme.tertiary,
-                          size: 18,
-                          bold: true,
-                        ),
-                        const SizedBox(height: 16),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      DefaultText(
+                        txt: "Cash Flow Overview",
+                        color: Theme.of(context).colorScheme.tertiary,
+                        size: 18,
+                        bold: true,
+                      ),
+                      const SizedBox(height: 16),
 
-                        // 3. Responsive Cash Cards Layout
-                        if (isMobile)
-                          Column(
-                            children: [
-                              _buildCashCard(
+                      // 3. Responsive Cash Cards Layout
+                      if (isMobile)
+                        Column(
+                          children: [
+                            _buildCashCard(
+                              context,
+                              title: "Actual Cash",
+                              value: PriceHelper.formatNumber(revenue.actualCashReceived),
+                              icon: Iconsax.money_copy,
+                              color: Colors.green,
+                            ),
+                            const SizedBox(height: 8),
+                            _buildCashCard(
+                              context,
+                              title: "Expected Cash",
+                              value: PriceHelper.formatNumber(revenue.expectedCash),
+                              icon: Iconsax.money_time_copy,
+                              color: Colors.orange,
+                            ),
+                            const SizedBox(height: 8),
+                            _buildCashCard(
+                              context,
+                              title: "Potential",
+                              value: PriceHelper.formatNumber(revenue.potentialRevenue),
+                              icon: Iconsax.trend_up_copy,
+                              color: Colors.blue,
+                            ),
+                          ],
+                        )
+                      else
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: _buildCashCard(
                                 context,
                                 title: "Actual Cash",
                                 value: PriceHelper.formatNumber(revenue.actualCashReceived),
                                 icon: Iconsax.money_copy,
                                 color: Colors.green,
                               ),
-                              const SizedBox(height: 8),
-                              _buildCashCard(
+                            ),
+                            const SizedBox(width: 8), // Spacing between items
+                            Expanded(
+                              child: _buildCashCard(
                                 context,
                                 title: "Expected Cash",
                                 value: PriceHelper.formatNumber(revenue.expectedCash),
                                 icon: Iconsax.money_time_copy,
                                 color: Colors.orange,
                               ),
-                              const SizedBox(height: 8),
-                              _buildCashCard(
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: _buildCashCard(
                                 context,
                                 title: "Potential",
                                 value: PriceHelper.formatNumber(revenue.potentialRevenue),
                                 icon: Iconsax.trend_up_copy,
                                 color: Colors.blue,
                               ),
-                            ],
-                          )
-                        else
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: _buildCashCard(
-                                  context,
-                                  title: "Actual Cash",
-                                  value: PriceHelper.formatNumber(revenue.actualCashReceived),
-                                  icon: Iconsax.money_copy,
-                                  color: Colors.green,
-                                ),
-                              ),
-                              const SizedBox(width: 8), // Spacing between items
-                              Expanded(
-                                child: _buildCashCard(
-                                  context,
-                                  title: "Expected Cash",
-                                  value: PriceHelper.formatNumber(revenue.expectedCash),
-                                  icon: Iconsax.money_time_copy,
-                                  color: Colors.orange,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: _buildCashCard(
-                                  context,
-                                  title: "Potential",
-                                  value: PriceHelper.formatNumber(revenue.potentialRevenue),
-                                  icon: Iconsax.trend_up_copy,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
 
-                        const SizedBox(height: 24),
+                      const SizedBox(height: 24),
 
-                        // Note: Removed Expanded around this list to prevent layout errors
-                        // inside scrollable parents. It will take natural height.
-                        TopSellingProductsList(products: topProducts),
-                        const SizedBox(height: 100),
-
-                      ],
-                    );
-                  },
-                ),
+                      // Note: Removed Expanded around this list to prevent layout errors
+                      // inside scrollable parents. It will take natural height.
+                      TopSellingProductsList(products: topProducts),
+                      const SizedBox(height: 100),
+                    ],
+                  );
+                },
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -244,52 +244,6 @@ class OrderDetailsWidget extends StatelessWidget {
                         icon: Iconsax.discount_shape,
                       ),
                     ),
-
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(right: 20.0, left: 20),
-                    //   child: DropdownButtonFormField<String>(
-                    //     decoration: InputDecoration(
-                    //       filled: true,
-                    //       fillColor: Theme.of(context)
-                    //           .colorScheme
-                    //           .tertiary
-                    //           .withAlpha(30),
-                    //       labelText: "Payment Method",
-                    //       labelStyle:
-                    //       const TextStyle(color: Colors.grey, fontSize: 14),
-                    //       border: OutlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(12),
-                    //       ),
-                    //       enabledBorder: OutlineInputBorder(
-                    //           borderSide: const BorderSide(
-                    //             color: Colors.transparent,
-                    //           ),
-                    //           borderRadius: Constants.BORDER_RADIUS_15),
-                    //       prefixIcon: Icon(Iconsax.wallet_1,
-                    //           color: Theme.of(context).colorScheme.tertiary),
-                    //     ),
-                    //     value: value.paymentMethod.text.isNotEmpty
-                    //         ? value.paymentMethod.text
-                    //         : null, // preselect if controller has value
-                    //     items: const [
-                    //       DropdownMenuItem(
-                    //           value: "vodafone cash",
-                    //           child: Text("Vodafone Cash")),
-                    //       DropdownMenuItem(
-                    //           value: "instapay", child: Text("Instapay")),
-                    //       DropdownMenuItem(value: "cash", child: Text("Cash")),
-                    //     ],
-                    //     onChanged: (selected) {
-                    //       if (selected != null) {
-                    //         value.paymentMethod.text =
-                    //             selected; // sync with controller
-                    //       }
-                    //     },
-                    //   ),
-                    // ),
                   ],
                 ),
               ],
@@ -323,9 +277,9 @@ class OrderDetailsWidget extends StatelessWidget {
                       prefixIcon: Icon(Iconsax.wallet_1,
                           color: Theme.of(context).colorScheme.tertiary),
                     ),
-                    value: value.paymentMethod.text.isNotEmpty
+                    initialValue: value.paymentMethod.text.isNotEmpty
                         ? value.paymentMethod.text
-                        : null, // preselect if controller has value
+                        : null,
                     items: const [
                       DropdownMenuItem(
                           value: "vodafone cash",
@@ -337,7 +291,7 @@ class OrderDetailsWidget extends StatelessWidget {
                     onChanged: (selected) {
                       if (selected != null) {
                         value.paymentMethod.text =
-                            selected; // sync with controller
+                            selected;
                       }
                     },
                   ),

@@ -8,22 +8,19 @@ class Products extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Expanded(
-      flex: 4,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimary,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: const Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: CRUDProduct(),
-            ),
-            ProductList(),
-          ],
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.onPrimary,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: const Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15.0),
+            child: CRUDProduct(),
+          ),
+          ProductList(),
+        ],
       ),
     );
   }

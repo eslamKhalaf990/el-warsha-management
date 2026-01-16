@@ -7,283 +7,254 @@ import 'package:warsha_app/models/category_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
+import 'package:warsha_app/utils/navigator.dart';
 import 'package:warsha_app/view_models/add_product_v_m.dart';
 
+// Assuming DragDropImageUpload is in the same file or imported
 import 'drag_drop_widget.dart';
 
 class AddProduct extends StatelessWidget {
   const AddProduct({super.key});
 
+  // Define your preferred brand color
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ProductProvider>(
-      builder: (context, value, child) => Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            title: const DefaultText(txt: "Add New Product")),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.blue.shade50,
-                Colors.yellow.shade200
-              ], // Replace with your colors
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
+      builder: (context, product, child) => Scaffold(
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // LEFT COLUMN: Media & Pricing (Flex 1)
               Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 60, bottom: 15, left: 15),
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        borderRadius: Constants.BORDER_RADIUS_15,
+                flex: 4,
+                child: Column(
+                  children: [
+                    // Image Upload Section
+                    _buildSectionContainer(
+                      context,
+                      title: "Product Image",
+                      child: const SizedBox(
+                        height: 250, // Fixed height for upload area
+                        child: DragDropImageUpload(),
                       ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Pricing Section
+                    _buildSectionContainer(
+                      context,
+                      title: "Pricing Strategy",
                       child: Column(
                         children: [
-                          const SizedBox(height: 20),
-                          const Expanded(
-                            flex: 3,
-                            child: DragDropImageUpload(),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(15),
-                            child: const Row(
-                              children: [DefaultText(txt: "Product Pricing")],
-                            ),
-                          ),
                           Row(
                             children: [
                               Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15.0),
-                                  child: DefaultProductForm(
-                                    title: "Product buying price",
-                                    controller: value.productBuyingPrice,
-                                    onChange: value.updateBuyingPrice,
-                                    icon: null,
-                                  ),
+                                child: DefaultProductForm(
+                                  title: "Buying Price",
+                                  controller: product.productBuyingPrice,
+                                  onChange: product.updateBuyingPrice,
+                                  icon: Iconsax.moneys,
+                                  currency: true,
                                 ),
                               ),
+                              const SizedBox(width: 15),
                               Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15.0),
-                                  child: DefaultProductForm(
-                                    title: "Product selling price",
-                                    controller: value.productSellingPrice,
-                                    onChange: value.updateSellingPrice,
-                                    icon: null,
-                                  ),
+                                child: DefaultProductForm(
+                                  title: "Selling Price",
+                                  controller: product.productSellingPrice,
+                                  onChange: product.updateSellingPrice,
+                                  icon: Iconsax.moneys,
+                                  currency: true,
                                 ),
                               ),
                             ],
                           ),
+                          const SizedBox(height: 15),
+                          DefaultProductForm(
+                            title: "Discount Amount",
+                            controller: product.discount,
+                            icon: Iconsax.discount_shape,
+                            currency: true,
+                          ),
                           const SizedBox(height: 20),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: DefaultProductForm(
-                                title: "Discount by EGP",
-                                controller: value.discount,
-                                icon: Iconsax.discount_shape,
-                              ),
+
+                          // Profit Margin Indicator (Live Calculation)
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Theme.of(context).colorScheme.tertiary.withOpacity(0.3)),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Iconsax.moneys, color: Theme.of(context).colorScheme.tertiary, size: 20),
+                                    const SizedBox(width: 10),
+                                    DefaultText(txt: "Estimated Profit:", color: Theme.of(context).colorScheme.tertiary),
+                                  ],
+                                ),
+                                DefaultText(
+                                  txt: "${product.sellingPrice - product.buyingPrice} EGP",
+                                  bold: true,
+                                  size: 18,
+                                  color: Theme.of(context).colorScheme.tertiary,
+                                )
+                              ],
                             ),
                           ),
                         ],
-                      )),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 60, bottom: 15, right: 15, left: 15),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      borderRadius: Constants.BORDER_RADIUS_15,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15.0),
-                            child: Row(
-                              children: [DefaultText(txt: "Product Details")],
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: DefaultProductForm(
-                                title: "Product name",
-                                controller: value.productName,
-                                icon: Iconsax.bag,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: DefaultProductForm(
-                                title: "Product description",
-                                controller: value.productDescription,
-                                icon: Iconsax.document,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: DropdownButtonFormField<CategoryModel>(
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: Colors.grey.shade100,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Colors.transparent,
-                                    ),
-                                    borderRadius: Constants.BORDER_RADIUS_15,
-                                  ),
-                                  prefixIcon: Padding(
-                                    padding: const EdgeInsets.only(left: 30.0, right: 30),
-                                    child: Icon(
-                                      Iconsax.category,
-                                      color: Theme.of(context).colorScheme.tertiary,
-                                    ),
-                                  ),
-                                ),
-                                hint: const Text("Select a category", style: TextStyle(color: Colors.grey),),
-                                items: Provider.of<ProductVM>(context, listen: false).allCategories?.map((category) {
-                                  return DropdownMenuItem<CategoryModel>(
-                                    value: category,
-                                    child: Text(category.name),
-                                  );
-                                }).toList(),
-                                onChanged: (selectedCategory) {
-                                  if (selectedCategory != null) {
-                                    value.productCategory.text = selectedCategory.categoryId.toString();
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
 
-                          const SizedBox(height: 20),
+              const SizedBox(width: 20),
+
+              // RIGHT COLUMN: Details & Actions (Flex 2)
+              Expanded(
+                flex: 6,
+                child: _buildSectionContainer(
+                  context,
+                  title: "Product Details",
+                  child: Column(
+                    children: [
+                      DefaultProductForm(
+                        title: "Product Name",
+                        controller: product.productName,
+                        icon: Iconsax.bag_2,
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Category Dropdown (Styled to match inputs)
+                      DropdownButtonFormField<CategoryModel>(
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: "Category",
+                          labelStyle: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey.shade200),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey.shade200),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1.5),
+                          ),
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Icon(Iconsax.category, color: Theme.of(context).colorScheme.tertiary),
+                          ),
+                        ),
+                        dropdownColor: Colors.white,
+                        items: Provider.of<ProductVM>(context, listen: false)
+                            .allCategories
+                            ?.map((category) {
+                          return DropdownMenuItem<CategoryModel>(
+                            value: category,
+                            child: Text(category.name),
+                          );
+                        }).toList(),
+                        onChanged: (selectedCategory) {
+                          if (selectedCategory != null) {
+                            product.productCategory.text = selectedCategory.categoryId.toString();
+                          }
+                        },
+                      ),
+
+                      const SizedBox(height: 20),
+                      DefaultProductForm(
+                        title: "Initial Quantity",
+                        controller: product.productQuantity,
+                        icon: Iconsax.box_add,
+                      ),
+                      const SizedBox(height: 20),
+                      DefaultProductForm(
+                        title: "Vendor (Supplier)",
+                        controller: product.productQuantity,
+                        icon: Iconsax.profile_2user,
+                      ),
+                      const SizedBox(height: 20),
+
+                      const ColorTagInput(),
+
+                      const SizedBox(height: 20),
+
+                      const SizeTagInput(),
+
+                      const SizedBox(height: 20),
+
+
+                      DefaultProductForm(
+                        title: "Description",
+                        controller: product.productDescription,
+                        icon: Iconsax.document_text,
+                        maxLines: 3, // Fixed height for description
+                      ),
+                      const SizedBox(height: 40),
+
+                      // Action Buttons
+                      Row(
+                        children: [
                           Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: DefaultProductForm(
-                                title: "Product quantity",
-                                controller: value.productQuantity,
-                                icon: Iconsax.add,
+                            child: SizedBox(
+                              height: 55,
+                              child: OutlinedButton(
+                                onPressed: () => Navigator.pop(context),
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(color: Colors.grey.shade300),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                ),
+                                child: const Text("Cancel", style: TextStyle(color: Colors.grey)),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: [
-                              Consumer<ProductVM>(
-                                builder: (context, productVM, child) =>
-                                    Expanded(
-                                  flex: 3,
-                                  child: DefaultButton(
-                                    onTap: () async {
-                                      String status =
-                                          await productVM.addProduct(
-                                        productName: value.productName.text,
-                                        productDescription:
-                                            value.productDescription.text,
-                                        productBPrice:
-                                            value.productBuyingPrice.text,
-                                        productSPrice:
-                                            value.productSellingPrice.text,
-                                        productCategory:
-                                            value.productCategory.text,
-                                        productQuantity:
-                                            value.productQuantity.text,
-                                        imageBytes:
-                                            Provider.of<DragDropController>(
-                                                    context,
-                                                    listen: false)
-                                                .droppedBytes,
-                                      );
-                                      if (status == "product_added") {
-                                        Navigator.pop(context);
-                                        productVM.initAllProducts();
-                                        productVM.getAllProducts();
-                                        value.clear();
-                                        Provider.of<DragDropController>(
-                                            context,
-                                            listen: false).clear();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                "Product added successfully"),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    isValid: !Provider.of<ProductVM>(context)
-                                        .isLoading,
-                                    isLoading: Provider.of<ProductVM>(context)
-                                        .isLoading,
-                                    title: "Add new product",
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 15),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .surfaceTint,
-                                    borderRadius: Constants.BORDER_RADIUS_20,
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15.0, vertical: 15),
-                                  child: Row(
-                                    children: [
-                                      const DefaultText(
-                                          txt: "Profit Margin is:  "),
-                                      DefaultText(
-                                        txt:
-                                            "${value.sellingPrice - value.buyingPrice}",
-                                        bold: true,
-                                        size: 16,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
+                          const SizedBox(width: 15),
+                          Expanded(
+                            flex: 2,
+                            child: DefaultButton(
+                              onTap: () async {
+                                String status = await Provider.of<ProductVM>(context, listen: false).addProduct(
+                                  productName: product.productName.text,
+                                  productDescription: product.productDescription.text,
+                                  productBPrice: product.productBuyingPrice.text,
+                                  productSPrice: product.productSellingPrice.text,
+                                  productCategory: product.productCategory.text,
+                                  productQuantity: product.productQuantity.text,
+                                  imageBytes: Provider.of<DragDropController>(context, listen: false).droppedBytes,
+                                );
+                                if (status == "product_added") {
+                                  Navigator.pop(navigatorKey.currentContext!);
+                                  Provider.of<ProductVM>(navigatorKey.currentContext!, listen: false).initAllProducts();
+                                  Provider.of<ProductVM>(navigatorKey.currentContext!, listen: false).getAllProducts();
+                                  product.clear();
+                                  Provider.of<DragDropController>(navigatorKey.currentContext!, listen: false).clear();
+                                  ScaffoldMessenger.of(navigatorKey.currentContext!).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Theme.of(context).colorScheme.tertiary,
+                                      content: const Text("Product added successfully"),
+                                    ),
+                                  );
+                                }
+                              },
+                              isValid: !Provider.of<ProductVM>(context).isLoading,
+                              isLoading: Provider.of<ProductVM>(context).isLoading,
+                              title: "Save Product", margin: EdgeInsets.zero,
+                            ),
                           ),
-                          const SizedBox(height: 20),
                         ],
-                      ),
-                    ),
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -293,8 +264,274 @@ class AddProduct extends StatelessWidget {
       ),
     );
   }
+
+  // Helper widget to create those white cards
+  Widget _buildSectionContainer(BuildContext context, {required String title, required Widget child}) {
+    return Container(
+      padding: const EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          )
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade800
+            ),
+          ),
+          const SizedBox(height: 25),
+          child,
+        ],
+      ),
+    );
+  }
 }
 
+class ColorTagInput extends StatefulWidget {
+  const ColorTagInput({super.key});
+
+  @override
+  State<ColorTagInput> createState() => _ColorTagInputState();
+}
+
+class _ColorTagInputState extends State<ColorTagInput> {
+  final TextEditingController _controller = TextEditingController();
+
+  void _handleAdd() {
+    final text = _controller.text.trim();
+    if (text.isNotEmpty) {
+      // Access provider to add color
+      Provider.of<ProductProvider>(context, listen: false).addColor(text);
+      _controller.clear();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ProductProvider>(
+      builder: (context, product, child) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // The Input Field
+          TextFormField(
+            controller: _controller,
+            onFieldSubmitted: (_) => _handleAdd(), // Add on 'Enter' key
+            cursorColor: Theme.of(context).colorScheme.tertiary,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              labelText: "Product Colors",
+              hintText: "Type color (e.g. Red) and press +",
+              labelStyle: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+              hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 12),
+
+              // Borders matching your previous form style
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade200),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1.5),
+                borderRadius: BorderRadius.circular(12),
+              ),
+
+              prefixIcon: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Icon(Iconsax.color_swatch, color: Theme.of(context).colorScheme.tertiary),
+              ),
+
+              // The Add Button inside the text field
+              suffixIcon: IconButton(
+                onPressed: _handleAdd,
+                icon: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(Iconsax.add_circle_copy, color: Theme.of(context).colorScheme.tertiary, size: 25),
+                ),
+              ),
+            ),
+          ),
+
+          // The List of Added Colors (Chips)
+          if (product.productColors.isNotEmpty) ...[
+            const SizedBox(height: 15),
+            Wrap(
+              spacing: 8.0, // Gap between adjacent chips
+              runSpacing: 8.0, // Gap between lines
+              children: product.productColors.map((color) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiary.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Theme.of(context).colorScheme.tertiary.withOpacity(0.2)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        color,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      InkWell(
+                        onTap: () {
+                          product.removeColor(color);
+                        },
+                        child: Icon(
+                          Icons.close,
+                          size: 16,
+                          color: Theme.of(context).colorScheme.tertiary.withOpacity(0.6),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+          ]
+        ],
+      ),
+    );
+  }
+}
+
+class SizeTagInput extends StatefulWidget {
+  const SizeTagInput({super.key});
+
+  @override
+  State<SizeTagInput> createState() => _SizeTagInputState();
+}
+
+class _SizeTagInputState extends State<SizeTagInput> {
+  final TextEditingController _controller = TextEditingController();
+
+  void _handleAdd() {
+    final text = _controller.text.trim();
+    if (text.isNotEmpty) {
+      // Access provider to add color
+      Provider.of<ProductProvider>(context, listen: false).addSize(text);
+      _controller.clear();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ProductProvider>(
+      builder: (context, product, child) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // The Input Field
+          TextFormField(
+            controller: _controller,
+            onFieldSubmitted: (_) => _handleAdd(), // Add on 'Enter' key
+            cursorColor: Theme.of(context).colorScheme.tertiary,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              labelText: "Product Sizes",
+              hintText: "Type size (e.g. 12mm) and press +",
+              labelStyle: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+              hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 12),
+
+              // Borders matching your previous form style
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade200),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1.5),
+                borderRadius: BorderRadius.circular(12),
+              ),
+
+              prefixIcon: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Icon(Iconsax.size, color: Theme.of(context).colorScheme.tertiary),
+              ),
+
+              // The Add Button inside the text field
+              suffixIcon: IconButton(
+                onPressed: _handleAdd,
+                icon: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(Iconsax.add_circle_copy, color: Theme.of(context).colorScheme.tertiary, size: 25),
+                ),
+              ),
+            ),
+          ),
+
+          // The List of Added Colors (Chips)
+          if (product.productSizes.isNotEmpty) ...[
+            const SizedBox(height: 15),
+            Wrap(
+              spacing: 8.0, // Gap between adjacent chips
+              runSpacing: 8.0, // Gap between lines
+              children: product.productSizes.map((color) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiary.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Theme.of(context).colorScheme.tertiary.withOpacity(0.2)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        color,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      InkWell(
+                        onTap: () {
+                          product.removeColor(color);
+                        },
+                        child: Icon(
+                          Icons.close,
+                          size: 16,
+                          color: Theme.of(context).colorScheme.tertiary.withOpacity(0.6),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+          ]
+        ],
+      ),
+    );
+  }
+}
+
+// Slightly updated Form to remove Expanded and match new style
 class DefaultProductForm extends StatelessWidget {
   const DefaultProductForm({
     super.key,
@@ -302,8 +539,11 @@ class DefaultProductForm extends StatelessWidget {
     required this.icon,
     required this.controller,
     this.onChange,
-    this.fillColor, this.currency, this.maxLines,
+    this.fillColor,
+    this.currency,
+    this.maxLines = 1, // Default to 1
   });
+
   final String title;
   final TextEditingController controller;
   final Function(String)? onChange;
@@ -311,45 +551,52 @@ class DefaultProductForm extends StatelessWidget {
   final bool? currency;
   final Color? fillColor;
   final int? maxLines;
+
   @override
   Widget build(BuildContext context) {
+
     return TextFormField(
       controller: controller,
       onChanged: onChange,
       maxLines: maxLines,
-      cursorColor: Theme.of(context)
-          .colorScheme
-          .tertiary
-          .withAlpha(Constants.OPACITY_05),
+      style: const TextStyle(fontWeight: FontWeight.w500),
+      cursorColor: Theme.of(context).colorScheme.tertiary,
       decoration: InputDecoration(
         filled: true,
-        fillColor:fillColor ?? Theme.of(context).colorScheme.surfaceTint,
+        fillColor: fillColor ?? Colors.white, // White background for clean look
+
+        // Unfocused Border
         enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.transparent,
-            ),
-            borderRadius: Constants.BORDER_RADIUS_15),
+          borderSide: BorderSide(color: Colors.grey.shade200),
+          borderRadius: BorderRadius.circular(12),
+        ),
+
+        // Focused Border (Active)
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1.5),
+          borderRadius: BorderRadius.circular(12),
+        ),
+
         errorStyle: TextStyle(color: Colors.red.shade300),
+
         prefixIcon: icon != null
             ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: Icon(
-                  icon,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              )
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: Icon(icon, color: Theme.of(context).colorScheme.tertiary), // Use brand color for icons
+        )
             : null,
-        border: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.transparent),
-            borderRadius: Constants.BORDER_RADIUS_15),
-        focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Colors.transparent,
-            ),
-            borderRadius: Constants.BORDER_RADIUS_15),
-        suffix: currency !=  null ? const DefaultText(txt: "EGP") : null,
+
+        suffixIcon: currency != null
+            ? Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Text("EGP", style: TextStyle(color: Colors.grey.shade500, fontWeight: FontWeight.bold)),
+        )
+            : null,
+
         labelText: title,
-        labelStyle: const TextStyle(fontSize: 14, color: Colors.grey),
+        alignLabelWithHint: true, // keeps label at top for multi-line description
+        labelStyle: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+        contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       ),
     );
   }

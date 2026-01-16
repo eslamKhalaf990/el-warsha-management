@@ -21,7 +21,6 @@ class UpdateDragDropController extends ChangeNotifier {
       if (response.statusCode == 200) {
         droppedBytes = response.bodyBytes;
         droppedFileName = fileName ?? url.split('/').last;
-        print(droppedFileName);
         notifyListeners();
       } else {
         debugPrint("Failed to load image from $url, status: ${response.statusCode}");
