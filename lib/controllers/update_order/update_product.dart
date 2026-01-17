@@ -36,7 +36,7 @@ class UpdateProductProvider extends ChangeNotifier {
     productSellingPrice.text = existingProduct.sellingPrice.toString();
     productCategory.text = existingProduct.category;
     productQuantity.text = existingProduct.quantity.toString();
-    discount.text = "0.0";
+    discount.text = existingProduct.discount;
 
     // Update profit calculation values
     _buyingPrice = double.tryParse(productBuyingPrice.text) ?? 0.0;

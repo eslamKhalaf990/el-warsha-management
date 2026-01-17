@@ -228,8 +228,8 @@ class AddCustomer extends StatelessWidget {
     return DropdownButtonFormField<String>(
       value: value.governorate.text.isNotEmpty ? value.governorate.text : null,
       decoration: InputDecoration(
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.surfaceTint,
+        // filled: true,
+        // fillColor: Theme.of(context).colorScheme.surfaceTint,
         labelText: "Governorate",
         labelStyle: const TextStyle(color: Colors.grey, fontSize: 14),
         contentPadding: const EdgeInsets.symmetric(vertical: 20),
@@ -298,24 +298,7 @@ class DefaultCustomerForm extends StatelessWidget {
       keyboardType: inputType,
       cursorColor: Theme.of(context).colorScheme.tertiary,
       decoration: InputDecoration(
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.surfaceTint,
         contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
-            width: 1.5,
-          ),
-        ),
         errorStyle: TextStyle(color: Colors.red.shade300),
         prefixIcon: icon != null
             ? Padding(

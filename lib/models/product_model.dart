@@ -4,6 +4,8 @@ class ProductModel {
   String productDescription;
   String sellingPrice;
   String buyingPrice;
+  String discount;
+  String totalPrice;
   String category;
   String categoryId;
   String quantity;
@@ -15,6 +17,8 @@ class ProductModel {
     required this.productDescription,
     required this.buyingPrice,
     required this.sellingPrice,
+    required this.discount,
+    required this.totalPrice,
     required this.category,
     required this.quantity,
     required this.categoryId,
@@ -28,6 +32,8 @@ class ProductModel {
     required this.productDescription,
     required this.buyingPrice,
     required this.sellingPrice,
+    required this.discount,
+    required this.totalPrice,
     required this.category,
     required this.categoryId,
     required this.quantity,
@@ -42,6 +48,8 @@ class ProductModel {
       productDescription: json['description'],
       sellingPrice: json['sellingPrice'].toString(),
       buyingPrice: json['buyingPrice'].toString(),
+      discount: json['discount'].toString(),
+      totalPrice: json['totalPrice'].toString(),
       category: json['categoryName'],
       categoryId: json['categoryId'].toString(),
       quantity: json['quantity'],
@@ -69,6 +77,8 @@ class ProductModel {
       productDescription: json['description'],
       buyingPrice: json['sellingPrice'].toString(),
       sellingPrice: json['BuyingPrice'].toString(),
+      discount: json['discount'].toString(),
+      totalPrice: json['totalPrice'].toString(),
       quantity: json['quantity'],
       category: json['category'],
       categoryId: json['categoryId'],

@@ -37,7 +37,7 @@ class _UpdateDragDropImageUploadState extends State<UpdateDragDropImageUpload> {
               borderRadius: Constants.BORDER_RADIUS_20,
               color: _dragging
                   ? Colors.grey.withAlpha(100)
-                  : Theme.of(context).colorScheme.surfaceTint,
+                  : Theme.of(context).colorScheme.tertiary.withAlpha(20),
             ),
             child: drop.droppedBytes == null
                 ? Column(
@@ -68,14 +68,14 @@ class _UpdateDragDropImageUploadState extends State<UpdateDragDropImageUpload> {
                       );
                     }
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Iconsax.document_upload,
-                    color: Theme.of(context).colorScheme.secondary,
+                    // color: Theme.of(context).colorScheme.secondary,
                     size: 20,
                   ),
-                  label: DefaultText(
+                  label: const DefaultText(
                     txt: 'Browse Images',
-                    color: Theme.of(context).colorScheme.onSurface,
+                    // color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ],

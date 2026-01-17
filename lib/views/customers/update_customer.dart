@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/update_order/update_customer.dart';
+import 'package:warsha_app/models/customerModel.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
-
-import '../../models/customerModel.dart' show CustomerModel;
 
 class UpdateCustomer extends StatelessWidget {
   const UpdateCustomer({super.key, required this.customerModel});
@@ -179,8 +178,6 @@ class DefaultCustomerForm extends StatelessWidget {
           .tertiary
           .withAlpha(Constants.OPACITY_05),
       decoration: InputDecoration(
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.surfaceTint,
         enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(
               color: Colors.transparent,

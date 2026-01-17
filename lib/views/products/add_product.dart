@@ -228,6 +228,7 @@ class AddProduct extends StatelessWidget {
                                   productName: product.productName.text,
                                   productDescription: product.productDescription.text,
                                   productBPrice: product.productBuyingPrice.text,
+                                  productDiscount: product.discount.text,
                                   productSPrice: product.productSellingPrice.text,
                                   productCategory: product.productCategory.text,
                                   productQuantity: product.productQuantity.text,
