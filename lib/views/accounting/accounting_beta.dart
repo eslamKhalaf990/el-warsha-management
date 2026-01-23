@@ -4,7 +4,6 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/models/transaction_add_model.dart';
 import 'package:warsha_app/models/transaction_cateogry.dart';
-import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/accountings_v_m.dart';
 import 'package:warsha_app/utils/price_helper.dart';
@@ -50,27 +49,123 @@ class AccountingBeta extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     // RESET BUTTON
-                    InkWell(
-                      onTap: () {
-                        _showResetDialog(context);
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Iconsax.money_remove_copy,
-                              color: Colors.red,
+                    Row(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            _showResetDialog(context);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red.withAlpha(20),
+                              borderRadius: BorderRadius.circular(25),
                             ),
-                            SizedBox(width: 10),
-                            DefaultText(
-                              txt: "Reset",
-                              color: Colors.red,
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Iconsax.money_remove_copy,
+                                    color: Colors.red,
+                                  ),
+                                  SizedBox(width: 10),
+                                  DefaultText(
+                                    txt: "Reset",
+                                    color: Colors.red,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+
+                        const SizedBox(width: 10),
+
+                        InkWell(
+                          onTap: () {
+                            // Create a TextEditingController to get the password from the TextField
+                            final passwordController = TextEditingController();
+
+                            showDialog(
+                              context: context,
+                              builder: (dialogContext) {
+                                return AlertDialog(
+                                  title: const Text("Enter Your Password"),
+                                  content: TextField(
+                                    controller: passwordController,
+                                    obscureText: true, // Hides the password text
+                                    autofocus: true,
+                                    decoration: const InputDecoration(
+                                      labelText: 'Password',
+                                      hintText: 'Enter password',
+                                      prefixIcon: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                                        child: Icon(Iconsax.key_copy),
+                                      ),
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text("Cancel"),
+                                      onPressed: () {
+                                        Navigator.of(dialogContext).pop(); // Close the dialog
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        // backgroundColor: Theme.of(context).colorScheme.tertiary,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(25),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        // Get the password from the controller
+                                        final password = passwordController.text;
+
+                                        // Call the provider method with the entered password
+                                        if (password.isNotEmpty) {
+                                          Navigator.of(context).pop(); // Close the dialog
+
+                                          value.getAccountsBalance(password: password);
+                                        }
+                                      },
+                                      child: const Text("Open"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ).whenComplete(() {
+                              // Dispose the controller when the dialog is closed to free up resources
+                              passwordController.dispose();
+                            });
+                          },
+
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.tertiary.withAlpha(20),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Iconsax.security_safe_copy,
+                                    color: Theme.of(context).colorScheme.tertiary,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  DefaultText(
+                                    txt: "Open Your Safe",
+                                    color: Theme.of(context).colorScheme.tertiary,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 16),
 
@@ -97,6 +192,29 @@ class AccountingBeta extends StatelessWidget {
                           spacing: spacing,
                           runSpacing: spacing,
                           children: [
+                            accountBalance.length == 5 ?
+                            _buildCashCard(
+                              context,
+                              width: cardWidth,
+                              title: accountBalance[4].name,
+                              value: PriceHelper.formatNumber(
+                                  accountBalance[4].currentBalance),
+                              icon: Iconsax.security_safe_copy,
+                              color: Theme.of(context).colorScheme.tertiary,
+                              onDeposit: () => _showTransactionDialog(
+                                  value, Colors.green, context,
+                                  bankAccountId: accountBalance[4].id,
+                                  categoryId: 1,
+                                  transactionType: "Deposit",
+                                  accountName: accountBalance[4].name),
+                              onWithdraw: () => _showTransactionDialog(
+                                  value, Colors.red, context,
+                                  bankAccountId: accountBalance[4].id,
+                                  categoryId: 1,
+                                  transactionType: "Withdrawal",
+                                  accountName: accountBalance[4].name),
+                            ) : Container(),
+
                             _buildCashCard(
                               context,
                               width: cardWidth,
@@ -125,7 +243,7 @@ class AccountingBeta extends StatelessWidget {
                               value: PriceHelper.formatNumber(
                                   accountBalance[1].currentBalance),
                               icon: Iconsax.bank_copy,
-                              color: Theme.of(context).colorScheme.tertiary,
+                              color: Colors.blue,
                               onDeposit: () => _showTransactionDialog(
                                   value, Colors.green, context,
                                   bankAccountId: accountBalance[1].id,
@@ -343,11 +461,6 @@ class AccountingBeta extends StatelessWidget {
                   controller: amountController,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Theme.of(context).colorScheme.surfaceTint,
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: Constants.BORDER_RADIUS_50),
                     prefixIcon: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Icon(Iconsax.money_copy, color: Colors.green.shade400),
@@ -355,12 +468,6 @@ class AccountingBeta extends StatelessWidget {
                     suffixIcon: const Padding(
                         padding: EdgeInsets.only(left: 15.0, right: 15, top: 11),
                         child: DefaultText(txt: "EGP")),
-                    border: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: Constants.BORDER_RADIUS_50),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: Constants.BORDER_RADIUS_50),
                     hintText: "Amount",
                     hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
@@ -388,20 +495,6 @@ class AccountingBeta extends StatelessWidget {
                     categoryId = value!.categoryID;
                   },
                   decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Theme.of(context).colorScheme.surfaceTint,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.transparent),
-                      borderRadius: Constants.BORDER_RADIUS_50,
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.transparent),
-                      borderRadius: Constants.BORDER_RADIUS_50,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.transparent),
-                      borderRadius: Constants.BORDER_RADIUS_50,
-                    ),
                     prefixIcon: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Icon(Iconsax.transaction_minus_copy,
@@ -416,21 +509,10 @@ class AccountingBeta extends StatelessWidget {
                   cursorColor: Theme.of(context).colorScheme.tertiary,
                   controller: descriptionController,
                   decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Theme.of(context).colorScheme.surfaceTint,
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: Constants.BORDER_RADIUS_50),
                     prefixIcon: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Icon(Iconsax.book_copy, color: Colors.green.shade400),
                     ),
-                    border: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: Constants.BORDER_RADIUS_50),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
-                        borderRadius: Constants.BORDER_RADIUS_50),
                     hintText: "Description",
                     hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
@@ -559,7 +641,7 @@ class AccountingBeta extends StatelessWidget {
                   side: BorderSide(color: Colors.green.shade500),
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(25),
                   ),
                 ),
                 icon: Icon(Iconsax.add_copy, size: 16, color: Colors.green.shade500),
@@ -572,7 +654,7 @@ class AccountingBeta extends StatelessWidget {
                   side: BorderSide(color: Colors.red.shade500),
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(25),
                   ),
                 ),
                 icon: Icon(Iconsax.minus_copy, size: 16, color: Colors.red.shade500),

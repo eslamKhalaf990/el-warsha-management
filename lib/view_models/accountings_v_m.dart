@@ -25,10 +25,10 @@ class AccountingVM extends ChangeNotifier {
     await getTransactionCategories();
   }
 
-  Future<String> getAccountsBalance() async {
+  Future<String> getAccountsBalance({String? password}) async {
     String status = "";
     try {
-      final response = await _accountingService.getAccountsBalance(_userViewModel.token);
+      final response = await _accountingService.getAccountsBalance(_userViewModel.token, password: password);
 
       if (response.statusCode == 200) {
 
