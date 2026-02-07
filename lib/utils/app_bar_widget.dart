@@ -23,7 +23,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               ClipRRect(
                   borderRadius: Constants.BORDER_RADIUS_100,
-                  child: Image.asset("assets/images/logo.jpg", width: 40,),
+                  child: Image.asset("assets/images/logo-no-back.png", width: 40,),
               ),
               const SizedBox(width: 10,),
               const DefaultText(

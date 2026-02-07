@@ -217,16 +217,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:warsha_app/models/customerModel.dart';
 import 'package:warsha_app/models/order_governorate_count.dart';
-// import 'package:warsha_app/models/customer_model.dart';
 
-import 'package:warsha_app/models/create_order_request.dart'; // For sending to the API
 import 'package:warsha_app/models/orderItemModel.dart';
 import 'package:warsha_app/models/orderModel.dart';
 import 'package:warsha_app/services/orders_service.dart';
 import 'package:warsha_app/view_models/user_v_m.dart';
-
-import '../models/customerModel.dart' show CustomerModel;
 
 class AddOrderVM extends ChangeNotifier {
   final OrdersService _orderService;

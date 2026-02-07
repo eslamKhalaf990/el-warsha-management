@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
+// Assuming these are your paths
 import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/models/orderItemModel.dart';
 import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
 
@@ -14,92 +15,102 @@ class ProductToUpdate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<ProductVM>(context);
+    // We listen to ProductVM for search query changes
+    final productVM = Provider.of<ProductVM>(context);
+    final orderVM = Provider.of<UpdateOrderVM>(context);
 
     return FutureBuilder<List<ProductModel>>(
-      future: Provider.of<ProductVM>(context).allProducts,
+      future: productVM.allProducts,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-          );
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (snapshot.data!.isNotEmpty) {
-          final filteredProducts = snapshot.data!.where((product) {
-            final name = product.name.toLowerCase();
-            final sku = product.sku?.toLowerCase() ?? "";
-            final query = Provider.of<ProductVM>(context).searchController.text.toLowerCase();
-            return name.contains(query) || sku.contains(query);
-          }).toList();
-          return Expanded(
-            child: ListView.builder(
-              itemCount: filteredProducts.length,
-              padding: EdgeInsets.zero,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    final product = filteredProducts[index];
-
-                    OrderItemModel orderItemModel = OrderItemModel(
-                      productId: int.parse(product.id),
-                      productName: product.name,
-                      quantity: int.parse(product.quantity),
-                      unitPrice: double.parse(product.sellingPrice),
-                    );
-
-                    final orderVM = Provider.of<UpdateOrderVM>(context, listen: false);
-
-                    // Check for duplicates by productId
-                    bool alreadyExists = orderVM.orderModel.orderItems
-                        .any((item) => item.productId.toString() == product.id);
-                    //
-                    if (!alreadyExists) {
-                      orderVM.addToOrderItems = orderItemModel;
-                    } else {
-                      orderVM.removeFromOrderItems = orderItemModel.productId;
-                    }
-                  },
-
-                  child: ProductWidget(
-                    productModel: filteredProducts[index],
-                  ),
-                );
-              },
-            ),
-          );
-        } else {
-          return const Center(
-            child: Text("no products yet!"),
-          );
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text("No products found"));
         }
+
+        // Filtering logic
+        final query = productVM.searchController.text.toLowerCase();
+        final filteredProducts = snapshot.data!.where((product) {
+          final name = product.name.toLowerCase();
+          final sku = product.sku?.toLowerCase() ?? "";
+          return name.contains(query) || sku.contains(query);
+        }).toList();
+
+        return Expanded(
+          child: ListView.builder(
+            itemCount: filteredProducts.length,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            itemBuilder: (context, index) {
+              final product = filteredProducts[index];
+
+              // Check if selected
+              final bool isSelected = orderVM.orderModel.orderItems
+                  .any((item) => item.productId.toString() == product.id);
+
+              return GestureDetector(
+                onTap: () {
+                  OrderItemModel orderItemModel = OrderItemModel(
+                    productId: int.parse(product.id),
+                    productName: product.name,
+                    quantity: int.parse(product.quantity),
+                    unitPrice: double.parse(product.sellingPrice),
+                  );
+
+                  if (!isSelected) {
+                    orderVM.addToOrderItems = orderItemModel;
+                  } else {
+                    orderVM.removeFromOrderItems = orderItemModel.productId;
+                  }
+                },
+                child: ProductWidget(
+                  productModel: product,
+                  isSelected: isSelected,
+                ),
+              );
+            },
+          ),
+        );
       },
     );
   }
 }
 
-
-
 class ProductWidget extends StatelessWidget {
-  const ProductWidget({super.key, required this.productModel});
-
   final ProductModel productModel;
+  final bool isSelected;
+
+  const ProductWidget({
+    super.key,
+    required this.productModel,
+    required this.isSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 2),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Provider.of<UpdateOrderVM>(context)
-            .orderModel
-            .orderItems
-            .any((product) => product.productId.toString() == productModel.id)
-            ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
-            : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
+        color: isSelected
+            ? Theme.of(context).colorScheme.tertiary.withAlpha(40)
+            : Theme.of(context).colorScheme.surface,
         borderRadius: Constants.BORDER_RADIUS_20,
+        border: Border.all(
+          color: isSelected
+              ? Theme.of(context).colorScheme.tertiary
+              : Colors.transparent,
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(10),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          )
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,157 +118,125 @@ class ProductWidget extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceTint,
-                  borderRadius: Constants.BORDER_RADIUS_20,
-                ),
-                child: Image.network(
-                  productModel.image,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                  // Show a loading spinner while the image is loading
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ),
-                    );
-                  },
-                  // Show a fallback if the image fails to load
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Icon(
-                      Iconsax.shopping_bag,
-                      size: 40,
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(width: 20),
+              // Flexible Image handling
+              _buildProductImage(context),
+              const SizedBox(width: 12),
+
+              // Content Area
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title
-                    Row(
-                      children: [
-                        DefaultText(txt: productModel.sku!, bold: true),
-                        const SizedBox(width: 10),
-                        Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                          width: 5,
-                          height: 5,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        DefaultText(
-                          txt: productModel.name,
-                          bold: true,
-                        ),
-
-                        const Expanded(child: SizedBox()),
-
-                        // Dot indicator for new
-                        if (int.parse(productModel.quantity) < 1)
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.red.shade300,
-                                borderRadius: Constants.BORDER_RADIUS_20),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 2),
-                            // margin: const EdgeInsets.only(top: 4, right: 12),
-                            child: const DefaultText(
-                              txt: 'Out of stock',
-                              color: Colors.white,
-                            ),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    // Message
+                    _buildHeader(context),
+                    const SizedBox(height: 4),
                     Text(
                       productModel.productDescription,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Theme.of(context).colorScheme.onSurface.withAlpha(180),
+                      ),
                     ),
-                    const SizedBox(height: 6),
-                    // Time
-                    Row(
-                      children: [
-                        DefaultText(
-                          txt: "${productModel.category}    |  ",
-                          size: 14,
-                        ),
-                        DefaultText(
-                          txt: " ${productModel.quantity} Pieces",
-                          size: 14,
-                        ),
-                        const SizedBox(width: 15),
-                      ],
-                    ),
+                    const SizedBox(height: 8),
+                    _buildTags(context),
                   ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 10),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.green.shade300,
-                    borderRadius: Constants.BORDER_RADIUS_20),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 4,
-                ),
-                width: 200,
-                child: Row(
-                  children: [
-                    const DefaultText(
-                        txt: "Buying Price  ", size: 14, color: Colors.white),
-                    DefaultText(
-                        txt: "${productModel.buyingPrice} EGP", size: 14, color: Colors.white),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 5),
-              Container(
-                width: 200,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.tertiary,
-                    borderRadius: Constants.BORDER_RADIUS_20),
-                padding:
-                const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-                child: Row(
-                  children: [
-                    const DefaultText(
-                        txt: "Selling Price  ", size: 14, color: Colors.white),
-                    DefaultText(
-                        txt: "${productModel.sellingPrice} EGP", size: 14, color: Colors.white),
-                  ],
-                ),
-              ),
-            ],
+          const SizedBox(height: 12),
+          _buildPriceSection(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProductImage(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Image.network(
+        productModel.image,
+        width: 65,
+        height: 65,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, progress) {
+          if (progress == null) return child;
+          return Container(
+            width: 65,
+            height: 65,
+            color: Colors.grey.shade200,
+            child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+          );
+        },
+        errorBuilder: (context, _, __) => Container(
+          width: 65,
+          height: 65,
+          color: Colors.grey.shade100,
+          child: const Icon(Iconsax.box, size: 30, color: Colors.grey),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 6,
+      children: [
+        DefaultText(txt: productModel.sku ?? "N/A", bold: true, size: 14),
+        Container(width: 4, height: 4, decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.grey)),
+        DefaultText(txt: productModel.name, bold: true, size: 14),
+        if (int.parse(productModel.quantity) < 1)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(color: Colors.red.shade400, borderRadius: BorderRadius.circular(6)),
+            child: const Text('Out of stock', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
           ),
-          const SizedBox(height: 5),
-          Divider(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
-            thickness: 0.5,
-          )
+      ],
+    );
+  }
+
+  Widget _buildTags(BuildContext context) {
+    return Row(
+      children: [
+        Icon(Iconsax.category, size: 14, color: Theme.of(context).colorScheme.primary),
+        const SizedBox(width: 4),
+        DefaultText(txt: productModel.category, size: 12),
+        const SizedBox(width: 12),
+        Icon(Iconsax.archive_1, size: 14, color: Theme.of(context).colorScheme.primary),
+        const SizedBox(width: 4),
+        DefaultText(txt: "${productModel.quantity} In Stock", size: 12),
+      ],
+    );
+  }
+
+  Widget _buildPriceSection(BuildContext context) {
+    // Wrap allows price boxes to stack if they are too wide for the screen
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: [
+        _priceBadge(label: "Buying", value: productModel.buyingPrice, color: Theme.of(context).colorScheme.tertiary.withAlpha(40)),
+        _priceBadge(label: "Selling", value: productModel.sellingPrice, color: Theme.of(context).colorScheme.tertiary.withAlpha(40)),
+      ],
+    );
+  }
+
+  Widget _priceBadge({required String label, required String value, required Color color}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("$label: ", style: const TextStyle(color: Colors.black, fontSize: 12)),
+          Text("$value EGP", style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 13)),
         ],
       ),
     );
   }
 }
-

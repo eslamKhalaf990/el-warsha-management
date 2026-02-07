@@ -30,6 +30,11 @@ class ProductVM extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> initAllCategories () async {
+    allCategories = await getAllCategories();
+    notifyListeners();
+  }
+
   Future<List<ProductModel>> getAllProducts() async {
     List<ProductModel> products = [];
     try {
@@ -87,6 +92,10 @@ class ProductVM extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
+      if(productDiscount.isEmpty){
+        productDiscount = "0";
+      }
+
       final response = await _productService.addProductWithImage(
         name: productName,
         description: productDescription,
@@ -138,6 +147,34 @@ class ProductVM extends ChangeNotifier {
     } catch (e) {
       status = "product_not_deleted";
       debugPrint("Error deleting product: $e");
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+
+    return status;
+  }
+
+  Future<String> addCategory(String name) async {
+    String status = "";
+    try {
+      isLoading = true;
+
+      notifyListeners();
+
+      final response = await _productService.addCategory(name, _userViewModel.token);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        status = "category_added";
+        initAllCategories();
+        debugPrint("Category added successfully");
+      } else {
+        status = "category_not_deleted";
+        debugPrint("Failed to add category: ${response.statusCode}");
+      }
+    } catch (e) {
+      status = "category_not_deleted";
+      debugPrint("Error adding category: $e");
     } finally {
       isLoading = false;
       notifyListeners();

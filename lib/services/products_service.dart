@@ -74,6 +74,33 @@ class ProductService {
     return response;
   }
 
+  Future<http.Response> addCategory(String name, String token) async {
+    debugPrint("addCategory with name: $name called");
+    http.Response response;
+    try {
+      response = await http.post(
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": 'Bearer $token',
+        },
+        Uri.parse(
+          "${Baseurl.addCategoryAPI}/add",
+        ),
+        body: jsonEncode({
+          'name': name,
+        }),
+      ).timeout(const Duration(seconds: Constants.TIMEOUT));
+
+      print(response.body);
+
+    } on TimeoutException {
+      throw Exception('The request timed out. Please try again later.');
+    } catch (e) {
+      throw Exception('Failed to add your category: $e');
+    }
+    return response;
+  }
+
   Future<http.StreamedResponse> addProductWithImage({
     required String name,
     required String description,
@@ -87,7 +114,7 @@ class ProductService {
     required String token,
   }) async {
     var uri = Uri.parse(Baseurl.addProductAPI);
-
+    print(discount);
     final product = jsonEncode({
       "name": name,
       "description": description,

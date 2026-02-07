@@ -137,7 +137,7 @@ class UpdateOrderDetails extends StatelessWidget {
                         color: Theme.of(context).colorScheme.tertiary,
                       ),
                     ),
-                    value: payment.platformSource.text.isNotEmpty
+                    initialValue: payment.platformSource.text.isNotEmpty
                         ? payment.platformSource.text.toLowerCase()
                         : null, // bind to controller if already set
                     items: const [

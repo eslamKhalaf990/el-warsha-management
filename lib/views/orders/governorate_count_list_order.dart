@@ -84,8 +84,8 @@ class GovernorateCountList extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(width: 6),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 3.0),
+                              const Padding(
+                                padding: EdgeInsets.only(bottom: 3.0),
                                 child: Text(
                                   'Orders',
                                   style: TextStyle(

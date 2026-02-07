@@ -1,68 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:warsha_app/models/customer_model.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
+
+// Your existing imports
 import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_text.dart';
-
-import '../../../models/customerModel.dart' show CustomerModel;
+import '../../../models/customerModel.dart';
 
 class CustomerToUpdate extends StatelessWidget {
   const CustomerToUpdate({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<CustomerVM>(context);
+    final customerVM = Provider.of<CustomerVM>(context);
+    final orderVM = Provider.of<UpdateOrderVM>(context);
 
     return FutureBuilder<List<CustomerModel>>(
-      future: Provider.of<CustomerVM>(context).allCustomers,
+      future: customerVM.allCustomers,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-          );
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (snapshot.data!.isNotEmpty) {
+        } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          final query = customerVM.searchController.text.toLowerCase();
           final filteredCustomers = snapshot.data!.where((customer) {
             final name = customer.fullName.toLowerCase();
             final phone = customer.phone.toLowerCase();
-            final query = Provider.of<CustomerVM>(context)
-                .searchController
-                .text
-                .toLowerCase();
             return name.contains(query) || phone.contains(query);
           }).toList();
+
           return Expanded(
             child: ListView.builder(
               itemCount: filteredCustomers.length,
-              padding: EdgeInsets.zero,
+              padding: const EdgeInsets.only(top: 10),
               itemBuilder: (context, index) {
+                final customer = filteredCustomers[index];
+                // Check selection logic
+                final bool isSelected = orderVM.orderModel.customer?.customerId == customer.customerId;
+
                 return GestureDetector(
                   onTap: () {
-                    Provider.of<UpdateOrderVM>(context, listen: false)
-                        .addCustomer = filteredCustomers[index];
+                    orderVM.addCustomer = customer;
                   },
                   child: CustomerWidget(
-                    index: index,
-                    name: filteredCustomers[index].fullName,
-                    email: filteredCustomers[index].governorate,
-                    address: filteredCustomers[index].address,
-                    phone: filteredCustomers[index].phone,
-                    id: filteredCustomers[index].customerId.toString(),
+                    customer: customer,
+                    isSelected: isSelected,
                   ),
                 );
               },
             ),
           );
         } else {
-          return const Center(
-            child: Text("No customers yet!"),
-          );
+          return const Center(child: Text("No customers yet!"));
         }
       },
     );
@@ -70,113 +62,127 @@ class CustomerToUpdate extends StatelessWidget {
 }
 
 class CustomerWidget extends StatelessWidget {
-  final String name;
-  final String id;
-  final String email;
-  final String phone;
-  final String address;
-  final int index;
+  final CustomerModel customer;
+  final bool isSelected;
 
   const CustomerWidget({
     super.key,
-    required this.name,
-    required this.address,
-    required this.email,
-    required this.phone,
-    required this.index,
-    required this.id,
+    required this.customer,
+    required this.isSelected,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Provider.of<UpdateOrderVM>(context).orderModel.customer?.customerId.toString() == id
-            ? Theme.of(context).colorScheme.tertiary.withAlpha(30)
-            : Theme.of(context).colorScheme.onPrimary.withAlpha(100),
+        color: isSelected
+            ? Theme.of(context).colorScheme.tertiary.withAlpha(40)
+            : Theme.of(context).colorScheme.surface,
         borderRadius: Constants.BORDER_RADIUS_20,
+        border: Border.all(
+          color: isSelected
+              ? Theme.of(context).colorScheme.tertiary
+              : Colors.transparent,
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(5),
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          )
+        ],
       ),
-      child: Column(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          // User Avatar / Icon
+          CircleAvatar(
+            radius: 25,
+            backgroundColor: isSelected
+                ? Theme.of(context).colorScheme.tertiary
+                : Theme.of(context).colorScheme.primary.withAlpha(30),
+            child: Icon(
+              Iconsax.user_copy,
+              color: isSelected ? Colors.white : Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          const SizedBox(width: 15),
+
+          // Details Section
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Title
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.surfaceTint,
-                            borderRadius: Constants.BORDER_RADIUS_20,
-                          ),
-                          child: const Icon(
-                            Iconsax.profile_circle,
-                            size: 25,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            DefaultText(
-                              txt: name,
-                              bold: true,
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            DefaultText(
-                              txt: email,
-                              bold: true,
-                            ),
-                          ],
-                        ),
-                      ],
+                    Expanded(
+                      child: DefaultText(
+                        txt: customer.fullName,
+                        bold: true,
+                        size: 16,
+                        center: false,
+                      ),
                     ),
-                    const SizedBox(height: 6),
-                    // Message
-                    Text(address),
-                    const SizedBox(height: 6),
-                    // Time
-                    Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.green.shade300,
-                              borderRadius: Constants.BORDER_RADIUS_20),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 2),
-                          child: Row(
-                            children: [
-                              const DefaultText(
-                                  txt: "Phone:  ",
-                                  size: 14,
-                                  color: Colors.white),
-                              DefaultText(
-                                  txt: phone, size: 14, color: Colors.white),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    Divider(
-                      color:
-                          Theme.of(context).colorScheme.onSurface.withAlpha(50),
-                      thickness: 0.5,
-                    )
+                    if (isSelected)
+                      Icon(
+                        Iconsax.tick_circle,
+                        color: Theme.of(context).colorScheme.tertiary,
+                        size: 20,
+                      ),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: 2),
+                DefaultText(
+                  txt: customer.governorate,
+                  size: 13,
+                  color: Colors.grey,
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Icon(Iconsax.location, size: 14, color: Colors.grey),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        customer.address,
+                        style: const TextStyle(fontSize: 13, color: Colors.grey),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+
+                // Flexible Phone Badge
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiary.withAlpha(40),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Iconsax.call, size: 14, color: Theme.of(context).colorScheme.tertiary,
+                      ),
+                      const SizedBox(width: 6),
+                      DefaultText(
+                        txt: customer.phone,
+                        size: 12,
+                        color: Theme.of(context).colorScheme.tertiary,
+                        bold: true,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

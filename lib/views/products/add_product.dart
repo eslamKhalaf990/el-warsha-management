@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/add_order/add_product.dart';
 import 'package:warsha_app/controllers/drag_drop_controller.dart';
 import 'package:warsha_app/models/category_model.dart';
-import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/default_button.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/utils/navigator.dart';
@@ -133,43 +132,67 @@ class AddProduct extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       // Category Dropdown (Styled to match inputs)
-                      DropdownButtonFormField<CategoryModel>(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          labelText: "Category",
-                          labelStyle: TextStyle(color: Colors.grey.shade600, fontSize: 14),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide(color: Colors.grey.shade200),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: DropdownButtonFormField<CategoryModel>(
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                labelText: "Category",
+                                labelStyle: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                  borderSide: BorderSide(color: Colors.grey.shade200),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                  borderSide: BorderSide(color: Colors.grey.shade200),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                  borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1.5),
+                                ),
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  child: Icon(Iconsax.category, color: Theme.of(context).colorScheme.tertiary),
+                                ),
+                              ),
+                              dropdownColor: Colors.white,
+                              items: Provider.of<ProductVM>(context, listen: false)
+                                  .allCategories
+                                  ?.map((category) {
+                                return DropdownMenuItem<CategoryModel>(
+                                  value: category,
+                                  child: Text(category.name),
+                                );
+                              }).toList(),
+                              onChanged: (selectedCategory) {
+                                if (selectedCategory != null) {
+                                  product.productCategory.text = selectedCategory.categoryId.toString();
+                                }
+                              },
+                            ),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide(color: Colors.grey.shade200),
+
+                          const SizedBox(width: 15),
+
+                          IconButton(
+                            onPressed: () => _showAddCategoryDialog(context), // Added here
+                            icon: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.tertiary.withAlpha(20),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Icon(
+                                Iconsax.add_circle_copy,
+                                color: Theme.of(context).colorScheme.tertiary,
+                                size: 25,
+                              ),
+                            ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                            borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1.5),
-                          ),
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Icon(Iconsax.category, color: Theme.of(context).colorScheme.tertiary),
-                          ),
-                        ),
-                        dropdownColor: Colors.white,
-                        items: Provider.of<ProductVM>(context, listen: false)
-                            .allCategories
-                            ?.map((category) {
-                          return DropdownMenuItem<CategoryModel>(
-                            value: category,
-                            child: Text(category.name),
-                          );
-                        }).toList(),
-                        onChanged: (selectedCategory) {
-                          if (selectedCategory != null) {
-                            product.productCategory.text = selectedCategory.categoryId.toString();
-                          }
-                        },
+                        ],
                       ),
 
                       const SizedBox(height: 20),
@@ -265,7 +288,41 @@ class AddProduct extends StatelessWidget {
       ),
     );
   }
+  void _showAddCategoryDialog(BuildContext context) {
+    final TextEditingController controller = TextEditingController();
 
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add New Category'),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          decoration: const InputDecoration(
+            hintText: 'Enter category name',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context), // Cancel
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: Provider.of<ProductVM>(context).isLoading ? null :() {
+              String name = controller.text.trim();
+              if (name.isNotEmpty) {
+                Provider.of<ProductVM>(context, listen: false).addCategory(name);
+                controller.clear();
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
   // Helper widget to create those white cards
   Widget _buildSectionContainer(BuildContext context, {required String title, required Widget child}) {
     return Container(

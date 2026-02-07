@@ -159,7 +159,7 @@ class UpdateProduct extends StatelessWidget {
                                 ),
                                 DropdownButtonFormField<CategoryModel>(
                                   // Find the matching category instance from the list
-                                  value: Provider.of<ProductVM>(context, listen: false).allCategories?.firstWhere(
+                                  initialValue: Provider.of<ProductVM>(context, listen: false).allCategories?.firstWhere(
                                         (c) => c.categoryId.toString() == productModel.categoryId,
                                     orElse: () => Provider.of<ProductVM>(context, listen: false).allCategories!.first,
                                   ),

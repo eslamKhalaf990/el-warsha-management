@@ -1,6 +1,6 @@
 class Baseurl {
-  // static String baseURL = "http://localhost:8080/";
-  static String baseURL = "https://yards-loops-ethics-much.trycloudflare.com/";
+  static String baseURL = "http://localhost:8080/";
+  // static String baseURL = "https://explicitly-bowl-documentation-objective.trycloudflare.com/";
   static String baseURLImages = "${baseURL}api/files/";
 
   /// =============== Authentication APIs ============== ///
@@ -31,13 +31,14 @@ class Baseurl {
   static String addProductAPI = '${baseURL}products';
   static String updateProductAPI = '${baseURL}products';
   static String deleteProductAPI = '${baseURL}products';
+  static String addCategoryAPI = '${baseURL}category';
   /// ===============   Products APIs    ============== ///
 
   /// ===============   Cash Flow APIs    ============== ///
   static String getRevenueSummaryAPI = '${baseURL}cashFlow/revenueSummary';
   static String getDailyCashFlowAPI = '${baseURL}cashFlow/daily';
   static String getTotalSoldProductsAPI = '${baseURL}cashFlow/topSoldProducts';
-  /// ===============   Products APIs    ============== ///
+  /// ===============   Cash Flow APIs    ============== ///
 
   /// ===============   Accounting APIs    ============== ///
   static String getAccountsBalanceAPI = '${baseURL}api/bank/accounts';
@@ -45,5 +46,13 @@ class Baseurl {
   static String getTransactionsAPI = '${baseURL}api/bank/transactions';
   static String getTransactionCategoriesAPI = '${baseURL}api/bank/transactionCategories';
   static String deleteAllTransactionsAPI = '${baseURL}api/bank/resetTransactions';
-  /// ===============   Products APIs    ============== ///
+  /// ===============   Accounting APIs    ============== ///
+
+  /// ===============   Vendors APIs    ============== ///
+  static String getVendorsAPI = '${baseURL}vendors';
+  static String addVendorAPI = '${baseURL}vendors';
+  static String updateVendorAPI = '${baseURL}vendors';
+  static String deleteVendorAPI = '${baseURL}vendors';
+
+  /// ===============   Vendors APIs    ============== ///
 }

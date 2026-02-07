@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/view_models/add_product_v_m.dart';
+import 'package:warsha_app/views/vendors/add_vendor.dart';
 
-import 'add_product.dart';
-
-class CRUDProduct extends StatelessWidget {
-  const CRUDProduct({super.key});
+class CRUDVendor extends StatelessWidget {
+  const CRUDVendor({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,37 +20,22 @@ class CRUDProduct extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            // Check screen width to decide layout
-            if (constraints.maxWidth < 700) {
-              // --- MOBILE LAYOUT (Vertical) ---
+            bool isMobile = constraints.maxWidth < 700;
+
+            if (isMobile) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  DefaultForm(
-                    title: 'Search For Product By Name or ID',
-                    controller:
-                    Provider.of<ProductVM>(context).searchController,
-                    numberOfLines: 1,
-                  ),
+                  _buildSearchField(context),
                   const SizedBox(height: 15),
-                  // Full width button on mobile
                   _buildAddButton(context, isFullWidth: true),
                 ],
               );
             } else {
-              // --- DESKTOP LAYOUT (Horizontal) ---
               return Row(
                 children: [
-                  Expanded(
-                    child: DefaultForm(
-                      title: 'Search For Product By Name or ID',
-                      controller:
-                      Provider.of<ProductVM>(context).searchController,
-                      numberOfLines: 1,
-                    ),
-                  ),
+                  Expanded(child: _buildSearchField(context)),
                   const SizedBox(width: 15),
-                  // Standard sized button on desktop
                   _buildAddButton(context, isFullWidth: false),
                 ],
               );
@@ -64,20 +46,29 @@ class CRUDProduct extends StatelessWidget {
     );
   }
 
+  Widget _buildSearchField(BuildContext context) {
+    return DefaultForm(
+      title: 'Search Vendor by Name or Contact',
+      controller: TextEditingController(),
+      numberOfLines: 1,
+      // Adding a listener to update the UI as the user types
+      onChanged: (val) {
+      },
+    );
+  }
+
   Widget _buildAddButton(BuildContext context, {required bool isFullWidth}) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const AddProduct(),
+            builder: (context) => const AddVendor(),
           ),
         );
       },
       borderRadius: Constants.BORDER_RADIUS_50,
       child: Container(
-        // On mobile, this container will take the width provided by parent (stretch)
-        // On desktop, it hugs content + padding.
         width: isFullWidth ? double.infinity : null,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 30),
         decoration: BoxDecoration(
@@ -87,16 +78,16 @@ class CRUDProduct extends StatelessWidget {
           ),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Center text on mobile
-          mainAxisSize: MainAxisSize.min, // Hug content on desktop
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              Iconsax.box_add,
+              Iconsax.user_add, // Updated icon for Vendors
               color: Theme.of(context).colorScheme.secondary,
             ),
             const SizedBox(width: 8),
             const DefaultText(
-              txt: "Add Product",
+              txt: "Add Vendor",
               bold: true,
             ),
           ],

@@ -287,8 +287,9 @@ class TopSellingProductsList extends StatelessWidget {
 
   Widget _buildProductRow(BuildContext context, int rank, TopProduct product) {
     Color rankColor;
-    if (rank == 1) rankColor = const Color(0xFFFFD700);
-    else if (rank == 2) rankColor = const Color(0xFFC0C0C0);
+    if (rank == 1) {
+      rankColor = const Color(0xFFFFD700);
+    } else if (rank == 2) rankColor = const Color(0xFFC0C0C0);
     else if (rank == 3) rankColor = const Color(0xFFCD7F32);
     else rankColor = Colors.grey.shade300;
 

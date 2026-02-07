@@ -60,11 +60,11 @@ class _DragDropImageUploadState extends State<DragDropImageUpload> {
                             );
                           }
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Iconsax.document_upload,
                           size: 20,
                         ),
-                        label: DefaultText(
+                        label: const DefaultText(
                           txt: 'Browse Images',
                         ),
                       ),

@@ -7,7 +7,6 @@ import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/order_v_m.dart';
-import 'package:warsha_app/views/orders/add_order/add_order.dart';
 import 'package:warsha_app/views/orders/add_order/add_order_beta.dart';
 
 class CRUDOrder extends StatelessWidget {
@@ -78,7 +77,7 @@ class CRUDOrder extends StatelessWidget {
     return [
       _buildCustomButton(
         context,
-        label: "Add Order (beta)",
+        label: "Add Order",
         icon: Iconsax.receipt_item,
         onTap: () {
           Navigator.push(
@@ -93,19 +92,19 @@ class CRUDOrder extends StatelessWidget {
       // But since we return a list, the Row/Wrap handles the layout.
       // We will add SizedBox in the Row layout dynamically or assume Wrap handles spacing.
 
-      _buildCustomButton(
-        context,
-        label: "Add Order",
-        icon: Iconsax.receipt_item,
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AddOrder(),
-            ),
-          );
-        },
-      ),
+      // _buildCustomButton(
+      //   context,
+      //   label: "Add Order",
+      //   icon: Iconsax.receipt_item,
+      //   onTap: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => const AddOrder(),
+      //       ),
+      //     );
+      //   },
+      // ),
 
       _buildCustomButton(
         context,

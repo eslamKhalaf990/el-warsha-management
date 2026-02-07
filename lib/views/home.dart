@@ -64,7 +64,7 @@ class Home extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      appBar: DefaultAppBar(
+      appBar: const DefaultAppBar(
 
       ),
       // The body is just the selected page
@@ -145,7 +145,7 @@ class _SideNavRail extends StatelessWidget {
               ),
               _NavigationItem(
                 title: 'Products',
-                icon: Iconsax.category,
+                icon: Iconsax.box_1,
                 isSelected: nav.page == 1,
                 onTap: () => navNotifier.updatePage(1),
               ),
@@ -160,6 +160,18 @@ class _SideNavRail extends StatelessWidget {
                 icon: Iconsax.profile_2user,
                 isSelected: nav.page == 3,
                 onTap: () => navNotifier.updatePage(3),
+              ),
+              _NavigationItem(
+                title: 'Categories',
+                icon: Iconsax.category,
+                isSelected: nav.page == 3,
+                onTap: () => navNotifier.updatePage(3),
+              ),
+              _NavigationItem(
+                title: 'Vendors',
+                icon: Iconsax.people,
+                isSelected: nav.page == 3,
+                onTap: () => navNotifier.updatePage(4),
               ),
               _NavigationItem(
                 title: 'Accounting',
@@ -187,7 +199,7 @@ class _Logo extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: Constants.BORDER_RADIUS_100,
-            child: Image.asset("assets/images/logo.jpg", width: 40),
+            child: Image.asset("assets/images/logo-no-back.png", width: 40),
           ),
           const SizedBox(width: 10),
           const DefaultText(
