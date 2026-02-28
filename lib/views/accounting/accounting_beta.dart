@@ -9,8 +9,8 @@ import 'package:warsha_app/view_models/accountings_v_m.dart';
 import 'package:warsha_app/utils/price_helper.dart';
 import 'package:warsha_app/views/accounting/transaction_table.dart';
 
-class AccountingBeta extends StatelessWidget {
-  const AccountingBeta({super.key});
+class Accounting extends StatelessWidget {
+  const Accounting({super.key});
 
   @override
   Widget build(BuildContext context) {

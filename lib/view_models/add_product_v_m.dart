@@ -24,13 +24,13 @@ class ProductVM extends ChangeNotifier {
     });
   }
 
-  Future<void> initAllProducts () async {
+  Future<void> initAllProducts() async {
     allProducts = getAllProducts();
     allCategories = await getAllCategories();
     notifyListeners();
   }
 
-  Future<void> initAllCategories () async {
+  Future<void> initAllCategories() async {
     allCategories = await getAllCategories();
     notifyListeners();
   }
@@ -39,7 +39,8 @@ class ProductVM extends ChangeNotifier {
     List<ProductModel> products = [];
     try {
       isLoading = true;
-      final response = await _productService.getAllProducts(_userViewModel.token);
+      final response =
+          await _productService.getAllProducts(_userViewModel.token);
       if (response.statusCode == 200) {
         final productsData = jsonDecode(response.body);
         final List<dynamic> data = productsData;
@@ -60,7 +61,8 @@ class ProductVM extends ChangeNotifier {
     List<CategoryModel> categories = [];
     try {
       isLoading = true;
-      final response = await _productService.getAllCategories(_userViewModel.token);
+      final response =
+          await _productService.getAllCategories(_userViewModel.token);
       if (response.statusCode == 200) {
         final categoriesData = jsonDecode(response.body);
         final List<dynamic> data = categoriesData;
@@ -92,21 +94,20 @@ class ProductVM extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      if(productDiscount.isEmpty){
+      if (productDiscount.isEmpty) {
         productDiscount = "0";
       }
 
       final response = await _productService.addProductWithImage(
-        name: productName,
-        description: productDescription,
-        buyingPrice: productBPrice,
-        sellingPrice: productSPrice,
-        discount: productDiscount,
-        category: productCategory,
-        quantity: productQuantity,
-        imageBytes: imageBytes,
-          token: _userViewModel.token
-      );
+          name: productName,
+          description: productDescription,
+          buyingPrice: productBPrice,
+          sellingPrice: productSPrice,
+          discount: productDiscount,
+          category: productCategory,
+          quantity: productQuantity,
+          imageBytes: imageBytes,
+          token: _userViewModel.token);
 
       final responseBody = await response.stream.bytesToString();
 
@@ -134,7 +135,8 @@ class ProductVM extends ChangeNotifier {
 
       notifyListeners();
 
-      final response = await _productService.deleteProduct(productId, _userViewModel.token);
+      final response =
+          await _productService.deleteProduct(productId, _userViewModel.token);
       print(response.statusCode);
 
       if (response.statusCode == 200 || response.statusCode == 204) {
@@ -162,7 +164,8 @@ class ProductVM extends ChangeNotifier {
 
       notifyListeners();
 
-      final response = await _productService.addCategory(name, _userViewModel.token);
+      final response =
+          await _productService.addCategory(name, _userViewModel.token);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         status = "category_added";
@@ -188,5 +191,4 @@ class ProductVM extends ChangeNotifier {
     searchController.dispose();
     super.dispose();
   }
-
 }

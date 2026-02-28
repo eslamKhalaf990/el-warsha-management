@@ -1,6 +1,6 @@
 class Baseurl {
-  static String baseURL = "http://localhost:8080/";
-  // static String baseURL = "https://explicitly-bowl-documentation-objective.trycloudflare.com/";
+  // static String baseURL = "http://localhost:8080/";
+  static String baseURL = "https://arc-checking-newbie-developmental.trycloudflare.com/";
   static String baseURLImages = "${baseURL}api/files/";
 
   /// =============== Authentication APIs ============== ///

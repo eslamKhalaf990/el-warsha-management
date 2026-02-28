@@ -5,7 +5,6 @@ import 'package:warsha_app/models/account_balance.dart';
 import 'package:warsha_app/models/create_order_request.dart';
 
 // Models & Values
-import 'package:warsha_app/models/customerModel.dart';
 import 'package:warsha_app/models/orderItemModel.dart';
 import 'package:warsha_app/models/product_model.dart';
 import 'package:warsha_app/utils/const_values.dart';
@@ -133,7 +132,6 @@ class CustomerSelectionSection extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // CUSTOMER DROPDOWN
           Consumer<CustomerVM>(
             builder: (context, customerVM, _) {
               if (customerVM.allCustomers == null) {
@@ -145,21 +143,43 @@ class CustomerSelectionSection extends StatelessWidget {
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) return const SizedBox();
 
-                  return DropdownButtonFormField<CustomerModel>(
-                    decoration: _inputDecoration(
-                        "Select Customer", Iconsax.profile_circle),
-                    items: snapshot.data!.map((customer) {
-                      return DropdownMenuItem(
-                        value: customer,
-                        child: Text("${customer.fullName} - ${customer.phone}",
-                            overflow: TextOverflow.ellipsis),
+                  return SearchAnchor(
+                    viewElevation: 2,
+                    builder: (BuildContext context, SearchController controller) {
+                      return SearchBar(
+                        elevation: const WidgetStatePropertyAll<double>(0.0),
+                        shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: const BorderRadius.all(Radius.circular(25)),
+                                side: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1)
+
+                            ),
+                        ),
+                        controller: controller,
+                        padding: const WidgetStatePropertyAll<EdgeInsets>(
+                            EdgeInsets.symmetric(horizontal: 16.0)),
+                        onTap: () => controller.openView(),
+                        onChanged: (_) => controller.openView(),
+                        leading: const Icon(Iconsax.profile_circle),
+                        hintText: "Search Customer...",
                       );
-                    }).toList(),
-                    onChanged: (CustomerModel? selected) {
-                      if (selected != null) {
-                        Provider.of<AddOrderVM>(context, listen: false)
-                            .addCustomer = selected;
-                      }
+                    },
+                    suggestionsBuilder: (BuildContext context, SearchController controller) {
+                      final String input = controller.value.text.toLowerCase();
+
+                      // snapshot.data is your List<CustomerModel>
+                      return snapshot.data!
+                          .where((customer) =>
+                          customer.fullName.toLowerCase().contains(input))
+                          .map((customer) => ListTile(
+                        title: Text(customer.fullName),
+                        subtitle: Text(customer.phone),
+                        onTap: () {
+                          controller.closeView(customer.fullName);
+                          Provider.of<AddOrderVM>(context, listen: false)
+                              .addCustomer = customer;
+                        },
+                      ));
                     },
                   );
                 },
@@ -256,24 +276,58 @@ class _OrderLineItemsSectionState extends State<OrderLineItemsSection> {
             children: [
               Consumer<ProductVM>(
                 builder: (context, productVM, _) {
-                  return FutureBuilder(
+                  return FutureBuilder<List<ProductModel>>(
                     future: productVM.allProducts,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) return const SizedBox();
-                      return DropdownButtonFormField<ProductModel>(
-                        initialValue: selectedProduct,
-                        isExpanded: true,
-                        decoration:
-                            _inputDecoration("Select Product", Iconsax.box_1),
-                        items: snapshot.data!.map((prod) {
-                          return DropdownMenuItem(
-                            value: prod,
-                            child: Text(prod.name,
-                                overflow: TextOverflow.ellipsis),
+
+                      return SearchAnchor(
+                        viewElevation: 0, // Removes shadow from the expanded list
+                        viewHintText: "Type product name...",
+                        viewShape: RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        builder: (BuildContext context, SearchController controller) {
+                          // Set initial text if a product is already selected
+                          if (selectedProduct != null && controller.text.isEmpty) {
+                            controller.text = selectedProduct!.name;
+                          }
+
+                          return SearchBar(
+                            controller: controller,
+                            elevation: const WidgetStatePropertyAll(0), // Low elevation
+                            backgroundColor: WidgetStatePropertyAll(Colors.grey.shade50),
+                            shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(25)),
+                                  side: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1)
+
+                              ),
+                            ),
+                            padding: const WidgetStatePropertyAll<EdgeInsets>(
+                                EdgeInsets.symmetric(horizontal: 16.0)),
+                            onTap: () => controller.openView(),
+                            onChanged: (_) => controller.openView(),
+                            leading: const Icon(Iconsax.box_1),
+                            hintText: "Select Product",
                           );
-                        }).toList(),
-                        onChanged: (val) =>
-                            setState(() => selectedProduct = val),
+                        },
+                        suggestionsBuilder: (BuildContext context, SearchController controller) {
+                          final String input = controller.value.text.toLowerCase();
+
+                          return snapshot.data!
+                              .where((prod) => prod.name.toLowerCase().contains(input))
+                              .map((prod) => ListTile(
+                            title: Text(prod.name),
+                            onTap: () {
+                              setState(() {
+                                selectedProduct = prod;
+                                controller.closeView(prod.name);
+                              });
+                            },
+                          ));
+                        },
                       );
                     },
                   );
@@ -347,10 +401,10 @@ class _OrderLineItemsSectionState extends State<OrderLineItemsSection> {
                     padding: const EdgeInsets.symmetric(vertical: 30),
                     child: Column(
                       children: [
-                        Icon(Iconsax.shopping_cart,
-                            size: 40, color: Colors.grey.shade300),
+                        Icon(Iconsax.box_1_copy,
+                            size: 40, color: Colors.grey.shade400),
                         const SizedBox(height: 10),
-                        const Text("No items added yet",
+                        const Text("Add Your First Item",
                             style: TextStyle(color: Colors.grey)),
                       ],
                     ),
@@ -492,7 +546,6 @@ class OrderSummaryCard extends StatelessWidget {
                   controller: payment.delivery,
                   decoration: _inputDecoration("Delivery", Iconsax.truck),
                   keyboardType: TextInputType.number,
-                  // onChanged: (v) => payment.notifyListeners(),
                 ),
               ),
               const SizedBox(width: 10),
@@ -502,7 +555,6 @@ class OrderSummaryCard extends StatelessWidget {
                   decoration:
                       _inputDecoration("Discount", Iconsax.discount_shape),
                   keyboardType: TextInputType.number,
-                  // onChanged: (v) => payment.notifyListeners(),
                 ),
               ),
             ],
@@ -513,7 +565,6 @@ class OrderSummaryCard extends StatelessWidget {
             controller: payment.downPayment,
             decoration: _inputDecoration("Down Payment", Iconsax.moneys),
             keyboardType: TextInputType.number,
-            // onChanged: (v) => payment.notifyListeners(),
           ),
 
           const SizedBox(height: 10),
@@ -522,7 +573,6 @@ class OrderSummaryCard extends StatelessWidget {
             maxLines: 2,
             decoration: _inputDecoration("Notes", Iconsax.note_1),
             keyboardType: TextInputType.text,
-            // onChanged: (v) => payment.notifyListeners(),
           ),
 
           const SizedBox(height: 25),

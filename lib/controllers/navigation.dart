@@ -14,7 +14,7 @@ class Navigation extends ChangeNotifier {
     const Orders(),
     const Customers(),
     const VendorList(),
-    const AccountingBeta(),
+    const Accounting(),
   ];
 
   int page = 0;
