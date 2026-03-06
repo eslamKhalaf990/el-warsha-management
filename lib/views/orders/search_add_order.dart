@@ -88,23 +88,6 @@ class CRUDOrder extends StatelessWidget {
           );
         },
       ),
-      // On desktop, add spacing between items manually if not using Wrap
-      // But since we return a list, the Row/Wrap handles the layout.
-      // We will add SizedBox in the Row layout dynamically or assume Wrap handles spacing.
-
-      // _buildCustomButton(
-      //   context,
-      //   label: "Add Order",
-      //   icon: Iconsax.receipt_item,
-      //   onTap: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => const AddOrder(),
-      //       ),
-      //     );
-      //   },
-      // ),
 
       _buildCustomButton(
         context,
