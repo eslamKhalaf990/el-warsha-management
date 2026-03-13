@@ -38,6 +38,19 @@ class Baseurl {
   static String getRevenueSummaryAPI = '${baseURL}cashFlow/revenueSummary';
   static String getDailyCashFlowAPI = '${baseURL}cashFlow/daily';
   static String getTotalSoldProductsAPI = '${baseURL}cashFlow/topSoldProducts';
+
+  // --- NEW: Customer Analysis Endpoints ---
+  static String getLoyalCustomersAPI = '${baseURL}cashFlow/analysis/customers/loyalty';
+  static String getVipCustomersAPI = '${baseURL}cashFlow/analysis/customers/vip';
+  static String getAtRiskCustomersAPI = '${baseURL}cashFlow/analysis/customers/at-risk';
+  static String getDiscountSeekersAPI = '${baseURL}cashFlow/analysis/discount-seekers';
+
+  // --- NEW: Sales & Market Performance Endpoints ---
+  static String getAverageBasketSizeAPI = '${baseURL}cashFlow/analysis/kpi/average-basket-size';
+  static String getRevenueBySourceAPI = '${baseURL}cashFlow/analysis/revenue-by-source';
+  static String getTopPerformersAPI = '${baseURL}cashFlow/analysis/products/top-performers';
+  static String getGovernoratePerformanceAPI = '${baseURL}cashFlow/analysis/governorate-performance';
+  static String getDailyRevenueReportAPI = '${baseURL}cashFlow/analysis/daily-revenue-report';
   /// ===============   Cash Flow APIs    ============== ///
 
   /// ===============   Accounting APIs    ============== ///
@@ -53,6 +66,5 @@ class Baseurl {
   static String addVendorAPI = '${baseURL}vendors';
   static String updateVendorAPI = '${baseURL}vendors';
   static String deleteVendorAPI = '${baseURL}vendors';
-
-  /// ===============   Vendors APIs    ============== ///
+/// ===============   Vendors APIs    ============== ///
 }

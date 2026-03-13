@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:warsha_app/views/accounting/accounting_beta.dart';
 import 'package:warsha_app/views/customers/customers.dart';
-import 'package:warsha_app/views/home/home.dart';
+import 'package:warsha_app/views/home/dashboard.dart';
 import 'package:warsha_app/views/orders/orders.dart';
 import 'package:warsha_app/views/products/products.dart';
 import 'package:warsha_app/views/vendors/vendors.dart';
 
 class Navigation extends ChangeNotifier {
   List<Widget> pages = [
-    const HomeCashFlow(),
+    const Dashboard(),
     const Products(),
     const Orders(),
     const Customers(),
