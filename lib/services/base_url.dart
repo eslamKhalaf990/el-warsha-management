@@ -1,6 +1,6 @@
 class Baseurl {
   // static String baseURL = "http://localhost:8080/";
-  static String baseURL = "https://arc-checking-newbie-developmental.trycloudflare.com/";
+  static String baseURL = "https://achieve-independently-influences-amendment.trycloudflare.com/";
   static String baseURLImages = "${baseURL}api/files/";
 
   /// =============== Authentication APIs ============== ///
@@ -66,5 +66,12 @@ class Baseurl {
   static String addVendorAPI = '${baseURL}vendors';
   static String updateVendorAPI = '${baseURL}vendors';
   static String deleteVendorAPI = '${baseURL}vendors';
-/// ===============   Vendors APIs    ============== ///
+  /// ===============   Vendors APIs    ============== ///
+
+  /// ===============   Shipping Zones APIs    ============== ///
+  static String getAllShippingZonesAPI = '${baseURL}shipping';
+  static String addShippingZoneAPI = '${baseURL}shipping';
+  static String updateShippingZoneAPI = '${baseURL}shipping';
+  static String deleteShippingZoneAPI = '${baseURL}shipping';
+  /// ===============   Shipping Zones APIs    ============== ///
 }

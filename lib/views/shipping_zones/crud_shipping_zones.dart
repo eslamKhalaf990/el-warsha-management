@@ -3,10 +3,10 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:warsha_app/utils/const_values.dart';
 import 'package:warsha_app/utils/deafualt_form_field.dart';
 import 'package:warsha_app/utils/default_text.dart';
-import 'package:warsha_app/views/vendors/add_vendor.dart';
+import 'package:warsha_app/views/shipping_zones/add_shipping_zone.dart';
 
-class CRUDVendor extends StatelessWidget {
-  const CRUDVendor({super.key});
+class CRUDShippingZone extends StatelessWidget {
+  const CRUDShippingZone({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +48,9 @@ class CRUDVendor extends StatelessWidget {
 
   Widget _buildSearchField(BuildContext context) {
     return DefaultForm(
-      title: 'Search Vendor by Name or Contact',
+      title: 'Search Shipping Zone by City',
       controller: TextEditingController(),
       numberOfLines: 1,
-      // Adding a listener to update the UI as the user types
       onChanged: (val) {
       },
     );
@@ -63,7 +62,7 @@ class CRUDVendor extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const AddVendor(),
+            builder: (context) => const AddShippingZone(),
           ),
         );
       },
@@ -82,12 +81,12 @@ class CRUDVendor extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              Iconsax.user_add_copy, // Updated icon for Vendors
+              Iconsax.truck_fast_copy,
               color: Theme.of(context).colorScheme.secondary,
             ),
             const SizedBox(width: 8),
             const DefaultText(
-              txt: "Add Vendor",
+              txt: "Add Shipping Zone",
               bold: true,
             ),
           ],

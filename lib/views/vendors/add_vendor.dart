@@ -253,12 +253,12 @@ class DefaultVendorForm extends StatelessWidget {
           borderRadius: BorderRadius.circular(25),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Color(0xFF8E515D), width: 1.5),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary, width: 1.5),
           borderRadius: BorderRadius.circular(25),
         ),
         prefixIcon: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Icon(icon, color: const Color(0xFF8E515D)),
+          child: Icon(icon, color: Theme.of(context).colorScheme.tertiary),
         ),
       ),
     );

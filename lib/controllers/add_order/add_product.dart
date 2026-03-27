@@ -8,6 +8,7 @@ class ProductProvider extends ChangeNotifier {
   final TextEditingController productSellingPrice = TextEditingController();
   final TextEditingController productCategory = TextEditingController();
   final TextEditingController productQuantity = TextEditingController();
+  final TextEditingController productSupplier = TextEditingController();
   final TextEditingController discount = TextEditingController();
 
   // Live price tracking
@@ -80,6 +81,7 @@ class ProductProvider extends ChangeNotifier {
     productSellingPrice.dispose();
     productCategory.dispose();
     productQuantity.dispose();
+    productSupplier.dispose();
     discount.dispose();
     super.dispose();
   }
@@ -92,6 +94,7 @@ class ProductProvider extends ChangeNotifier {
     productSellingPrice.clear();
     productCategory.clear();
     productQuantity.clear();
+    productSupplier.clear();
     discount.clear();
   }
 }

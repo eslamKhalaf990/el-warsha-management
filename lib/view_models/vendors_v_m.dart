@@ -49,6 +49,9 @@ class VendorVM extends ChangeNotifier {
   Future<String> addVendor(Map<String, dynamic> vendorData) async {
     String status = "";
     try {
+      isLoading = true;
+      notifyListeners();
+
       final response = await _vendorService.addVendor(_userViewModel.token, vendorData);
 
       if (response.statusCode == 201 || response.statusCode == 200) {
@@ -63,6 +66,7 @@ class VendorVM extends ChangeNotifier {
       debugPrint("Error adding vendor: $e");
       status = "vendor_not_added";
     } finally {
+      isLoading = false;
       notifyListeners();
     }
     return status;

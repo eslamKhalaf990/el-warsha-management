@@ -8,18 +8,22 @@ import 'package:warsha_app/controllers/update_drag_drop.dart';
 import 'package:warsha_app/controllers/update_order/updatePaymentDetails.dart';
 import 'package:warsha_app/controllers/update_order/update_customer.dart';
 import 'package:warsha_app/services/accounting_service.dart';
+import 'package:warsha_app/services/category_service.dart';
 import 'package:warsha_app/services/customers_services.dart';
 import 'package:warsha_app/services/home_service.dart';
 import 'package:warsha_app/services/orders_service.dart';
 import 'package:warsha_app/services/products_service.dart';
+import 'package:warsha_app/services/shipping_zone_service.dart';
 import 'package:warsha_app/services/user_service.dart';
 import 'package:warsha_app/services/vendors_service.dart';
 import 'package:warsha_app/utils/navigator.dart';
 import 'package:warsha_app/view_models/accountings_v_m.dart';
+import 'package:warsha_app/view_models/category_v_m.dart';
 import 'package:warsha_app/view_models/customers_v_m.dart';
 import 'package:warsha_app/view_models/add_order_v_m.dart';
 import 'package:warsha_app/view_models/add_product_v_m.dart';
 import 'package:warsha_app/view_models/home_v_m.dart';
+import 'package:warsha_app/view_models/shipping_zone_v_m.dart';
 import 'package:warsha_app/view_models/update_order_v_m.dart';
 import 'package:warsha_app/view_models/update_product_v_m.dart';
 import 'package:warsha_app/view_models/user_v_m.dart';
@@ -51,6 +55,8 @@ void main() {
           //providers used for dependency injection
           Provider<ProductService>(create: (_) => ProductService()),
           Provider<VendorService>(create: (_) => VendorService()),
+          Provider<CategoryService>(create: (_) => CategoryService()),
+          Provider<ShippingZoneService>(create: (_) => ShippingZoneService()),
           Provider<AccountingService>(create: (_) => AccountingService()),
           Provider<HomeService>(create: (_) => HomeService()),
           Provider<UserService>(create: (_) => UserService()),
@@ -89,6 +95,22 @@ void main() {
           ChangeNotifierProvider<VendorVM>(
             create: (context) => VendorVM(
               context.read<VendorService>(),
+              context.read<UserViewModel>(),
+            ),
+          ),
+
+          //injecting category with api services
+          ChangeNotifierProvider<CategoryVM>(
+            create: (context) => CategoryVM(
+              context.read<CategoryService>(),
+              context.read<UserViewModel>(),
+            ),
+          ),
+
+          //injecting shipping zones with api services
+          ChangeNotifierProvider<ShippingZoneVM>(
+            create: (context) => ShippingZoneVM(
+              context.read<ShippingZoneService>(),
               context.read<UserViewModel>(),
             ),
           ),

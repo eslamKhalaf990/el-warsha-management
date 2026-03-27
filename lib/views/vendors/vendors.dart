@@ -6,8 +6,8 @@ import 'package:warsha_app/view_models/vendors_v_m.dart';
 import 'package:warsha_app/views/vendors/crud_vendors.dart';
 import 'package:warsha_app/views/vendors/vendor_widget.dart';
 
-class VendorList extends StatelessWidget {
-  const VendorList({super.key});
+class Vendors extends StatelessWidget {
+  const Vendors({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +36,14 @@ class VendorList extends StatelessWidget {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else if (vendorVM.allVendors != null && vendorVM.allVendors!.isNotEmpty) {
 
-                return Expanded(
-                  child: ListView.builder(
-                    itemCount: vendorVM.allVendors!.length,
-                    padding: EdgeInsets.zero,
-                    itemBuilder: (context, index) {
-                      return VendorWidget(
-                        vendor: vendorVM.allVendors![index],
-                      );
-                    },
-                  ),
+                return ListView.builder(
+                  itemCount: vendorVM.allVendors!.length,
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context, index) {
+                    return VendorWidget(
+                      vendor: vendorVM.allVendors![index],
+                    );
+                  },
                 );
               } else {
                 return const Center(
