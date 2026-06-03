@@ -1,7 +1,10 @@
 class Baseurl {
-  // static String baseURL = "http://localhost:8080/";
-  static String baseURL = "https://achieve-independently-influences-amendment.trycloudflare.com/";
-  static String baseURLImages = "${baseURL}api/files/";
+  static String baseURL = "http://localhost:8080/";
+  // static String baseURL = "https://gloves-checks-census-ascii.trycloudflare.com/"; // PROD
+  // static String baseURLImages = "${baseURL}api/files/"; // PROD
+  //
+  // static String baseURL = "https://mice-arrested-certificates-vocabulary.trycloudflare.com/"; // DEV
+  static String baseURLImages = "https://eminem-weights-mit-trademarks.trycloudflare.com"; // DEV
 
   /// =============== Authentication APIs ============== ///
   static String loginApi = '${baseURL}auth/login';
@@ -39,7 +42,7 @@ class Baseurl {
   static String getDailyCashFlowAPI = '${baseURL}cashFlow/daily';
   static String getTotalSoldProductsAPI = '${baseURL}cashFlow/topSoldProducts';
 
-  // --- NEW: Customer Analysis Endpoints ---
+  // --- Customer Analysis Endpoints ---
   static String getLoyalCustomersAPI = '${baseURL}cashFlow/analysis/customers/loyalty';
   static String getVipCustomersAPI = '${baseURL}cashFlow/analysis/customers/vip';
   static String getAtRiskCustomersAPI = '${baseURL}cashFlow/analysis/customers/at-risk';

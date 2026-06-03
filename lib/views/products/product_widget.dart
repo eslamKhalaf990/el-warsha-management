@@ -253,7 +253,7 @@ class ProductWidget extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
         child: Image.network(
-          "${Baseurl.baseURLImages}${ImageHelper.extractFileId(product.image)}",
+          "${Baseurl.baseURLImages}${product.image}",
           width: size,
           height: size,
           fit: BoxFit.cover,

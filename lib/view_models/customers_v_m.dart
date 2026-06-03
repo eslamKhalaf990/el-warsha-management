@@ -79,12 +79,14 @@ class CustomerVM extends ChangeNotifier {
     try {
       isLoading = true;
       notifyListeners();
+
       final response = await _customerService.addCustomer(name, governorate, phone, address,secondaryPhone,city, _userViewModel.token);
-      if (response.statusCode == 201) {
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 201 || response.statusCode == 200) {
         status = "customer_added";
         debugPrint("customer added successfully");
         initAllCustomers();
-        await Future.delayed(const Duration(seconds: 2));
       } else {
         status = "customer_not_added";
         debugPrint("Failed to add customer: ${response.statusCode}");
