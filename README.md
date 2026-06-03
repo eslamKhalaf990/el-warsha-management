@@ -223,8 +223,8 @@ intl: ^0.20.2                      // Date/number formatting
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/warsha_app.git
-   cd warsha_app
+   git clone https://github.com/eslamKhalaf990/el-warsha-management.git
+   cd el-warsha-management
    ```
 
 2. **Install dependencies**
