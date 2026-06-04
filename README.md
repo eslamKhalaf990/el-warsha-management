@@ -9,7 +9,7 @@ A sophisticated **Full-Stack ERP solution** built with Flutter & Dart. This proj
 
 ---
 
-## 🎯 Why This Project Stands Out (For Interviewers)
+## Why This Project Stands Out
 
 This isn't just a CRUD application. El Warsha ERP implements real-world enterprise requirements:
 - **Advanced Business Intelligence (BI)**: Features a robust analytics engine tracking **Customer Lifetime Value (CLV)**, **Retention Metrics (At-Risk)**, and regional performance across 25+ Egyptian governorates.
@@ -20,35 +20,35 @@ This isn't just a CRUD application. El Warsha ERP implements real-world enterpri
 
 ---
 
-## 🚀 Key Modules & Technical Implementation
+## Key Modules & Technical Implementation
 
-### 📊 1. Business Intelligence & Analytics Dashboard
+### 1. Business Intelligence & Analytics Dashboard
 *The brain of the operation. Transforms raw data into actionable insights.*
 - **Predictive Retention**: Identification of "At-Risk" customers based on activity algorithms.
 - **Customer Segmentation**: Automated categorization into Loyal, VIP, and Discount-Seeker groups.
 - **Financial KPIs**: Real-time monitoring of **Average Basket Size**, Revenue by Source, and Daily Cash Flow.
 - **Regional Performance**: Performance heatmaps for all Egyptian governorates.
 
-### 🛠️ 2. Professional Order Engineering
+### 2. Professional Order Engineering
 *A multi-step builder pattern designed for speed and accuracy.*
 - **Stateful Wizard**: Maintains complex order state (Customer + Products + Shipping + Payment) across multiple screens using a builder pattern.
 - **Dynamic Inventory Sync**: Real-time quantity adjustments and price calculations within the cart.
 - **Advanced Query Engine**: Multi-criteria filtering (Region, Payment Status, Source) to manage thousands of records efficiently.
 
-### 💰 3. Financial & Accounting Engine
+### 3. Financial & Accounting Engine
 *Complete transparency and auditability.*
 - **Transaction Ledger**: Full audit trail for every EGP in the system.
 - **Multi-Channel Tracking**: Monitoring balances across Cash, Bank, and Digital payments.
 - **Category-Based Accounting**: Automatic categorization of expenses and revenue streams.
 
-### 📦 4. Inventory & Supply Chain
+### 4. Inventory & Supply Chain
 - **Hierarchical Cataloging**: Multi-level product categories for intuitive navigation.
 - **Vendor Lifecycle Management**: Comprehensive sourcing and performance tracking for suppliers.
 - **Bulk Operations**: Drag-and-drop Excel processing for massive inventory updates.
 
 ---
 
-## 🏗️ Technical Architecture
+## Technical Architecture
 
 ### Design Patterns
 - **MVVM (Model-View-ViewModel)**: Decouples UI from business logic, ensuring the codebase is testable and maintainable.
@@ -68,7 +68,7 @@ This isn't just a CRUD application. El Warsha ERP implements real-world enterpri
 
 ---
 
-## 📱 The "Onyx" Design System
+## The "Onyx" Design System
 Designed for **power users**, the Onyx UI focuses on:
 - **Data Density**: Maximizing information visibility without cluttering.
 - **Professional Aesthetic**: A high-contrast palette of Black, White, and Slate Grey.
@@ -77,7 +77,7 @@ Designed for **power users**, the Onyx UI focuses on:
 
 ---
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 ```bash
 # Clone the repository
