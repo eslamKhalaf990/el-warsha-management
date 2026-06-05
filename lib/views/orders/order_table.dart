@@ -59,8 +59,9 @@ class OrderList extends StatelessWidget {
         sortAscending: orderVM.sortAscending,
         dividerThickness: 0.05,
         columnSpacing: 40,
-        headingRowHeight: 70,
+        headingRowHeight: 45,
         columns: [
+          // Id
           DataColumn(
             label: const DefaultText(txt: '#', bold: true),
             onSort: (columnIndex, ascending) {
@@ -68,6 +69,8 @@ class OrderList extends StatelessWidget {
                   (order) => order.orderId ?? 0, columnIndex, ascending);
             },
           ),
+
+          // Date
           DataColumn(
             label: Row(
               children: [
@@ -75,243 +78,250 @@ class OrderList extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Iconsax.sort_copy, size: 20),
                   onPressed: () async {
-                    final DateTimeRange? newDateRange = await showDateRangePicker(
+                    final DateTimeRange? newDateRange =
+                        await showDateRangePicker(
                       context: context,
-                      initialDateRange: (orderVM.startDate != null && orderVM.endDate != null)
-                          ? DateTimeRange(start: orderVM.startDate!, end: orderVM.endDate!)
-                          : null,
+                      initialDateRange:
+                          (orderVM.startDate != null && orderVM.endDate != null)
+                              ? DateTimeRange(
+                                  start: orderVM.startDate!,
+                                  end: orderVM.endDate!)
+                              : null,
                       firstDate: DateTime(2025),
                       initialEntryMode: DatePickerEntryMode.inputOnly,
                       lastDate: DateTime.now(),
                       builder: (BuildContext context, Widget? child) {
                         return Theme(
                           data: Theme.of(context).copyWith(
-
-                                  colorScheme: Theme.of(context).colorScheme.copyWith(
-                                    primary: Theme.of(context).colorScheme.tertiary,
-                                  ),
-                                  textButtonTheme: TextButtonThemeData(
-                                    style: TextButton.styleFrom(
-                                      foregroundColor: Theme.of(context).colorScheme.tertiary, // "Save" and "Cancel" text color
-                                    ),
-                                  ),
-                                  dialogTheme: DialogThemeData(backgroundColor: Colors.grey[850]),
+                            colorScheme: Theme.of(context).colorScheme.copyWith(
+                                  primary:
+                                      Theme.of(context).colorScheme.tertiary,
                                 ),
-                                child: child!,
-                              );
-                            },
-                          );
-
-                          // Update the ViewModel with the new range
-                          orderVM.setDateRange(newDateRange);
-                        },
-                      )
-                    ],
-                  ),
-                  onSort: (columnIndex, ascending) {
-                    orderVM.sort<DateTime>(
-                      (order) => order.orderDate ?? DateTime.now(),
-                      columnIndex,
-                      ascending,
+                            textButtonTheme: TextButtonThemeData(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Theme.of(context)
+                                    .colorScheme
+                                    .tertiary, // "Save" and "Cancel" text color
+                              ),
+                            ),
+                            dialogTheme: DialogThemeData(
+                                backgroundColor: Colors.grey[850]),
+                          ),
+                          child: child!,
+                        );
+                      },
                     );
-                  },
-                ),
 
-                // Customer
-                DataColumn(
-                  label: SizedBox(
-                    height: 22,
-                    width: 120,
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Customer',
-                        hintStyle:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
-                      ),
-                      controller: orderVM.customer,
-                      onChanged: (val) => orderVM.applyFilter('customer', val),
-                    ),
-                  ),
-                  onSort: (columnIndex, ascending) {
-                    orderVM.sort<String>(
-                      (order) => order.customer?.fullName ?? '',
-                      columnIndex,
-                      ascending,
-                    );
+                    // Update the ViewModel with the new range
+                    orderVM.setDateRange(newDateRange);
                   },
-                ),
+                )
+              ],
+            ),
+            onSort: (columnIndex, ascending) {
+              orderVM.sort<DateTime>(
+                (order) => order.orderDate ?? DateTime.now(),
+                columnIndex,
+                ascending,
+              );
+            },
+          ),
 
-                // Phone
-                DataColumn(
-                  label: SizedBox(
-                    height: 22,
-                    width: 120,
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Phone',
-                        hintStyle:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
-                      ),
-                      controller: orderVM.phone,
-                      onChanged: (val) => orderVM.applyFilter('phone', val),
-                    ),
-                  ),
-                  onSort: (columnIndex, ascending) {
-                    orderVM.sort<String>(
-                      (order) => order.customer?.phone ?? '',
-                      columnIndex,
-                      ascending,
-                    );
-                  },
+          // Customer
+          DataColumn(
+            label: SizedBox(
+              height: 22,
+              width: 120,
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Customer',
+                  hintStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
                 ),
+                controller: orderVM.customer,
+                onChanged: (val) => orderVM.applyFilter('customer', val),
+              ),
+            ),
+            onSort: (columnIndex, ascending) {
+              orderVM.sort<String>(
+                (order) => order.customer?.fullName ?? '',
+                columnIndex,
+                ascending,
+              );
+            },
+          ),
 
-                // Status
-                DataColumn(
-                  label: SizedBox(
-                    height: 22,
-                    width: 120,
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Status',
-                        hintStyle:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
-                      ),
-                      controller: orderVM.status,
-                      onChanged: (val) => orderVM.applyFilter('status', val),
-                    ),
-                  ),
-                  onSort: (columnIndex, ascending) {
-                    orderVM.sort<String>(
-                      (order) => order.status ?? '',
-                      columnIndex,
-                      ascending,
-                    );
-                  },
+          // Phone
+          DataColumn(
+            label: SizedBox(
+              height: 22,
+              width: 120,
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Phone',
+                  hintStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
                 ),
+                controller: orderVM.phone,
+                onChanged: (val) => orderVM.applyFilter('phone', val),
+              ),
+            ),
+            onSort: (columnIndex, ascending) {
+              orderVM.sort<String>(
+                (order) => order.customer?.phone ?? '',
+                columnIndex,
+                ascending,
+              );
+            },
+          ),
 
-                // Governorate
-                DataColumn(
-                  label: SizedBox(
-                    height: 22,
-                    width: 120,
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Governorate',
-                        hintStyle:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
-                      ),
-                      controller: orderVM.governorate,
-                      onChanged: (val) => orderVM.applyFilter('governorate', val),
-                    ),
-                  ),
-                  onSort: (columnIndex, ascending) {
-                    orderVM.sort<String>(
-                      (order) => order.customer?.governorate ?? '',
-                      columnIndex,
-                      ascending,
-                    );
-                  },
+          // Status
+          DataColumn(
+            label: SizedBox(
+              height: 22,
+              width: 120,
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Status',
+                  hintStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
                 ),
+                controller: orderVM.status,
+                onChanged: (val) => orderVM.applyFilter('status', val),
+              ),
+            ),
+            onSort: (columnIndex, ascending) {
+              orderVM.sort<String>(
+                (order) => order.status ?? '',
+                columnIndex,
+                ascending,
+              );
+            },
+          ),
 
-                // Total
-                DataColumn(
-                  label: SizedBox(
-                    height: 22,
-                    width: 120,
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Total',
-                        hintStyle:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
-                      ),
-                      controller: orderVM.total,
-                      onChanged: (val) => orderVM.applyFilter('total', val),
-                    ),
-                  ),
-                  onSort: (columnIndex, ascending) {
-                    orderVM.sort<num>(
-                      (order) => order.totalPrice ?? 0,
-                      columnIndex,
-                      ascending,
-                    );
-                  },
+          // Governorate
+          DataColumn(
+            label: SizedBox(
+              height: 22,
+              width: 120,
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Governorate',
+                  hintStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
                 ),
+                controller: orderVM.governorate,
+                onChanged: (val) => orderVM.applyFilter('governorate', val),
+              ),
+            ),
+            onSort: (columnIndex, ascending) {
+              orderVM.sort<String>(
+                (order) => order.customer?.governorate ?? '',
+                columnIndex,
+                ascending,
+              );
+            },
+          ),
 
-                // Source
-                DataColumn(
-                  label: SizedBox(
-                    height: 22,
-                    width: 120,
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Source',
-                        hintStyle:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
-                      ),
-                      controller: orderVM.source,
-                      onChanged: (val) => orderVM.applyFilter('source', val),
-                    ),
-                  ),
-                  onSort: (columnIndex, ascending) {
-                    orderVM.sort<String>(
-                      (order) => order.orderSource ?? '',
-                      columnIndex,
-                      ascending,
-                    );
-                  },
+          // Total
+          DataColumn(
+            label: SizedBox(
+              height: 22,
+              width: 120,
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Total',
+                  hintStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
                 ),
+                controller: orderVM.total,
+                onChanged: (val) => orderVM.applyFilter('total', val),
+              ),
+            ),
+            onSort: (columnIndex, ascending) {
+              orderVM.sort<num>(
+                (order) => order.totalPrice ?? 0,
+                columnIndex,
+                ascending,
+              );
+            },
+          ),
 
-                // Source
-                DataColumn(
-                  label: SizedBox(
-                    height: 22,
-                    width: 120,
-                    child: TextField(
-                      decoration: const InputDecoration(
-                        hintText: 'Payment Method',
-                        hintStyle:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
-                      ),
-                      controller: orderVM.paymentMethod,
-                      onChanged: (val) => orderVM.applyFilter('paymentMethod', val),
-                    ),
-                  ),
-                  onSort: (columnIndex, ascending) {
-                    orderVM.sort<String>(
-                      (order) => order.paymentMethod ?? '',
-                      columnIndex,
-                      ascending,
-                    );
-                  },
+          // Source
+          DataColumn(
+            label: SizedBox(
+              height: 22,
+              width: 120,
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Source',
+                  hintStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
                 ),
+                controller: orderVM.source,
+                onChanged: (val) => orderVM.applyFilter('source', val),
+              ),
+            ),
+            onSort: (columnIndex, ascending) {
+              orderVM.sort<String>(
+                (order) => order.orderSource ?? '',
+                columnIndex,
+                ascending,
+              );
+            },
+          ),
+
+          // Source
+          DataColumn(
+            label: SizedBox(
+              height: 22,
+              width: 120,
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Payment Method',
+                  hintStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                  suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                ),
+                controller: orderVM.paymentMethod,
+                onChanged: (val) => orderVM.applyFilter('paymentMethod', val),
+              ),
+            ),
+            onSort: (columnIndex, ascending) {
+              orderVM.sort<String>(
+                (order) => order.paymentMethod ?? '',
+                columnIndex,
+                ascending,
+              );
+            },
+          ),
 
           // Actions
           const DataColumn(
@@ -331,7 +341,10 @@ class OrderList extends StatelessWidget {
       cells: [
         DataCell(Text('#${order.orderId}')),
         DataCell(Text(DateHelper.formatDatePicker(order.orderDate.toString()))),
-        DataCell(Text(order.customer?.fullName ?? "-", style: const TextStyle(fontWeight: FontWeight.bold),)),
+        DataCell(Text(
+          order.customer?.fullName ?? "-",
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        )),
         DataCell(Text(order.customer?.phone ?? "-")),
         DataCell(
           SizedBox(
@@ -671,7 +684,8 @@ class OrderStatusDropdown extends StatelessWidget {
             // We also add a 'mounted' check for safety in async functions.
             if (!context.mounted) return;
             final orderVM = Provider.of<OrderVM>(context, listen: false);
-            final accountingVM = Provider.of<AccountingVM>(context, listen: false);
+            final accountingVM =
+                Provider.of<AccountingVM>(context, listen: false);
             final productVM = Provider.of<ProductVM>(context, listen: false);
 
             String bankAccountId = "0"; // Default bank account ID
@@ -680,12 +694,12 @@ class OrderStatusDropdown extends StatelessWidget {
             // --- 3. Handle Status-Specific Logic ---
 
             if (value == "Completed") {
-              final bankAccount = await showTransferDialog(context, order.totalPrice ?? 0);
+              final bankAccount =
+                  await showTransferDialog(context, order.totalPrice ?? 0);
               // User cancelled the dialog
               if (bankAccount == null) return;
 
               bankAccountId = bankAccount.id.toString();
-
             } else if (value == "Cancelled") {
               final confirm = await showCancelDialog(context);
               // User cancelled the confirmation
@@ -715,7 +729,8 @@ class OrderStatusDropdown extends StatelessWidget {
   }
 }
 
-Future<BankAccount?> showTransferDialog(BuildContext context, double totalPrice) async {
+Future<BankAccount?> showTransferDialog(
+    BuildContext context, double totalPrice) async {
   BankAccount? selectedAccount;
 
   final bool? result = await showDialog<bool>(
@@ -730,59 +745,66 @@ Future<BankAccount?> showTransferDialog(BuildContext context, double totalPrice)
             RichText(
               text: TextSpan(
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.black87,
-                  height: 1.5,
-                ),
+                      color: Colors.black87,
+                      height: 1.5,
+                    ),
                 children: [
-                  const TextSpan(text: 'Once the order is completed, the payment ', style: TextStyle(fontSize: 16)),
+                  const TextSpan(
+                      text: 'Once the order is completed, the payment ',
+                      style: TextStyle(fontSize: 16)),
                   TextSpan(
                     text: '$totalPrice EGP',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   const TextSpan(
-                      text:
-                      ' will be transferred.\n\n',  style: TextStyle(fontSize: 16)),
-                  const TextSpan(text: 'Select the account to transfer your money to:'),
+                      text: ' will be transferred.\n\n',
+                      style: TextStyle(fontSize: 16)),
+                  const TextSpan(
+                      text: 'Select the account to transfer your money to:'),
                 ],
               ),
             ),
             const SizedBox(height: 10),
             Consumer<AccountingVM>(
-              builder: (context, accounting, child) => accounting.accountsBalance == null ? Container() : DropdownButtonFormField<BankAccount>(
-                initialValue: selectedAccount,
-                hint: const Text('Choose account'),
-                items:
-                  accounting.accountsBalance!
-                      .map((account) => DropdownMenuItem<BankAccount>(
-                    value: account,
-                    child: Text(account.name),
-                  ))
-                      .toList(),
-                onChanged: (value) => setState(() => selectedAccount = value),
-                borderRadius: Constants.BORDER_RADIUS_20,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor:
-                  Colors.grey.shade100,
-                  labelStyle:
-                  const TextStyle(color: Colors.grey, fontSize: 14),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
+              builder: (context, accounting, child) => accounting
+                          .accountsBalance ==
+                      null
+                  ? Container()
+                  : DropdownButtonFormField<BankAccount>(
+                      initialValue: selectedAccount,
+                      hint: const Text('Choose account'),
+                      items: accounting.accountsBalance!
+                          .map((account) => DropdownMenuItem<BankAccount>(
+                                value: account,
+                                child: Text(account.name),
+                              ))
+                          .toList(),
+                      onChanged: (value) =>
+                          setState(() => selectedAccount = value),
+                      borderRadius: Constants.BORDER_RADIUS_20,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey.shade100,
+                        labelStyle:
+                            const TextStyle(color: Colors.grey, fontSize: 14),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.transparent,
+                            ),
+                            borderRadius: Constants.BORDER_RADIUS_15),
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Icon(
+                            Iconsax.bank_copy,
+                            color: Theme.of(context).colorScheme.tertiary,
+                          ),
+                        ),
                       ),
-                      borderRadius: Constants.BORDER_RADIUS_15),
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Icon(
-                      Iconsax.bank_copy,
-                      color: Theme.of(context).colorScheme.tertiary,
                     ),
-                  ),
-                ),
-              ),
             ),
           ],
         ),
@@ -792,7 +814,7 @@ Future<BankAccount?> showTransferDialog(BuildContext context, double totalPrice)
             style: ButtonStyle(
               foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
               backgroundColor:
-              WidgetStateProperty.all<Color>(Colors.grey.shade500),
+                  WidgetStateProperty.all<Color>(Colors.grey.shade500),
             ),
             child: const Text('Cancel'),
           ),
@@ -803,7 +825,7 @@ Future<BankAccount?> showTransferDialog(BuildContext context, double totalPrice)
             style: ButtonStyle(
               foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
               backgroundColor:
-              WidgetStateProperty.all<Color>(Colors.green.shade400),
+                  WidgetStateProperty.all<Color>(Colors.green.shade400),
             ),
             child: const Text('Confirm'),
           ),
@@ -813,14 +835,12 @@ Future<BankAccount?> showTransferDialog(BuildContext context, double totalPrice)
   );
 
   if (result == true && selectedAccount != null) {
-
     return selectedAccount;
   }
   return null;
 }
 
 Future<bool> showCancelDialog(BuildContext context) async {
-
   final bool? result = await showDialog<bool>(
     context: context,
     builder: (context) => StatefulBuilder(
@@ -837,8 +857,8 @@ Future<bool> showCancelDialog(BuildContext context) async {
           text: TextSpan(
             // Use the default body style from the theme
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              height: 1.5, // Line spacing
-            ),
+                  height: 1.5, // Line spacing
+                ),
             children: const [
               TextSpan(
                 text: 'Are you sure you want to cancel this order?\n\n',
@@ -868,7 +888,8 @@ Future<bool> showCancelDialog(BuildContext context) async {
             onPressed: () => Navigator.pop(context, true),
             style: ButtonStyle(
               foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-              backgroundColor: WidgetStateProperty.all<Color>(Colors.red.shade700),
+              backgroundColor:
+                  WidgetStateProperty.all<Color>(Colors.red.shade700),
             ),
             child: const Text('Yes, Cancel Order'),
           ),
@@ -878,10 +899,8 @@ Future<bool> showCancelDialog(BuildContext context) async {
   );
 
   if (result == true) {
-
     return true;
   }
 
   return false;
 }
-

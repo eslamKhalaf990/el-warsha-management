@@ -3,6 +3,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:warsha_app/controllers/transaction_provider.dart';
 import 'package:warsha_app/utils/date.dart';
+import 'package:warsha_app/utils/default_text.dart';
 import 'package:warsha_app/utils/price_helper.dart';
 import 'package:warsha_app/view_models/accountings_v_m.dart';
 
@@ -13,7 +14,6 @@ class TransactionsTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final accountingVM = context.watch<AccountingVM>();
     final provider = context.watch<TransactionsProvider>();
-    final theme = Theme.of(context);
 
     final transactions = accountingVM.allTransactions ?? [];
 
@@ -29,6 +29,18 @@ class TransactionsTable extends StatelessWidget {
       });
     }
 
+    if (provider.sortedTransactions.isEmpty && provider.allTransactions.isNotEmpty) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(32.0),
+          child: DefaultText(
+            txt: 'No transactions found matching your filters',
+            bold: true,
+          ),
+        ),
+      );
+    }
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: Scrollbar(
@@ -41,42 +53,178 @@ class TransactionsTable extends StatelessWidget {
               sortColumnIndex: provider.sortColumnIndex,
               sortAscending: provider.sortAscending,
               dividerThickness: 0.05,
-              columnSpacing: 80,
-              headingRowColor: WidgetStatePropertyAll(
-                theme.colorScheme.primary.withAlpha(40),
-              ),
-              dataRowMinHeight: 52,
-              dataRowMaxHeight: 52,
+              columnSpacing: 40,
+              headingRowHeight: 40,
               columns: [
+                // Date
                 DataColumn(
-                  label: const Text('Date'),
+                  label: Row(
+                    children: [
+                      const DefaultText(txt: 'Date', bold: true),
+                      IconButton(
+                        icon: const Icon(Iconsax.sort_copy, size: 20),
+                        onPressed: () async {
+                          final DateTimeRange? newDateRange =
+                              await showDateRangePicker(
+                            context: context,
+                            initialDateRange: (provider.startDate != null &&
+                                    provider.endDate != null)
+                                ? DateTimeRange(
+                                    start: provider.startDate!,
+                                    end: provider.endDate!)
+                                : null,
+                            firstDate: DateTime(2024),
+                            initialEntryMode: DatePickerEntryMode.inputOnly,
+                            lastDate: DateTime.now(),
+                            builder: (BuildContext context, Widget? child) {
+                              return Theme(
+                                data: Theme.of(context).copyWith(
+                                  colorScheme: Theme.of(context)
+                                      .colorScheme
+                                      .copyWith(
+                                        primary: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
+                                      ),
+                                  textButtonTheme: TextButtonThemeData(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                    ),
+                                  ),
+                                  dialogTheme: DialogThemeData(
+                                      backgroundColor: Colors.grey[850]),
+                                ),
+                                child: child!,
+                              );
+                            },
+                          );
+                          provider.setDateRange(newDateRange);
+                        },
+                      )
+                    ],
+                  ),
                   onSort: (i, asc) => provider.sort<String>(
-                        (t) => t.createdAt.toString(),
+                    (t) => t.createdAt.toString(),
                     i,
                     asc,
                   ),
                 ),
+
+                // Account
                 DataColumn(
-                  label: const Text('Account'),
+                  label: SizedBox(
+                    height: 22,
+                    width: 120,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Account',
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                      ),
+                      controller: provider.accountController,
+                      onChanged: (val) => provider.applyFilter('account', val),
+                    ),
+                  ),
                   onSort: (i, asc) =>
                       provider.sort<String>((t) => t.bankAccount.name, i, asc),
                 ),
+
+                // Category
                 DataColumn(
-                  label: const Text('Category'),
+                  label: SizedBox(
+                    height: 22,
+                    width: 120,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Category',
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                      ),
+                      controller: provider.categoryController,
+                      onChanged: (val) => provider.applyFilter('category', val),
+                    ),
+                  ),
                   onSort: (i, asc) => provider.sort<String>(
-                          (t) => t.category.categoryName, i, asc),
+                      (t) => t.category.categoryName, i, asc),
                 ),
+
+                // Type
                 DataColumn(
-                  label: const Text('Type'),
+                  label: SizedBox(
+                    height: 22,
+                    width: 80,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Type',
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                      ),
+                      controller: provider.typeController,
+                      onChanged: (val) => provider.applyFilter('type', val),
+                    ),
+                  ),
                   onSort: (i, asc) =>
                       provider.sort<String>((t) => t.transactionType, i, asc),
                 ),
+
+                // Amount
                 DataColumn(
-                  label: const Text('Amount'),
+                  label: SizedBox(
+                    height: 22,
+                    width: 100,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Amount',
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                      ),
+                      controller: provider.amountController,
+                      onChanged: (val) => provider.applyFilter('amount', val),
+                    ),
+                  ),
                   onSort: (i, asc) =>
                       provider.sort<num>((t) => t.amount, i, asc),
                 ),
-                const DataColumn(label: Text('Description')),
+
+                // Description
+                DataColumn(
+                  label: SizedBox(
+                    height: 22,
+                    width: 150,
+                    child: TextField(
+                      decoration: const InputDecoration(
+                        hintText: 'Description',
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                        border: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                        suffixIcon: Icon(Iconsax.sort_copy, size: 20),
+                      ),
+                      controller: provider.descriptionController,
+                      onChanged: (val) =>
+                          provider.applyFilter('description', val),
+                    ),
+                  ),
+                ),
               ],
               rows: provider.sortedTransactions.map<DataRow>((t) {
                 final color = t.transactionType == "Deposit"

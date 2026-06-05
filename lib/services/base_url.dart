@@ -1,6 +1,6 @@
 class Baseurl {
-  static String baseURL = "http://localhost:8080/";
-  // static String baseURL = "https://gloves-checks-census-ascii.trycloudflare.com/"; // PROD
+  // static String baseURL = "http://localhost:8080/";
+  static String baseURL = "https://gloves-checks-census-ascii.trycloudflare.com/"; // PROD
   // static String baseURLImages = "${baseURL}api/files/"; // PROD
   //
   // static String baseURL = "https://mice-arrested-certificates-vocabulary.trycloudflare.com/"; // DEV
